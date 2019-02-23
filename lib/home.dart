@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:gatrabali/widgets/regency_news_card.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() {
@@ -41,16 +43,25 @@ Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
 
 Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
   Map<String, dynamic> data = item.data;
+  var hasImage = data["enclosures"] == null ? false : true;
+
+  if (hasImage) {
+    return Padding(
+      padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: RegencyNewsCard(
+          key: ValueKey(item.documentID), regency: "Gianyar", data: data),
+    );
+  }
 
   return Padding(
-      key: ValueKey(item.documentID),
-      padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(5.0)),
-        child: ListTile(
-            title: Text(data["title"]),
-            onLongPress: () => print(data["title"])),
+      padding: new EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(data["title"]),
+            )
+          ],
+        ),
       ));
 }
