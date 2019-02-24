@@ -17,7 +17,7 @@ class _LatestNewsState extends State<LatestNews> {
       stream: Firestore.instance
           .collection("entries")
           .orderBy("id", descending: true)
-          .limit(10)
+          .limit(20)
           .snapshots(),
       builder: (ctx, snapshots) {
         if (!snapshots.hasData) return LinearProgressIndicator();
@@ -30,21 +30,14 @@ class _LatestNewsState extends State<LatestNews> {
 
 Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
   return ListView(
-      padding: new EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       children: docs.map((doc) => _listItem(ctx, doc)).toList());
 }
 
 Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
   Map<String, dynamic> data = item.data;
-  //print("[${item.documentID}] ${data['title']} - ${data['enclosures']}");
-  var hasImage = data["enclosures"] == null ? false : true;
-
-  if (hasImage) {
-    return Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: SingleNewsCard(key: ValueKey(item.documentID), data: data),
-    );
-  }
-
-  return Container();
+  return Padding(
+    padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    child: SingleNewsCard(key: ValueKey(item.documentID), data: data),
+  );
 }

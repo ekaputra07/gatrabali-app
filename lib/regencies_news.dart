@@ -30,7 +30,7 @@ class _RegenciesNewsState extends State<RegenciesNews> {
 
 Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
   return ListView(
-      padding: new EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       children: docs.map((doc) => _listItem(ctx, doc)).toList());
 }
 
@@ -41,7 +41,7 @@ Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
 
   if (hasImage) {
     return Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
       child: RegencyNewsCard(key: ValueKey(item.documentID), data: data, regency: "Gianyar"),
     );
   }

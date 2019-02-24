@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
@@ -9,9 +8,7 @@ class RegencyNewsCard extends StatelessWidget {
   final String regency;
   final dynamic data;
 
-  RegencyNewsCard({Key key, this.regency, this.data}) : super(key: key) {
-    initializeDateFormatting("id_ID");
-  }
+  RegencyNewsCard({Key key, this.regency, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {

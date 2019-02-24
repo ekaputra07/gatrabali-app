@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
@@ -8,9 +7,7 @@ import 'package:gatrabali/single_news.dart';
 class SingleNewsCard extends StatelessWidget {
   final dynamic data;
 
-  SingleNewsCard({Key key, this.data}) : super(key: key) {
-    initializeDateFormatting("id_ID");
-  }
+  SingleNewsCard({Key key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -42,17 +39,26 @@ class SingleNewsCard extends StatelessWidget {
   }
 
   Widget _header(ctx) {
-    return Stack(
-      children: [
-        CoverImageDecoration(
-            url: data["enclosures"][0]["url"],
-            width: null,
-            height: 150,
-            onTap: () {
-              _openDetail(ctx);
-            }),
-      ],
-    );
+    bool hasImage = data['enclosures'] == null ? false : true;
+    if (hasImage) {
+      return Stack(
+        children: [
+          CoverImageDecoration(
+              url: data["enclosures"][0]["url"],
+              width: null,
+              height: 150.0,
+              onTap: () {
+                _openDetail(ctx);
+              }),
+        ],
+      );
+    } else {
+      return Container(
+        width: double.infinity,
+        height: 150.0,
+        color: Colors.teal,
+      );
+    }
   }
 
   // Open detail page

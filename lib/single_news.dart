@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 
 class SingleNews extends StatelessWidget {
   final dynamic data;
 
-  SingleNews(Key key, this.data) : super(key: key) {
-    initializeDateFormatting("id_ID");
-  }
+  SingleNews(Key key, this.data) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -24,7 +19,6 @@ class SingleNews extends StatelessWidget {
   }
 
   Widget _getBody(BuildContext ctx) {
-    var imgUrl = data["enclosures"][0]["url"];
     var title = Text(data["title"],
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
@@ -33,7 +27,7 @@ class SingleNews extends StatelessWidget {
         child: Column(children: [
       Stack(
         children: [
-          CoverImageDecoration(url: imgUrl, height: 250, width: null),
+          _cover(ctx),
           Container(
             height: 250,
             width: double.infinity,
@@ -52,10 +46,7 @@ class SingleNews extends StatelessWidget {
       Html(
           useRichText: true,
           data: data["content"],
-          padding: EdgeInsets.all(20.0),
-          onLinkTap: (link) {
-            print("Link Tapped");
-          }),
+          padding: EdgeInsets.all(20.0)),
       Divider(),
       _source(ctx),
       Divider(),
@@ -64,11 +55,25 @@ class SingleNews extends StatelessWidget {
     ]));
   }
 
+  Widget _cover(BuildContext ctx) {
+    bool hasImg = data['enclosures'] == null ? false : true;
+    if (hasImg) {
+      var imgUrl = data["enclosures"][0]["url"];
+      return CoverImageDecoration(url: imgUrl, height: 250.0, width: null);
+    } else {
+      return Container(
+        width: double.infinity,
+        height: 250.0,
+        color: Colors.teal,
+      );
+    }
+  }
+
   Widget _actions(BuildContext ctx, bool includeDate) {
     var actions = [
       Column(children: [
         Icon(Icons.bookmark, color: Colors.teal),
-        Text("Bookmark", style: TextStyle(color: Colors.teal))
+        Text("Simpan", style: TextStyle(color: Colors.teal))
       ]),
       Column(children: [
         Icon(Icons.comment, color: Colors.black),
