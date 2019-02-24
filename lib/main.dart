@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gatrabali/latest_news.dart';
-import 'package:gatrabali/regency_news.dart';
+import 'package:gatrabali/regencies_news.dart';
 
 void main() => runApp(MyApp());
 
@@ -59,7 +59,7 @@ class _GatraBaliState extends State<GatraBali> {
       case 0:
         return LatestNews();
       case 1:
-        return RegencyNews();
+        return RegenciesNews();
       default:
         return LatestNews();
     }

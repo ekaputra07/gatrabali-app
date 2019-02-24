@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:gatrabali/widgets/regency_news_card.dart';
 
-class RegencyNews extends StatefulWidget {
+class RegenciesNews extends StatefulWidget {
   @override
-  _RegencyNewsState createState() {
-    return _RegencyNewsState();
+  _RegenciesNewsState createState() {
+    return _RegenciesNewsState();
   }
 }
 
-class _RegencyNewsState extends State<RegencyNews> {
+class _RegenciesNewsState extends State<RegenciesNews> {
   @override
   Widget build(BuildContext ctx) {
     return StreamBuilder<QuerySnapshot>(

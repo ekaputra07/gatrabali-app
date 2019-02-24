@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/single_news.dart';
 
 class RegencyNewsCard extends StatelessWidget {
   final String regency;
@@ -23,23 +24,28 @@ class RegencyNewsCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(),
+          _header(ctx, data),
           ListTile(
-            title: Text(data["title"],
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            title: Padding(
+                padding: EdgeInsets.only(top: 7),
+                child: Text(data["title"],
+                    style: TextStyle(fontWeight: FontWeight.bold))),
             subtitle: Padding(
                 padding: new EdgeInsets.only(top: 5),
                 child: Text("$source ($formattedDate)")),
+            onTap: () {
+              _openDetail(ctx, data);
+            },
           ),
           Divider(),
-          _relatedNews(),
-          _moreNews()
+          _relatedNews(ctx),
+          _moreNews(ctx)
         ],
       ),
     );
   }
 
-  Widget _header() {
+  Widget _header(BuildContext ctx, dynamic data) {
     var titleWidget = Text(regency.toUpperCase(),
         style: TextStyle(
             fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white));
@@ -47,7 +53,12 @@ class RegencyNewsCard extends StatelessWidget {
     return Stack(
       children: [
         CoverImageDecoration(
-            url: data["enclosures"][0]["url"], width: null, height: 150),
+            url: data["enclosures"][0]["url"],
+            width: null,
+            height: 150,
+            onTap: () {
+              _openDetail(ctx, data);
+            }),
         Container(
           height: 50,
           width: double.infinity,
@@ -62,29 +73,43 @@ class RegencyNewsCard extends StatelessWidget {
     );
   }
 
-  Widget _relatedNews() {
+  Widget _relatedNews(BuildContext ctx) {
     return Column(
       children: [
         ListTile(
           leading: CoverImageDecoration(
               url: "https://picsum.photos/200", width: 40, height: 40),
           title: Text(data["title"], style: TextStyle(fontSize: 14)),
+          onTap: () {
+            _openDetail(ctx, data);
+          },
         ),
         Divider(),
         ListTile(
           leading: CoverImageDecoration(
               url: "https://picsum.photos/200", width: 40, height: 40),
           title: Text(data["title"], style: TextStyle(fontSize: 14)),
+          onTap: () {
+            _openDetail(ctx, data);
+          },
         ),
         Divider(),
       ],
     );
   }
 
-  Widget _moreNews() {
+  Widget _moreNews(BuildContext ctx) {
     return Padding(
       padding: new EdgeInsets.fromLTRB(0, 7, 0, 15),
       child: Text("Berita lainnya dari $regency..."),
     );
+  }
+
+  // Open detail page
+  void _openDetail(BuildContext ctx, dynamic data) {
+    Navigator.push(
+        ctx,
+        MaterialPageRoute(
+            builder: (ctx) => SingleNews(ValueKey(data["id"]), data)));
   }
 }
