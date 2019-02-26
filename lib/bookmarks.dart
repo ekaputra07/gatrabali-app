@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 
+import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/char_thumbnail.dart';
 import 'package:gatrabali/single_news.dart';
@@ -34,22 +34,17 @@ class _BookmarksState extends State<Bookmarks> {
 Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
   return ListView(
       padding: EdgeInsets.symmetric(vertical: 10.0),
-      children: docs.map((doc) => _listItem(ctx, doc)).toList());
+      children:
+          docs.map((doc) => _listItem(ctx, Entry.fromDocument(doc))).toList());
 }
 
-Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
-  Map<String, dynamic> data = item.data;
-
-  var dateFormatted = DateFormat("d/MM/yyyy")
-      .format(DateTime.fromMillisecondsSinceEpoch(data["published_at"]));
-
+Widget _listItem(BuildContext ctx, Entry entry) {
   Widget thumbnail;
-  var hasImage = data["enclosures"] == null ? false : true;
-  if (hasImage) {
-    thumbnail = CoverImageDecoration(
-        url: data["enclosures"][0]["url"], width: 50.0, height: 50.0);
+  if (entry.hasPicture) {
+    thumbnail =
+        CoverImageDecoration(url: entry.picture, width: 50.0, height: 50.0);
   } else {
-    thumbnail = CharThumbnail(char: data['title'][0]);
+    thumbnail = CharThumbnail(char: entry.title[0]);
   }
 
   return Padding(
@@ -61,16 +56,16 @@ Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
                     ctx,
                     MaterialPageRoute(
                         builder: (ctx) =>
-                            SingleNews(ValueKey(data['id']), data)));
+                            SingleNews(key: ValueKey(entry.id), entry: entry)));
               },
               leading: thumbnail,
-              title: Text(data["title"],
+              title: Text(entry.title,
                   style: TextStyle(
                       color: Colors.black87,
                       fontSize: 15.0,
                       fontWeight: FontWeight.w600)),
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 3.0),
-                child: Text("Balipost.com ($dateFormatted)"),
+                child: Text("Balipost.com (${entry.formattedDate})"),
               ))));
 }

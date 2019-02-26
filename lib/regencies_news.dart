@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/regency_news_card.dart';
 
 class RegenciesNews extends StatefulWidget {
@@ -31,18 +32,16 @@ class _RegenciesNewsState extends State<RegenciesNews> {
 Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
   return ListView(
       padding: EdgeInsets.symmetric(vertical: 10.0),
-      children: docs.map((doc) => _listItem(ctx, doc)).toList());
+      children:
+          docs.map((doc) => _listItem(ctx, Entry.fromDocument(doc))).toList());
 }
 
-Widget _listItem(BuildContext ctx, DocumentSnapshot item) {
-  Map<String, dynamic> data = item.data;
-  //print("[${item.documentID}] ${data['title']} - ${data['enclosures']}");
-  var hasImage = data["enclosures"] == null ? false : true;
-
-  if (hasImage) {
+Widget _listItem(BuildContext ctx, Entry entry) {
+  if (entry.hasPicture) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-      child: RegencyNewsCard(key: ValueKey(item.documentID), data: data, regency: "Gianyar"),
+      child: RegencyNewsCard(
+          key: ValueKey(entry.id), entry: entry, regency: "Gianyar"),
     );
   }
 

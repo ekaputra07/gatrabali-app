@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
+import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
 
 class RegencyNewsCard extends StatelessWidget {
   final String regency;
-  final dynamic data;
+  final Entry entry;
 
-  RegencyNewsCard({Key key, this.regency, this.data}) : super(key: key);
+  RegencyNewsCard({Key key, this.regency, this.entry}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
     var source = "Balipost.com";
-    var format = new DateFormat("dd/MM/yyyy");
-    var formattedDate = format
-        .format(new DateTime.fromMillisecondsSinceEpoch(data["published_at"]));
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(ctx, data),
+          _header(ctx, entry),
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
-                child: Text(data["title"],
+                child: Text(entry.title,
                     style: TextStyle(fontWeight: FontWeight.bold))),
             subtitle: Padding(
                 padding: new EdgeInsets.only(top: 5),
-                child: Text("$source ($formattedDate)")),
+                child: Text("$source (${entry.formattedDate})")),
             onTap: () {
-              _openDetail(ctx, data);
+              _openDetail(ctx, entry);
             },
           ),
           Divider(),
@@ -42,7 +39,7 @@ class RegencyNewsCard extends StatelessWidget {
     );
   }
 
-  Widget _header(BuildContext ctx, dynamic data) {
+  Widget _header(BuildContext ctx, Entry e) {
     var titleWidget = Text(regency.toUpperCase(),
         style: TextStyle(
             fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white));
@@ -50,11 +47,11 @@ class RegencyNewsCard extends StatelessWidget {
     return Stack(
       children: [
         CoverImageDecoration(
-            url: data["enclosures"][0]["url"],
+            url: entry.picture,
             width: null,
             height: 150,
             onTap: () {
-              _openDetail(ctx, data);
+              _openDetail(ctx, entry);
             }),
         Container(
           height: 50,
@@ -76,18 +73,18 @@ class RegencyNewsCard extends StatelessWidget {
         ListTile(
           leading: CoverImageDecoration(
               url: "https://picsum.photos/200", width: 40, height: 40),
-          title: Text(data["title"], style: TextStyle(fontSize: 14)),
+          title: Text(entry.title, style: TextStyle(fontSize: 14)),
           onTap: () {
-            _openDetail(ctx, data);
+            _openDetail(ctx, entry);
           },
         ),
         Divider(),
         ListTile(
           leading: CoverImageDecoration(
               url: "https://picsum.photos/200", width: 40, height: 40),
-          title: Text(data["title"], style: TextStyle(fontSize: 14)),
+          title: Text(entry.title, style: TextStyle(fontSize: 14)),
           onTap: () {
-            _openDetail(ctx, data);
+            _openDetail(ctx, entry);
           },
         ),
         Divider(),
@@ -103,10 +100,11 @@ class RegencyNewsCard extends StatelessWidget {
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx, dynamic data) {
+  void _openDetail(BuildContext ctx, Entry entry) {
     Navigator.push(
         ctx,
         MaterialPageRoute(
-            builder: (ctx) => SingleNews(ValueKey(data["id"]), data)));
+            builder: (ctx) =>
+                SingleNews(key: ValueKey(entry.id), entry: entry)));
   }
 }

@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
+import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
 
 class SingleNewsCard extends StatelessWidget {
-  final dynamic data;
+  final Entry entry;
 
-  SingleNewsCard({Key key, this.data}) : super(key: key);
+  SingleNewsCard({Key key, this.entry}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
     var source = "Balipost.com";
-    var format = new DateFormat("dd/MM/yyyy");
-    var formattedDate = format
-        .format(new DateTime.fromMillisecondsSinceEpoch(data["published_at"]));
-
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -24,11 +20,11 @@ class SingleNewsCard extends StatelessWidget {
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
-                child: Text(data["title"],
+                child: Text(entry.title,
                     style: TextStyle(fontWeight: FontWeight.bold))),
             subtitle: Padding(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
-                child: Text("$source ($formattedDate)")),
+                child: Text("$source (${entry.formattedDate})")),
             onTap: () {
               _openDetail(ctx);
             },
@@ -39,12 +35,11 @@ class SingleNewsCard extends StatelessWidget {
   }
 
   Widget _header(ctx) {
-    bool hasImage = data['enclosures'] == null ? false : true;
-    if (hasImage) {
+    if (entry.hasPicture) {
       return Stack(
         children: [
           CoverImageDecoration(
-              url: data["enclosures"][0]["url"],
+              url: entry.picture,
               width: null,
               height: 150.0,
               onTap: () {
@@ -66,7 +61,8 @@ class SingleNewsCard extends StatelessWidget {
     Navigator.push(
         ctx,
         MaterialPageRoute(
-            builder: (ctx) => SingleNews(ValueKey(data["id"]), data)));
+            builder: (ctx) =>
+                SingleNews(key: ValueKey(entry.id), entry: entry)));
   }
 
   // Bookmark this item

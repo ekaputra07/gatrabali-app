@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 
 class SingleNews extends StatelessWidget {
-  final dynamic data;
+  final Entry entry;
 
-  SingleNews(Key key, this.data) : super(key: key);
+  SingleNews({Key key, this.entry}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -19,7 +19,7 @@ class SingleNews extends StatelessWidget {
   }
 
   Widget _getBody(BuildContext ctx) {
-    var title = Text(data["title"],
+    var title = Text(entry.title,
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
 
@@ -45,7 +45,7 @@ class SingleNews extends StatelessWidget {
       Divider(),
       Html(
           useRichText: true,
-          data: data["content"],
+          data: entry.content,
           padding: EdgeInsets.all(20.0)),
       Divider(),
       _source(ctx),
@@ -56,10 +56,9 @@ class SingleNews extends StatelessWidget {
   }
 
   Widget _cover(BuildContext ctx) {
-    bool hasImg = data['enclosures'] == null ? false : true;
-    if (hasImg) {
-      var imgUrl = data["enclosures"][0]["url"];
-      return CoverImageDecoration(url: imgUrl, height: 250.0, width: null);
+    if (entry.hasPicture) {
+      return CoverImageDecoration(
+          url: entry.picture, height: 250.0, width: null);
     } else {
       return Container(
         width: double.infinity,
@@ -82,12 +81,9 @@ class SingleNews extends StatelessWidget {
     ];
 
     if (includeDate) {
-      var format = new DateFormat("dd/MM/yyyy");
-      var formattedDate = format.format(
-          new DateTime.fromMillisecondsSinceEpoch(data["published_at"]));
       actions.insert(
         0,
-        Column(children: [Icon(Icons.calendar_today), Text(formattedDate)]),
+        Column(children: [Icon(Icons.calendar_today), Text(entry.formattedDate)]),
       );
     }
 
@@ -103,13 +99,13 @@ class SingleNews extends StatelessWidget {
   Widget _source(BuildContext ctx) {
     return GestureDetector(
         onTap: () {
-          launch(data["url"], forceSafariVC: false);
+          launch(entry.url, forceSafariVC: false);
         },
         child: Padding(
             padding: EdgeInsets.all(10),
             child: ListTile(
               title: Text("Sumber:"),
-              subtitle: Text(data['url'], style: TextStyle(color: Colors.teal)),
+              subtitle: Text(entry.url, style: TextStyle(color: Colors.teal)),
             )));
   }
 }
