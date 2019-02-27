@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:gatrabali/services/feed_service.dart';
+import 'package:gatrabali/scoped_models/news.dart';
+import 'package:gatrabali/models/Feed.dart';
+
 import 'package:gatrabali/latest_news.dart';
 import 'package:gatrabali/regencies_news.dart';
 import 'package:gatrabali/bookmarks.dart';
@@ -8,7 +14,19 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Gatra Bali', home: GatraBali());
+    return MaterialApp(
+        title: 'Gatra Bali',
+        home: ScopedModel<News>(
+          model: new News(),
+          child: FutureBuilder<List<Feed>>(
+            future: FeedService.fetchFeeds(),
+            builder: (ctx, snapshot) {
+              News.of(ctx).setFeeds(snapshot.data);
+
+              return GatraBali();
+            },
+          ),
+        ));
   }
 }
 
