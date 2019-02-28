@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
@@ -12,7 +13,9 @@ class RegencyNewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    var source = "Balipost.com";
+    final feeds = News.of(ctx).feeds;
+    final feedTitle = entry.getFeedTitle(feeds);
+    final source = feedTitle == null ? '' : feedTitle;
 
     return Card(
       clipBehavior: Clip.antiAlias,

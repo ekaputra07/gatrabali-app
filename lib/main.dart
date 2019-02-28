@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
           child: FutureBuilder<List<Feed>>(
             future: FeedService.fetchFeeds(),
             builder: (ctx, snapshot) {
-              News.of(ctx).setFeeds(snapshot.data);
-
+              if (snapshot.hasData) {
+                News.of(ctx).setFeeds(snapshot.data);
+              }
               return GatraBali();
             },
           ),

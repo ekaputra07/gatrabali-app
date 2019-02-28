@@ -13,20 +13,14 @@ class SingleNewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final feeds = News.of(ctx).feeds;
-    var feedTitle;
-    for (var f in feeds) {
-      if (f.id == entry.feedId) {
-        feedTitle = f.title;
-      }
-    }
-
+    final feedTitle = entry.getFeedTitle(feeds);
     final source = feedTitle == null ? '' : feedTitle;
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(ctx),
+          _header(ctx, source),
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
@@ -36,7 +30,7 @@ class SingleNewsCard extends StatelessWidget {
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 child: Text("$source (${entry.formattedDate})")),
             onTap: () {
-              _openDetail(ctx);
+              _openDetail(ctx, source);
             },
           ),
         ],
@@ -44,7 +38,7 @@ class SingleNewsCard extends StatelessWidget {
     );
   }
 
-  Widget _header(ctx) {
+  Widget _header(BuildContext ctx, String source) {
     if (entry.hasPicture) {
       return Stack(
         children: [
@@ -53,7 +47,7 @@ class SingleNewsCard extends StatelessWidget {
               width: null,
               height: 150.0,
               onTap: () {
-                _openDetail(ctx);
+                _openDetail(ctx, source);
               }),
         ],
       );
@@ -67,12 +61,12 @@ class SingleNewsCard extends StatelessWidget {
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx) {
+  void _openDetail(BuildContext ctx, String source) {
     Navigator.push(
         ctx,
         MaterialPageRoute(
-            builder: (ctx) =>
-                SingleNews(key: ValueKey(entry.id), entry: entry)));
+            builder: (ctx) => SingleNews(
+                key: ValueKey(entry.id), title: source, entry: entry)));
   }
 
   // Bookmark this item

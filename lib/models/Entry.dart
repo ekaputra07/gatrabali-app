@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
+import 'package:gatrabali/models/Feed.dart';
+
 class Entry {
   int id;
   int categoryId;
@@ -15,6 +17,15 @@ class Entry {
   bool get hasPicture => picture != null;
   String get formattedDate => DateFormat("d/MM/yyyy")
       .format(DateTime.fromMillisecondsSinceEpoch(publishedAt));
+
+  String getFeedTitle(List<Feed> feeds) {
+    for (var f in feeds) {
+      if (f.id == this.feedId) {
+        return f.title;
+      }
+    }
+    return null;
+  }
 
   static Entry fromDocument(DocumentSnapshot doc) {
     var e = new Entry();

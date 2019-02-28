@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 
 class SingleNews extends StatelessWidget {
+  final String title;
   final Entry entry;
 
-  SingleNews({Key key, this.entry}) : super(key: key);
+  SingleNews({Key key, this.title, this.entry}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
-      appBar: AppBar(title: Text("Balipost.com"), backgroundColor: Colors.teal),
+      appBar: AppBar(
+          title: Text(title == null ? entry.title : title),
+          backgroundColor: Colors.teal),
       body: _getBody(ctx),
     );
   }
@@ -77,13 +81,21 @@ class SingleNews extends StatelessWidget {
       Column(children: [
         Icon(Icons.comment, color: Colors.black),
         Text("12 Komentar")
-      ])
+      ]),
+      GestureDetector(
+        onTap: () {
+          Share.share("${entry.url} via #GatraBaliApp");
+        },
+        child: Column(
+          children: [Icon(Icons.share, color: Colors.black), Text("Bagikan")]),
+      )
     ];
 
     if (includeDate) {
       actions.insert(
         0,
-        Column(children: [Icon(Icons.calendar_today), Text(entry.formattedDate)]),
+        Column(
+            children: [Icon(Icons.calendar_today), Text(entry.formattedDate)]),
       );
     }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/Entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/char_thumbnail.dart';
@@ -39,6 +40,10 @@ Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
 }
 
 Widget _listItem(BuildContext ctx, Entry entry) {
+  final feeds = News.of(ctx).feeds;
+  final feedTitle = entry.getFeedTitle(feeds);
+  final source = feedTitle == null ? '' : feedTitle;
+
   Widget thumbnail;
   if (entry.hasPicture) {
     thumbnail =
@@ -55,8 +60,10 @@ Widget _listItem(BuildContext ctx, Entry entry) {
                 Navigator.push(
                     ctx,
                     MaterialPageRoute(
-                        builder: (ctx) =>
-                            SingleNews(key: ValueKey(entry.id), entry: entry)));
+                        builder: (ctx) => SingleNews(
+                            key: ValueKey(entry.id),
+                            title: source,
+                            entry: entry)));
               },
               leading: thumbnail,
               title: Text(entry.title,
@@ -66,6 +73,6 @@ Widget _listItem(BuildContext ctx, Entry entry) {
                       fontWeight: FontWeight.w600)),
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 3.0),
-                child: Text("Balipost.com (${entry.formattedDate})"),
+                child: Text("$source (${entry.formattedDate})"),
               ))));
 }
