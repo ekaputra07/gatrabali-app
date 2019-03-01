@@ -21,7 +21,7 @@ class _LatestNewsState extends State<LatestNews> {
           .limit(20)
           .snapshots(),
       builder: (ctx, snapshots) {
-        if (!snapshots.hasData) return LinearProgressIndicator();
+        if (!snapshots.hasData) return Container();
 
         return _buildList(ctx, snapshots.data.documents);
       },
