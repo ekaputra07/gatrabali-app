@@ -3,7 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 
-import 'package:gatrabali/models/Entry.dart';
+import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 
 class SingleNews extends StatelessWidget {

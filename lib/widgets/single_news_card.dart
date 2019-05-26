@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gatrabali/scoped_models/news.dart';
-import 'package:gatrabali/models/Entry.dart';
+import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
 

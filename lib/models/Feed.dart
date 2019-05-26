@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Feed {
   int id;
   String title;
@@ -7,16 +5,20 @@ class Feed {
   String siteUrl;
   String iconData;
 
-  static Feed fromDocument(DocumentSnapshot doc) {
+  static Feed fromJson(dynamic json) {
     var feed = new Feed();
 
-    feed.id = doc['id'];
-    feed.title = doc['title'];
-    feed.feedUrl = doc['feed_url'];
-    feed.siteUrl = doc['site_url'];
-    if (doc['icon_data'] != null) {
-      feed.iconData = doc['icon_data'];
+    feed.id = json['id'];
+    feed.title = json['title'];
+    feed.feedUrl = json['feed_url'];
+    feed.siteUrl = json['site_url'];
+    if (json['icon_data'] != null) {
+      feed.iconData = json['icon_data'];
     }
     return feed;
+  }
+
+  static List<Feed> emptyList() {
+    return List<Feed>();
   }
 }

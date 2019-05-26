@@ -1,0 +1,1 @@
+const API_HOST = "https://<PROJECT_ID>.firebaseapp.com";

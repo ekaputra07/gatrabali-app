@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:gatrabali/scoped_models/news.dart';
-import 'package:gatrabali/models/Entry.dart';
+import 'package:gatrabali/services/entries.dart';
+import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/char_thumbnail.dart';
 import 'package:gatrabali/single_news.dart';
@@ -17,26 +17,21 @@ class Bookmarks extends StatefulWidget {
 class _BookmarksState extends State<Bookmarks> {
   @override
   Widget build(BuildContext ctx) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance
-          .collection("entries")
-          .orderBy("id", descending: true)
-          .limit(20)
-          .snapshots(),
-      builder: (ctx, snapshots) {
-        if (!snapshots.hasData) return Container();
+    return StreamBuilder<List<Entry>>(
+      stream: EntryService.fetchEntries().asStream(),
+      builder: (ctx, stream) {
+        if (!stream.hasData) return Container();
 
-        return _buildList(ctx, snapshots.data.documents);
+        return _buildList(ctx, stream.data);
       },
     );
   }
 }
 
-Widget _buildList(BuildContext ctx, List<DocumentSnapshot> docs) {
+Widget _buildList(BuildContext ctx, List<Entry> entries) {
   return ListView(
       padding: EdgeInsets.symmetric(vertical: 10.0),
-      children:
-          docs.map((doc) => _listItem(ctx, Entry.fromDocument(doc))).toList());
+      children: entries.map((entry) => _listItem(ctx, entry)).toList());
 }
 
 Widget _listItem(BuildContext ctx, Entry entry) {

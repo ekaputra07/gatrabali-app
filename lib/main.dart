@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:gatrabali/services/feed_service.dart';
+import 'package:gatrabali/services/feeds.dart';
 import 'package:gatrabali/scoped_models/news.dart';
-import 'package:gatrabali/models/Feed.dart';
+import 'package:gatrabali/models/feed.dart';
 
 import 'package:gatrabali/latest_news.dart';
 import 'package:gatrabali/regencies_news.dart';
@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
           model: new News(),
           child: FutureBuilder<List<Feed>>(
             future: FeedService.fetchFeeds(),
-            builder: (ctx, snapshot) {
-              if (snapshot.hasData) {
-                News.of(ctx).setFeeds(snapshot.data);
+            builder: (ctx, result) {
+              if (result.hasData) {
+                News.of(ctx).setFeeds(result.data);
               }
               return GatraBali();
             },

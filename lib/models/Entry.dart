@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gatrabali/models/Feed.dart';
+import 'package:gatrabali/models/feed.dart';
 
 class Entry {
   int id;
@@ -27,17 +26,21 @@ class Entry {
     return null;
   }
 
-  static Entry fromDocument(DocumentSnapshot doc) {
+  static Entry fromJson(dynamic json) {
     var e = new Entry();
-    e.id = doc['id'];
-    e.title = doc['title'];
-    e.url = doc['url'];
-    e.content = doc['content'];
-    e.publishedAt = doc["published_at"];
-    e.feedId = doc['feed_id'];
-    if (doc['author'] != null) e.author = doc['author'];
-    if (doc['enclosures'] != null) e.picture = doc['enclosures'][0]['url'];
-    if (doc['categories'] != null) e.categoryId = doc['categories'][0];
+    e.id = json['id'];
+    e.title = json['title'];
+    e.url = json['url'];
+    e.content = json['content'];
+    e.publishedAt = json["published_at"];
+    e.feedId = json['feed_id'];
+    if (json['author'] != null) e.author = json['author'];
+    if (json['enclosures'] != null) e.picture = json['enclosures'][0]['url'];
+    if (json['categories'] != null) e.categoryId = json['categories'][0];
     return e;
+  }
+
+  static List<Entry> emptyList() {
+    return List<Entry>();
   }
 }
