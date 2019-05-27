@@ -10,9 +10,12 @@ class EntryService {
   /**
    * Returns all entries.
    */
-  static Future<List<Entry>> fetchEntries() {
-    print('EntryService.fetchEntries()...');
-    return http.get('$API_HOST/api/v1/news').then((resp) {
+  static Future<List<Entry>> fetchEntries({int cursor, int limit = 10}) {
+    var url = cursor == null
+        ? '$API_HOST/api/v1/news?limit=$limit'
+        : '$API_HOST/api/v1/news?cursor=$cursor&limit=$limit';
+    print('EntryService.fetchEntries() => $url ...');
+    return http.get(url).then((resp) {
       print('EntryService.fetchEntries() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> entries = convert.jsonDecode(resp.body);

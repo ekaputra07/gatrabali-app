@@ -39,13 +39,23 @@ class GatraBali extends StatefulWidget {
   ];
 
   @override
-  _GatraBaliState createState() {
-    return _GatraBaliState();
-  }
+  _GatraBaliState createState() => _GatraBaliState();
 }
 
 class _GatraBaliState extends State<GatraBali> {
-  int _selectedIndex = 0;
+  int _selectedIndex;
+  List<Widget> _pages;
+
+  @override
+  void initState() {
+    _selectedIndex = 0;
+    _pages = [
+      LatestNews(),
+      RegenciesNews(),
+      Bookmarks(),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) {
@@ -53,11 +63,18 @@ class _GatraBaliState extends State<GatraBali> {
       appBar: AppBar(
           title: widget._appBarTitles[_selectedIndex],
           backgroundColor: Colors.teal),
-      body: _getBody(),
+      body: IndexedStack(
+        children: _pages,
+        index: _selectedIndex,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         fixedColor: Colors.teal,
-        onTap: _onMenuTapped,
+        onTap: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home), title: Text("Terbaru")),
@@ -68,24 +85,5 @@ class _GatraBaliState extends State<GatraBali> {
         ],
       ),
     );
-  }
-
-  void _onMenuTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  Widget _getBody() {
-    switch (_selectedIndex) {
-      case 0:
-        return LatestNews();
-      case 1:
-        return RegenciesNews();
-      case 2:
-        return Bookmarks();
-      default:
-        return LatestNews();
-    }
   }
 }
