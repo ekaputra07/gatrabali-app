@@ -10,10 +10,12 @@ class EntryService {
   /**
    * Returns all entries.
    */
-  static Future<List<Entry>> fetchEntries({int cursor, int limit = 10}) {
+  static Future<List<Entry>> fetchEntries(
+      {int categoryId, int cursor, int limit = 10}) {
+    var category = categoryId == null ? '' : categoryId;
     var url = cursor == null
-        ? '$API_HOST/api/v1/news?limit=$limit'
-        : '$API_HOST/api/v1/news?cursor=$cursor&limit=$limit';
+        ? '$API_HOST/api/v1/news?categoryId=$category&limit=$limit'
+        : '$API_HOST/api/v1/news?categoryId=$category&cursor=$cursor&limit=$limit';
     print('EntryService.fetchEntries() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.fetchEntries() finished.');

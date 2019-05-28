@@ -6,7 +6,7 @@ import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/feed.dart';
 
 import 'package:gatrabali/latest_news.dart';
-import 'package:gatrabali/regencies_news.dart';
+import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
 
 void main() => runApp(MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Berita Terbaru"),
-    Text("Berita Kabupaten"),
+    Text("Berita Kabupaten / Kota"),
     Text("Berita Disimpan")
   ];
 
@@ -51,7 +51,7 @@ class _GatraBaliState extends State<GatraBali> {
     _selectedIndex = 0;
     _pages = [
       LatestNews(),
-      RegenciesNews(),
+      CategoriesSummary(),
       Bookmarks(),
     ];
     super.initState();

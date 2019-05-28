@@ -6,6 +6,8 @@ import 'package:gatrabali/models/feed.dart';
 class News extends Model {
   List<Feed> feeds = [];
 
+  News({this.feeds});
+
   void setFeeds(List<Feed> feeds) {
     this.feeds = feeds;
     notifyListeners();

@@ -1,17 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:scoped_model/scoped_model.dart';
 
+import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/services/entries.dart';
 import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/widgets/single_news_card.dart';
 
-class LatestNews extends StatefulWidget {
+class CategoryNews extends StatefulWidget {
+  final String categoryName;
+  final int categoryId;
+  final List<Feed> feeds;
+
+  CategoryNews({this.categoryId, this.categoryName, this.feeds});
+
   @override
-  _LatestNewsState createState() => _LatestNewsState();
+  _CategoryNewsState createState() => _CategoryNewsState();
 }
 
-class _LatestNewsState extends State<LatestNews> {
+class _CategoryNewsState extends State<CategoryNews> {
   List<Entry> _entries;
   int _cursor;
   StreamSubscription _sub;
@@ -34,7 +43,9 @@ class _LatestNewsState extends State<LatestNews> {
   }
 
   void _refreshEntries() {
-    _sub = EntryService.fetchEntries().asStream().listen((entries) {
+    _sub = EntryService.fetchEntries(categoryId: widget.categoryId)
+        .asStream()
+        .listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
           _cursor = entries.last.id;
@@ -50,8 +61,10 @@ class _LatestNewsState extends State<LatestNews> {
   }
 
   void _loadMoreEntries() {
-    _sub =
-        EntryService.fetchEntries(cursor: _cursor).asStream().listen((entries) {
+    _sub = EntryService.fetchEntries(
+            categoryId: widget.categoryId, cursor: _cursor)
+        .asStream()
+        .listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
           _cursor = entries.last.id;
@@ -67,18 +80,24 @@ class _LatestNewsState extends State<LatestNews> {
 
   @override
   Widget build(BuildContext ctx) {
-    return SmartRefresher(
-      controller: _refreshController,
-      enablePullDown: true,
-      enablePullUp: true,
-      onRefresh: () {
-        _refreshEntries();
-      },
-      onLoading: () {
-        _loadMoreEntries();
-      },
-      child: _buildList(ctx),
-    );
+    return ScopedModel<News>(
+        model: new News(feeds: widget.feeds),
+        child: Scaffold(
+            appBar: AppBar(
+                title: Text('Berita dari ${widget.categoryName}'),
+                backgroundColor: Colors.teal),
+            body: SmartRefresher(
+              controller: _refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              onRefresh: () {
+                _refreshEntries();
+              },
+              onLoading: () {
+                _loadMoreEntries();
+              },
+              child: _buildList(ctx),
+            )));
   }
 
   Widget _buildList(BuildContext ctx) {

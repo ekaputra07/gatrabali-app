@@ -9,22 +9,21 @@ import 'package:gatrabali/single_news.dart';
 
 class Bookmarks extends StatefulWidget {
   @override
-  _BookmarksState createState() {
-    return _BookmarksState();
-  }
+  _BookmarksState createState() => _BookmarksState();
 }
 
 class _BookmarksState extends State<Bookmarks> {
   @override
   Widget build(BuildContext ctx) {
-    return StreamBuilder<List<Entry>>(
-      stream: EntryService.fetchEntries().asStream(),
-      builder: (ctx, stream) {
-        if (!stream.hasData) return Container();
+    // return StreamBuilder<List<Entry>>(
+    //   stream: EntryService.fetchEntries().asStream(),
+    //   builder: (ctx, stream) {
+    //     if (!stream.hasData) return Container();
 
-        return _buildList(ctx, stream.data);
-      },
-    );
+    //     return _buildList(ctx, stream.data);
+    //   },
+    // );
+    return Container();
   }
 }
 

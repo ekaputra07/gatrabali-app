@@ -5,12 +5,14 @@ import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/category_news.dart';
 
-class RegencyNewsCard extends StatelessWidget {
-  final String regency;
+class CategorySummaryCard extends StatelessWidget {
+  final int categoryId;
+  final String categoryName;
   final List<Entry> entries;
 
-  RegencyNewsCard({Key key, this.regency, this.entries}) : super(key: key);
+  CategorySummaryCard({this.categoryId, this.categoryName, this.entries});
 
   @override
   Widget build(BuildContext ctx) {
@@ -39,14 +41,19 @@ class RegencyNewsCard extends StatelessWidget {
           ),
           Divider(),
           _relatedNews(ctx, feeds, entries.sublist(1)),
-          _moreNews(ctx)
+          GestureDetector(
+            child: _moreNews(ctx),
+            onTap: () {
+              _openCategory(ctx);
+            },
+          )
         ],
       ),
     );
   }
 
   Widget _header(BuildContext ctx, String source, Entry entry) {
-    var titleWidget = Text(regency.toUpperCase(),
+    var titleWidget = Text(categoryName.toUpperCase(),
         style: TextStyle(
             fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white));
 
@@ -96,7 +103,7 @@ class RegencyNewsCard extends StatelessWidget {
   Widget _moreNews(BuildContext ctx) {
     return Padding(
       padding: new EdgeInsets.fromLTRB(0, 7, 0, 15),
-      child: Text("Berita lainnya dari $regency..."),
+      child: Text("Berita lainnya dari $categoryName..."),
     );
   }
 
@@ -107,5 +114,17 @@ class RegencyNewsCard extends StatelessWidget {
         MaterialPageRoute(
             builder: (ctx) => SingleNews(
                 key: ValueKey(entry.id), title: source, entry: entry)));
+  }
+
+  // Open category page
+  void _openCategory(BuildContext ctx) {
+    final feeds = News.of(ctx).feeds;
+    Navigator.push(
+        ctx,
+        MaterialPageRoute(
+            builder: (ctx) => CategoryNews(
+                categoryId: categoryId,
+                categoryName: categoryName,
+                feeds: feeds)));
   }
 }
