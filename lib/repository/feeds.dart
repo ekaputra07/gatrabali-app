@@ -18,9 +18,6 @@ class FeedService {
         return Future.value(feeds.map((f) => Feed.fromJson(f)).toList());
       }
       throw Exception(resp.body);
-    }).catchError((err) {
-      print('FeedService.fetchFeeds() error. $err');
-      return Future.value(Feed.emptyList());
     });
   }
 }

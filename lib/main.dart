@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:gatrabali/services/feeds.dart';
+import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/feed.dart';
 
@@ -62,7 +62,13 @@ class _GatraBaliState extends State<GatraBali> {
     return Scaffold(
       appBar: AppBar(
           title: widget._appBarTitles[_selectedIndex],
-          backgroundColor: Colors.teal),
+          backgroundColor: Colors.teal,
+          actions: [
+            Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: IconButton(
+                    icon: Icon(Icons.account_circle), onPressed: () {}))
+          ]),
       body: IndexedStack(
         children: _pages,
         index: _selectedIndex,

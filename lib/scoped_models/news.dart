@@ -4,9 +4,9 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:gatrabali/models/feed.dart';
 
 class News extends Model {
-  List<Feed> feeds = [];
+  List<Feed> feeds;
 
-  News({this.feeds});
+  News({this.feeds = const <Feed>[]});
 
   void setFeeds(List<Feed> feeds) {
     this.feeds = feeds;

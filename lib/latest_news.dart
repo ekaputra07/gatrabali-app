@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'package:gatrabali/services/entries.dart';
+import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/single_news_card.dart';
 

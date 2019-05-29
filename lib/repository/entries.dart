@@ -24,9 +24,6 @@ class EntryService {
         return Future.value(entries.map((f) => Entry.fromJson(f)).toList());
       }
       throw Exception(resp.body);
-    }).catchError((err) {
-      print('EntryService.fetchEntries() error. $err');
-      return Future.value(Entry.emptyList());
     });
   }
 
@@ -43,9 +40,6 @@ class EntryService {
             summaries.map((f) => CategorySummary.fromJson(f)).toList());
       }
       throw Exception(resp.body);
-    }).catchError((err) {
-      print('EntryService.fetchCategorySummary() error. $err');
-      return Future.value(CategorySummary.emptyList());
     });
   }
 }

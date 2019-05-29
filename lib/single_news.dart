@@ -78,10 +78,10 @@ class SingleNews extends StatelessWidget {
         Icon(Icons.bookmark, color: Colors.teal),
         Text("Simpan", style: TextStyle(color: Colors.teal))
       ]),
-      Column(children: [
-        Icon(Icons.comment, color: Colors.black),
-        Text("12 Komentar")
-      ]),
+      // Column(children: [
+      //   Icon(Icons.comment, color: Colors.black),
+      //   Text("12 Komentar")
+      // ]),
       GestureDetector(
         onTap: () {
           Share.share("${entry.url} via #GatraBaliApp");
