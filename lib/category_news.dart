@@ -84,8 +84,9 @@ class _CategoryNewsState extends State<CategoryNews> {
         model: new News(feeds: widget.feeds),
         child: Scaffold(
             appBar: AppBar(
-                title: Text('Berita dari ${widget.categoryName}'),
-                backgroundColor: Colors.teal),
+              title: Text('Berita ${widget.categoryName}'),
+              elevation: 0,
+            ),
             body: SmartRefresher(
               controller: _refreshController,
               enablePullDown: true,

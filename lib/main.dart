@@ -5,6 +5,7 @@ import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/feed.dart';
 
+import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
 import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Gatra Bali',
+        theme: ThemeData(primarySwatch: Colors.teal),
         home: ScopedModel<News>(
           model: new News(),
           child: FutureBuilder<List<Feed>>(
@@ -62,12 +64,19 @@ class _GatraBaliState extends State<GatraBali> {
     return Scaffold(
       appBar: AppBar(
           title: widget._appBarTitles[_selectedIndex],
-          backgroundColor: Colors.teal,
+          elevation: 0,
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 10.0),
                 child: IconButton(
-                    icon: Icon(Icons.account_circle), onPressed: () {}))
+                    icon: Icon(Icons.account_circle),
+                    onPressed: () {
+                      Navigator.push(
+                          ctx,
+                          MaterialPageRoute(
+                              builder: (ctx) => Profile(),
+                              fullscreenDialog: true));
+                    }))
           ]),
       body: IndexedStack(
         children: _pages,
@@ -75,7 +84,6 @@ class _GatraBaliState extends State<GatraBali> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        fixedColor: Colors.teal,
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;

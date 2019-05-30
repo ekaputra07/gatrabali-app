@@ -15,9 +15,7 @@ class SingleNews extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(title == null ? entry.title : title),
-          backgroundColor: Colors.teal),
+      appBar: AppBar(title: Text(title == null ? entry.title : title)),
       body: _getBody(ctx),
     );
   }
@@ -86,8 +84,10 @@ class SingleNews extends StatelessWidget {
         onTap: () {
           Share.share("${entry.url} via #GatraBaliApp");
         },
-        child: Column(
-          children: [Icon(Icons.share, color: Colors.black), Text("Bagikan")]),
+        child: Column(children: [
+          Icon(Icons.share, color: Colors.black),
+          Text("Bagikan")
+        ]),
       )
     ];
 
