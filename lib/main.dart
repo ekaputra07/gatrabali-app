@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/feed.dart';
@@ -74,7 +75,7 @@ class _GatraBaliState extends State<GatraBali> {
                       Navigator.push(
                           ctx,
                           MaterialPageRoute(
-                              builder: (ctx) => Profile(),
+                              builder: (ctx) => Profile(auth: GoogleAuth()),
                               fullscreenDialog: true));
                     }))
           ]),
