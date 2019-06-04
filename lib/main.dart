@@ -75,7 +75,7 @@ class _GatraBaliState extends State<GatraBali> {
                       Navigator.push(
                           ctx,
                           MaterialPageRoute(
-                              builder: (ctx) => Profile(auth: GoogleAuth()),
+                              builder: (ctx) => Profile(auth: Auth()),
                               fullscreenDialog: true));
                     }))
           ]),

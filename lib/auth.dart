@@ -1,23 +1,15 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:gatrabali/models/user.dart';
 
-abstract class BaseAuth {
-  Future<User> signIn();
-  Future<User> currentUser();
-  Future<void> signOut();
-  String provider;
-}
-
-class GoogleAuth implements BaseAuth {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String provider = 'google';
 
-  @override
-  Future<User> signIn() {
+  Future<User> googleSignIn() {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
     return _googleSignIn.signIn().then((user) {
       return user.authentication;
     }).then((auth) {
@@ -29,11 +21,33 @@ class GoogleAuth implements BaseAuth {
       return User(
           id: firebaseUser.uid,
           name: firebaseUser.displayName,
-          provider: provider);
+          provider: firebaseUser.providerId,
+          avatar: firebaseUser.photoUrl);
     });
   }
 
-  @override
+  Future<User> facebookSignIn() {
+    final _facebookSignin = FacebookLogin();
+    return _facebookSignin.logInWithReadPermissions(['email']).then((result) {
+      if (result.status == FacebookLoginStatus.cancelledByUser) {
+        throw Exception('Facebook login cancelled');
+      }
+      if (result.status == FacebookLoginStatus.error) {
+        throw Exception(result.errorMessage);
+      }
+      return FacebookAuthProvider.getCredential(
+          accessToken: result.accessToken.token);
+    }).then((credential) {
+      return _auth.signInWithCredential(credential);
+    }).then((firebaseUser) {
+      return User(
+          id: firebaseUser.uid,
+          name: firebaseUser.displayName,
+          provider: firebaseUser.providerId,
+          avatar: firebaseUser.photoUrl);
+    });
+  }
+
   Future<User> currentUser() {
     return _auth.currentUser().then((firebaseUser) {
       if (firebaseUser == null) throw Exception('User not found');
@@ -41,11 +55,11 @@ class GoogleAuth implements BaseAuth {
       return User(
           id: firebaseUser.uid,
           name: firebaseUser.displayName,
-          provider: provider);
+          provider: firebaseUser.providerId,
+          avatar: firebaseUser.photoUrl);
     });
   }
 
-  @override
   Future<void> signOut() {
     return _auth.signOut();
   }

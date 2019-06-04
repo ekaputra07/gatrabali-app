@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gatrabali/auth.dart';
+import 'package:gatrabali/models/user.dart';
 
 class Profile extends StatefulWidget {
-  final BaseAuth auth;
+  final Auth auth;
 
   Profile({this.auth});
 
@@ -11,14 +12,15 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  User _user;
   bool _isLoggedIn = false;
   TextStyle _style = TextStyle(fontFamily: 'Montserrat');
 
   @override
   void initState() {
     widget.auth.currentUser().then((user) {
-      print(user);
       setState(() {
+        _user = user;
         _isLoggedIn = true;
       });
     }).catchError((err) {
@@ -30,10 +32,21 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-  void _googleSignin() {
-    widget.auth.signIn().then((user) {
-      print(user);
+  void _googleSignIn() {
+    widget.auth.googleSignIn().then((user) {
       setState(() {
+        _user = user;
+        _isLoggedIn = true;
+      });
+    }).catchError((err) {
+      print(err);
+    });
+  }
+
+  void _facebookSignIn() {
+    widget.auth.facebookSignIn().then((user) {
+      setState(() {
+        _user = user;
         _isLoggedIn = true;
       });
     }).catchError((err) {
@@ -45,6 +58,7 @@ class _ProfileState extends State<Profile> {
     widget.auth.signOut().then((_) {
       setState(() {
         _isLoggedIn = false;
+        _user = null;
       });
     }).catchError((err) {
       print(err);
@@ -58,28 +72,59 @@ class _ProfileState extends State<Profile> {
         title: Text('Akun'),
         elevation: 0,
       ),
-      body: _buildContent(context),
+      body: _isLoggedIn
+          ? _buildProfileScreen(context)
+          : _buildLoginScreen(context),
     );
   }
 
-  Widget _buildContent(BuildContext ctx) {
-    if (_isLoggedIn) {
-      final signOutButton = Material(
-        elevation: 0,
-        borderRadius: BorderRadius.circular(5.0),
-        color: Colors.black,
-        child: MaterialButton(
-          minWidth: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          onPressed: _signOut,
-          child: Text("Sign Out",
-              textAlign: TextAlign.center,
-              style: _style.copyWith(color: Colors.white, fontSize: 20)),
-        ),
-      );
-      return Center(child: signOutButton);
-    }
+  Widget _buildProfileScreen(BuildContext ctx) {
+    final logoutButton = Material(
+      elevation: 0,
+      borderRadius: BorderRadius.circular(5.0),
+      color: Colors.teal,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: _signOut,
+        child: Text("Logout / Keluar",
+            textAlign: TextAlign.center,
+            style: _style.copyWith(color: Colors.white, fontSize: 20)),
+      ),
+    );
 
+    return Container(
+      padding: EdgeInsets.only(left: 30, right: 30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+              backgroundColor: Colors.grey,
+              backgroundImage: NetworkImage(_user.avatar),
+              radius: 50.0),
+          SizedBox(height: 10.0),
+          Text(
+            _user.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 30.0),
+          Divider(),
+          SizedBox(height: 30.0),
+          Text(
+            'Terima kasih telah membuat akun di aplikasi Gatra Bali. Dengan membuat akun anda bisa menyimpan/bookmark berita dan otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14.0, color: Colors.blueGrey),
+          ),
+          SizedBox(height: 30.0),
+          logoutButton
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoginScreen(BuildContext ctx) {
     final facebookButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(5.0),
@@ -87,7 +132,7 @@ class _ProfileState extends State<Profile> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
+        onPressed: _facebookSignIn,
         child: Text("Facebook",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
@@ -101,7 +146,7 @@ class _ProfileState extends State<Profile> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: _googleSignin,
+        onPressed: _googleSignIn,
         child: Text("Google",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
