@@ -11,16 +11,21 @@ import 'package:gatrabali/latest_news.dart';
 import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
 
+import 'package:gatrabali/category_news.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final News _model = News();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Gatra Bali',
         theme: ThemeData(primarySwatch: Colors.teal),
+        onGenerateRoute: _generateRoute,
         home: ScopedModel<News>(
-          model: new News(),
+          model: _model,
           child: FutureBuilder<List<Feed>>(
             future: FeedService.fetchFeeds(),
             builder: (ctx, result) {
@@ -31,6 +36,19 @@ class MyApp extends StatelessWidget {
             },
           ),
         ));
+  }
+
+  // We use this so we can pass _model to the widget.
+  Route<dynamic> _generateRoute(settings) {
+
+    // handles CategoryNews
+    if (settings.name == CategoryNews.routeName) {
+      final CategoryNewsArgs args = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => CategoryNews(
+              categoryId: args.id, categoryName: args.name, model: _model));
+    }
+    return null;
   }
 }
 
@@ -57,6 +75,11 @@ class _GatraBaliState extends State<GatraBali> {
       CategoriesSummary(),
       Bookmarks(),
     ];
+
+    Auth.onAuthStateChanged((user) {
+      News.of(context).setUser(user);
+    });
+
     super.initState();
   }
 

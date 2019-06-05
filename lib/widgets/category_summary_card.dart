@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/entry.dart';
@@ -41,12 +42,7 @@ class CategorySummaryCard extends StatelessWidget {
           ),
           Divider(),
           _relatedNews(ctx, feeds, entries.sublist(1)),
-          GestureDetector(
-            child: _moreNews(ctx),
-            onTap: () {
-              _openCategory(ctx);
-            },
-          )
+          _moreNews(ctx)
         ],
       ),
     );
@@ -101,9 +97,15 @@ class CategorySummaryCard extends StatelessWidget {
   }
 
   Widget _moreNews(BuildContext ctx) {
-    return Padding(
-      padding: new EdgeInsets.fromLTRB(0, 7, 0, 15),
-      child: Text("Berita lainnya dari $categoryName..."),
+    return GestureDetector(
+      child: Padding(
+        padding: new EdgeInsets.fromLTRB(0, 7, 0, 15),
+        child: Text("Berita lainnya dari $categoryName..."),
+      ),
+      onTap: () {
+        Navigator.of(ctx).pushNamed(CategoryNews.routeName,
+            arguments: CategoryNewsArgs(categoryId, categoryName));
+      },
     );
   }
 
@@ -114,17 +116,5 @@ class CategorySummaryCard extends StatelessWidget {
         MaterialPageRoute(
             builder: (ctx) => SingleNews(
                 key: ValueKey(entry.id), title: source, entry: entry)));
-  }
-
-  // Open category page
-  void _openCategory(BuildContext ctx) {
-    final feeds = News.of(ctx).feeds;
-    Navigator.push(
-        ctx,
-        MaterialPageRoute(
-            builder: (ctx) => CategoryNews(
-                categoryId: categoryId,
-                categoryName: categoryName,
-                feeds: feeds)));
   }
 }

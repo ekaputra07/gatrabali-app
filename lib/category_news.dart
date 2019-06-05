@@ -6,15 +6,22 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/widgets/single_news_card.dart';
 
-class CategoryNews extends StatefulWidget {
-  final String categoryName;
-  final int categoryId;
-  final List<Feed> feeds;
+class CategoryNewsArgs {
+  int id;
+  String name;
 
-  CategoryNews({this.categoryId, this.categoryName, this.feeds});
+  CategoryNewsArgs(this.id, this.name);
+}
+
+class CategoryNews extends StatefulWidget {
+  static final String routeName = '/CategoryNews';
+  final int categoryId;
+  final String categoryName;
+  final News model;
+
+  CategoryNews({this.categoryId, this.categoryName, this.model});
 
   @override
   _CategoryNewsState createState() => _CategoryNewsState();
@@ -81,7 +88,7 @@ class _CategoryNewsState extends State<CategoryNews> {
   @override
   Widget build(BuildContext ctx) {
     return ScopedModel<News>(
-        model: new News(feeds: widget.feeds),
+        model: widget.model,
         child: Scaffold(
             appBar: AppBar(
               title: Text('Berita ${widget.categoryName}'),

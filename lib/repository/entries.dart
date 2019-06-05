@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -41,5 +42,16 @@ class EntryService {
       }
       throw Exception(resp.body);
     });
+  }
+
+  static Future<bool> isBookmarked(String userId, String entryId) {
+    return Firestore.instance
+        .collection('/users/$userId/bookmarks')
+        .document(entryId)
+        .get()
+        .then((bookmark) {
+          if (bookmark.exists) return true;
+          return false;
+        });
   }
 }

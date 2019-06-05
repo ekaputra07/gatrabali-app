@@ -18,11 +18,7 @@ class Auth {
     }).then((credential) {
       return _auth.signInWithCredential(credential);
     }).then((firebaseUser) {
-      return User(
-          id: firebaseUser.uid,
-          name: firebaseUser.displayName,
-          provider: firebaseUser.providerId,
-          avatar: firebaseUser.photoUrl);
+      return Auth.userFromFirebaseUser(firebaseUser);
     });
   }
 
@@ -40,11 +36,7 @@ class Auth {
     }).then((credential) {
       return _auth.signInWithCredential(credential);
     }).then((firebaseUser) {
-      return User(
-          id: firebaseUser.uid,
-          name: firebaseUser.displayName,
-          provider: firebaseUser.providerId,
-          avatar: firebaseUser.photoUrl);
+      return Auth.userFromFirebaseUser(firebaseUser);
     });
   }
 
@@ -52,15 +44,29 @@ class Auth {
     return _auth.currentUser().then((firebaseUser) {
       if (firebaseUser == null) throw Exception('User not found');
 
-      return User(
-          id: firebaseUser.uid,
-          name: firebaseUser.displayName,
-          provider: firebaseUser.providerId,
-          avatar: firebaseUser.photoUrl);
+      return Auth.userFromFirebaseUser(firebaseUser);
     });
   }
 
   Future<void> signOut() {
     return _auth.signOut();
+  }
+
+  static User userFromFirebaseUser(FirebaseUser firebaseUser) {
+    return User(
+        id: firebaseUser.uid,
+        name: firebaseUser.displayName,
+        provider: firebaseUser.providerId,
+        avatar: firebaseUser.photoUrl);
+  }
+
+  static void onAuthStateChanged(Function callback) {
+    FirebaseAuth.instance.onAuthStateChanged.listen((firebaseUser) {
+      if (firebaseUser == null) {
+        callback(null);
+      } else {
+        callback(Auth.userFromFirebaseUser(firebaseUser));
+      }
+    });
   }
 }
