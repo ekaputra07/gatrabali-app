@@ -6,9 +6,7 @@ import 'package:gatrabali/config.dart';
 import 'package:gatrabali/models/feed.dart';
 
 class FeedService {
-  /**
-   * Returns all feeds.
-   */
+  /// Returns all feeds.
   static Future<List<Feed>> fetchFeeds() {
     print('FeedService.fetchFeeds()...');
     return http.get('$API_HOST/api/v1/feeds').then((resp) {

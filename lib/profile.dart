@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/models/user.dart';
 
 class Profile extends StatefulWidget {
+  static final routeName = '/Profile';
   final Auth auth;
+  final bool closeAfterLogin;
 
-  Profile({this.auth});
+  Profile({this.auth, this.closeAfterLogin = false});
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -32,33 +36,54 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-  void _googleSignIn() {
+  void _googleSignIn(BuildContext ctx) {
     widget.auth.googleSignIn().then((user) {
       setState(() {
         _user = user;
         _isLoggedIn = true;
+        _toast(
+            ctx, "Login dengan Google berhasil", Colors.teal);
+        if (widget.closeAfterLogin) {
+          Navigator.of(ctx).pop(true);
+        }
       });
     }).catchError((err) {
       print(err);
+      _toast(ctx, 'Gagal login dengan Google', Colors.red);
     });
   }
 
-  void _facebookSignIn() {
+  void _facebookSignIn(BuildContext ctx) {
     widget.auth.facebookSignIn().then((user) {
       setState(() {
         _user = user;
         _isLoggedIn = true;
+        _toast(
+            ctx, "Login dengan Facebook berhasil", Colors.teal);
+        if (widget.closeAfterLogin) {
+          Navigator.of(ctx).pop(true);
+        }
       });
     }).catchError((err) {
       print(err);
+      _toast(ctx, 'Gagal login dengan Facebook', Colors.red);
     });
   }
 
-  void _signOut() {
+  void _toast(BuildContext ctx, String message, Color color) {
+    Toast.show(message, ctx,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: color,
+        backgroundRadius: 5.0);
+  }
+
+  void _signOut(BuildContext ctx) {
     widget.auth.signOut().then((_) {
       setState(() {
         _isLoggedIn = false;
         _user = null;
+        _toast(ctx, 'Anda berhasil logout', Colors.black);
       });
     }).catchError((err) {
       print(err);
@@ -82,11 +107,13 @@ class _ProfileState extends State<Profile> {
     final logoutButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(5.0),
-      color: Colors.teal,
+      color: Colors.black,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: _signOut,
+        onPressed: () {
+          _signOut(ctx);
+        },
         child: Text("Logout / Keluar",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
@@ -132,7 +159,9 @@ class _ProfileState extends State<Profile> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: _facebookSignIn,
+        onPressed: () {
+          _facebookSignIn(ctx);
+        },
         child: Text("Facebook",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
@@ -146,7 +175,9 @@ class _ProfileState extends State<Profile> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: _googleSignIn,
+        onPressed: () {
+          _googleSignIn(ctx);
+        },
         child: Text("Google",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
@@ -160,9 +191,9 @@ class _ProfileState extends State<Profile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Untuk membuat akun / login silahkan gunakan salah satu dari layanan media sosial berikut ini:',
+            'Untuk dapat menyimpan berita silahkan login dengan salah satu dari layanan media sosial berikut ini:',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15.0),
+            style: TextStyle(fontSize: 16.0),
           ),
           SizedBox(height: 30.0),
           facebookButton,

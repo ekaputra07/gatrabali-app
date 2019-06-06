@@ -12,6 +12,7 @@ import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
 
 import 'package:gatrabali/category_news.dart';
+import 'package:gatrabali/single_news.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,13 +41,28 @@ class MyApp extends StatelessWidget {
 
   // We use this so we can pass _model to the widget.
   Route<dynamic> _generateRoute(settings) {
-
-    // handles CategoryNews
+    // handles /CategoryNews
     if (settings.name == CategoryNews.routeName) {
       final CategoryNewsArgs args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => CategoryNews(
               categoryId: args.id, categoryName: args.name, model: _model));
+    }
+
+    // handles /SingleNews
+    if (settings.name == SingleNews.routeName) {
+      final SingleNewsArgs args = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) =>
+              SingleNews(title: args.title, entry: args.entry, model: _model));
+    }
+    // handles /Profile
+    if (settings.name == Profile.routeName) {
+      var closeAfterLogin = settings.arguments as bool == true;
+      return MaterialPageRoute(
+          builder: (context) =>
+              Profile(auth: Auth(), closeAfterLogin: closeAfterLogin),
+          fullscreenDialog: true);
     }
     return null;
   }
@@ -95,11 +111,7 @@ class _GatraBaliState extends State<GatraBali> {
                 child: IconButton(
                     icon: Icon(Icons.account_circle),
                     onPressed: () {
-                      Navigator.push(
-                          ctx,
-                          MaterialPageRoute(
-                              builder: (ctx) => Profile(auth: Auth()),
-                              fullscreenDialog: true));
+                      Navigator.of(ctx).pushNamed(Profile.routeName);
                     }))
           ]),
       body: IndexedStack(

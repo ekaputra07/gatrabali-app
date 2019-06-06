@@ -51,13 +51,8 @@ Widget _listItem(BuildContext ctx, Entry entry) {
       child: Card(
           child: ListTile(
               onTap: () {
-                Navigator.push(
-                    ctx,
-                    MaterialPageRoute(
-                        builder: (ctx) => SingleNews(
-                            key: ValueKey(entry.id),
-                            title: source,
-                            entry: entry)));
+                Navigator.of(ctx).pushNamed(SingleNews.routeName,
+                    arguments: SingleNewsArgs(source, entry));
               },
               leading: thumbnail,
               title: Text(entry.title,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/entry.dart';
@@ -111,10 +110,7 @@ class CategorySummaryCard extends StatelessWidget {
 
   // Open detail page
   void _openDetail(BuildContext ctx, String source, Entry entry) {
-    Navigator.push(
-        ctx,
-        MaterialPageRoute(
-            builder: (ctx) => SingleNews(
-                key: ValueKey(entry.id), title: source, entry: entry)));
+    Navigator.of(ctx).pushNamed(SingleNews.routeName,
+        arguments: SingleNewsArgs(source, entry));
   }
 }

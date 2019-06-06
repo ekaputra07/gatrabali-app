@@ -62,11 +62,8 @@ class SingleNewsCard extends StatelessWidget {
 
   // Open detail page
   void _openDetail(BuildContext ctx, String source) {
-    Navigator.push(
-        ctx,
-        MaterialPageRoute(
-            builder: (ctx) => SingleNews(
-                key: ValueKey(entry.id), title: source, entry: entry)));
+    Navigator.of(ctx).pushNamed(SingleNews.routeName,
+        arguments: SingleNewsArgs(source, entry));
   }
 
   // Bookmark this item

@@ -8,9 +8,7 @@ import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/category.dart';
 
 class EntryService {
-  /**
-   * Returns all entries.
-   */
+  /// Returns all entries.
   static Future<List<Entry>> fetchEntries(
       {int categoryId, int cursor, int limit = 10}) {
     var category = categoryId == null ? '' : categoryId;
@@ -28,9 +26,7 @@ class EntryService {
     });
   }
 
-  /**
-   * Returns summary of Category news.
-   */
+  /// Returns summary of Category news.
   static Future<List<CategorySummary>> fetchCategorySummary() {
     print('EntryService.fetchCategorySummary()...');
     return http.get('$API_HOST/api/v1/category_news_summary').then((resp) {
@@ -44,14 +40,39 @@ class EntryService {
     });
   }
 
-  static Future<bool> isBookmarked(String userId, String entryId) {
+  // Check to see if an entry is bookmarked by user
+  static Future<bool> isBookmarked(String userId, int entryId) {
     return Firestore.instance
         .collection('/users/$userId/bookmarks')
-        .document(entryId)
+        .document(entryId.toString())
         .get()
         .then((bookmark) {
-          if (bookmark.exists) return true;
-          return false;
-        });
+      if (bookmark.exists) return true;
+      return false;
+    });
+  }
+
+  // Bookmark an entry
+  static Future<void> bookmark(String userId, Entry entry,
+      {bool delete = false}) {
+    var collestionName = '/users/$userId/bookmarks';
+    if (!delete) {
+      return Firestore.instance
+          .collection(collestionName)
+          .document(entry.id.toString())
+          .setData({
+        'entry_id': entry.id,
+        'bookmarked_at': FieldValue.serverTimestamp(),
+        'title': entry.title,
+        'picture': entry.picture,
+        'feed_id': entry.feedId,
+        'published_at': entry.publishedAt
+      });
+    } else {
+      return Firestore.instance
+          .collection(collestionName)
+          .document(entry.id.toString())
+          .delete();
+    }
   }
 }
