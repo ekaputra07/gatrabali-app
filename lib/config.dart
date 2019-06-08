@@ -1,1 +1,1 @@
-const API_HOST = "https://gatrabali.firebaseapp.com";
+const API_HOST = "https://gatrabali.web.app";

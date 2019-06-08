@@ -65,7 +65,4 @@ class SingleNewsCard extends StatelessWidget {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
         arguments: SingleNewsArgs(source, entry));
   }
-
-  // Bookmark this item
-  void _bookmark(BuildContext ctx) {}
 }

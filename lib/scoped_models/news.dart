@@ -5,7 +5,7 @@ import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
 
 class News extends Model {
-  List<Feed> feeds;
+  List<Feed> feeds = <Feed>[];
   User currentUser;
   int selectedTabIndex;
   String whatIsChanged;

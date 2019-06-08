@@ -10,9 +10,9 @@ import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
 import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
-
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/about.dart';
 
 void main() => runApp(MyApp());
 
@@ -67,6 +67,11 @@ class MyApp extends StatelessWidget {
               Profile(auth: Auth(), closeAfterLogin: closeAfterLogin),
           fullscreenDialog: true);
     }
+    // handles /About
+    if (settings.name == About.routeName) {
+      return MaterialPageRoute(
+          builder: (context) => About(), fullscreenDialog: true);
+    }
     return null;
   }
 }
@@ -116,13 +121,18 @@ class _GatraBaliState extends State<GatraBali> {
           title: widget._appBarTitles[_selectedIndex],
           elevation: 0,
           actions: [
+            IconButton(
+                icon: profileIcon,
+                onPressed: () {
+                  Navigator.of(ctx).pushNamed(Profile.routeName);
+                }),
             Padding(
                 padding: EdgeInsets.only(right: 10.0),
                 child: IconButton(
-                    icon: profileIcon,
+                    icon: Icon(Icons.help),
                     onPressed: () {
-                      Navigator.of(ctx).pushNamed(Profile.routeName);
-                    }))
+                      Navigator.of(ctx).pushNamed(About.routeName);
+                    })),
           ]),
       body: IndexedStack(
         children: _pages,

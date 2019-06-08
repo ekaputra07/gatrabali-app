@@ -90,7 +90,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Akun'),
+        title: Text('Profil'),
         elevation: 0,
       ),
       body: _isLoggedIn
