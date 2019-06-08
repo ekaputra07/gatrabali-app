@@ -20,7 +20,7 @@ class EntryService {
       print('EntryService.fetchEntries() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> entries = convert.jsonDecode(resp.body);
-        return Future.value(entries.map((f) => Entry.fromJson(f)).toList());
+        return entries.map((f) => Entry.fromJson(f)).toList();
       }
       throw Exception(resp.body);
     });
@@ -33,14 +33,13 @@ class EntryService {
       print('EntryService.fetchCategorySummary() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> summaries = convert.jsonDecode(resp.body);
-        return Future.value(
-            summaries.map((f) => CategorySummary.fromJson(f)).toList());
+        return summaries.map((f) => CategorySummary.fromJson(f)).toList();
       }
       throw Exception(resp.body);
     });
   }
 
-  // Check to see if an entry is bookmarked by user
+  /// Check to see if an entry is bookmarked by user
   static Future<bool> isBookmarked(String userId, int entryId) {
     return Firestore.instance
         .collection('/users/$userId/bookmarks')
@@ -52,7 +51,7 @@ class EntryService {
     });
   }
 
-  // Bookmark an entry
+  /// Bookmark an entry
   static Future<void> bookmark(String userId, Entry entry,
       {bool delete = false}) {
     var collestionName = '/users/$userId/bookmarks';
@@ -74,5 +73,22 @@ class EntryService {
           .document(entry.id.toString())
           .delete();
     }
+  }
+
+  static Future<List<BookmarkEntry>> getBookmarks(String userId,
+      {int cursor = 0, limit = 20}) {
+    print('CALLED');
+    return Firestore.instance
+        .collection('/users/$userId/bookmarks')
+        // .startAfter([cursor.toString()])
+        .limit(limit)
+        .orderBy('bookmarked_at', descending: true)
+        .getDocuments()
+        .then((result) {
+          return result.documents
+              .map((doc) => BookmarkEntry.fromDocument(doc))
+              .toList();
+        })
+        .catchError((err) => print(err));
   }
 }

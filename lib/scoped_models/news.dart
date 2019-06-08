@@ -7,17 +7,26 @@ import 'package:gatrabali/models/user.dart';
 class News extends Model {
   List<Feed> feeds;
   User currentUser;
-
-  News({this.feeds = const <Feed>[]});
+  int selectedTabIndex;
+  String whatIsChanged;
 
   void setFeeds(List<Feed> feeds) {
     this.feeds = feeds;
+    this.whatIsChanged = 'feeds';
+    notifyListeners();
+  }
+
+  void setSelectedTabIndex(int index) {
+    this.selectedTabIndex = index;
+    this.whatIsChanged = 'selectedTabIndex';
     notifyListeners();
   }
 
   void setUser(User user) {
     this.currentUser = user;
+    this.whatIsChanged = 'currentUser';
     print("currentUser SET: $user");
+    notifyListeners();
   }
 
   static News of(BuildContext ctx) =>

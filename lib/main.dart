@@ -123,6 +123,7 @@ class _GatraBaliState extends State<GatraBali> {
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;
+            News.of(ctx).setSelectedTabIndex(index);
           });
         },
         items: [

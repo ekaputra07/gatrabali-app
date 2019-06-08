@@ -49,6 +49,7 @@ class _CategoriesSummaryState extends State<CategoriesSummary> {
 
   @override
   Widget build(BuildContext ctx) {
+    print("BUIILD CATE");
     return SmartRefresher(
       controller: _refreshController,
       enablePullDown: true,

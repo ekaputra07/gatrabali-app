@@ -67,6 +67,8 @@ class _LatestNewsState extends State<LatestNews> {
 
   @override
   Widget build(BuildContext ctx) {
+    print("BUIILD LATEST");
+
     return SmartRefresher(
       controller: _refreshController,
       enablePullDown: true,
