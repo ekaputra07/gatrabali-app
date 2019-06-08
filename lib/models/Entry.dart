@@ -41,6 +41,16 @@ class Entry {
     return e;
   }
 
+  static Entry fromBookmarkEntry(BookmarkEntry bookmark) {
+    var e = new Entry();
+    e.id = bookmark.entryId;
+    e.title = bookmark.title;
+    e.publishedAt = bookmark.publishedAt;
+    e.feedId = bookmark.feedId;
+    e.picture = bookmark.picture;
+    return e;
+  }
+
   static List<Entry> emptyList() {
     return List<Entry>();
   }

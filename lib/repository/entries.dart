@@ -75,9 +75,9 @@ class EntryService {
     }
   }
 
+  /// Returns all user bookmarks
   static Future<List<BookmarkEntry>> getBookmarks(String userId,
       {int cursor = 0, limit = 20}) {
-    print('CALLED');
     return Firestore.instance
         .collection('/users/$userId/bookmarks')
         // .startAfter([cursor.toString()])
@@ -85,10 +85,21 @@ class EntryService {
         .orderBy('bookmarked_at', descending: true)
         .getDocuments()
         .then((result) {
-          return result.documents
-              .map((doc) => BookmarkEntry.fromDocument(doc))
-              .toList();
-        })
-        .catchError((err) => print(err));
+      return result.documents
+          .map((doc) => BookmarkEntry.fromDocument(doc))
+          .toList();
+    }).catchError((err) => print(err));
+  }
+
+  /// Return entry by ID
+  static Future<Entry> getEntryById(int id) {
+    return Firestore.instance
+        .collection('/entries')
+        .document(id.toString())
+        .get()
+        .then((doc) {
+      if (!doc.exists) throw Exception('entry $id not exists');
+      return Entry.fromJson(doc.data);
+    });
   }
 }

@@ -9,7 +9,7 @@ class CharThumbnail extends StatelessWidget {
 
   CharThumbnail(
       {@required this.char,
-      this.color = Colors.teal,
+      this.color = Colors.blueGrey,
       this.width = 50.0,
       this.height = 50.0,
       this.fontSize = 28.0});

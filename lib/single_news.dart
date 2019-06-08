@@ -11,29 +11,48 @@ import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/profile.dart';
 
 class SingleNewsArgs {
+  int id;
   String title;
   Entry entry;
 
-  SingleNewsArgs(this.title, this.entry);
+  SingleNewsArgs(this.title, this.entry, {this.id});
 }
 
 class SingleNews extends StatefulWidget {
   static final String routeName = '/SingleNews';
+  final int id;
   final String title;
   final Entry entry;
   final News model;
 
-  SingleNews({this.title, this.entry, this.model});
+  SingleNews({this.title, this.entry, this.model, this.id});
 
   @override
   _SingleNews createState() => _SingleNews();
 }
 
 class _SingleNews extends State<SingleNews> {
+  Entry _entry;
   bool _bookmarked = false;
+  bool _loading = false;
+  bool _notFound = false;
 
   @override
   void initState() {
+    _entry = widget.entry;
+
+    if (widget.id != null) {
+      _loading = true;
+      EntryService.getEntryById(widget.id).then((entry) {
+        setState(() {
+          _entry = entry;
+          _loading = false;
+        });
+      }).catchError((err) {
+        _notFound = true;
+      });
+    }
+
     if (widget.model.currentUser != null) {
       _checkBookmark();
     }
@@ -42,7 +61,7 @@ class _SingleNews extends State<SingleNews> {
   }
 
   void _checkBookmark() {
-    EntryService.isBookmarked(widget.model.currentUser.id, widget.entry.id)
+    EntryService.isBookmarked(widget.model.currentUser.id, _entry.id)
         .then((bookmarked) {
       setState(() {
         _bookmarked = bookmarked;
@@ -65,7 +84,7 @@ class _SingleNews extends State<SingleNews> {
       return;
     }
 
-    EntryService.bookmark(widget.model.currentUser.id, widget.entry,
+    EntryService.bookmark(widget.model.currentUser.id, _entry,
             delete: _bookmarked)
         .then((_) {
       setState(() {
@@ -83,16 +102,22 @@ class _SingleNews extends State<SingleNews> {
   Widget build(BuildContext ctx) {
     return Scaffold(
       appBar: AppBar(
-          title:
-              Text(widget.title == null ? widget.entry.title : widget.title)),
-      body: _getBody(ctx),
+          title: Text(widget.title == null ? _entry.title : widget.title)),
+      body: _loading ? _loader() : _getBody(ctx),
     );
   }
 
-  Widget _getBody(BuildContext ctx) {
-    final Entry entry = widget.entry;
+  Widget _loader() {
+    if (_notFound) {
+      return Center(
+          child: Text('Berita tidak ditemukan.',
+              style: TextStyle(color: Colors.grey, fontSize: 16)));
+    }
+    return Center(child: CircularProgressIndicator());
+  }
 
-    var title = Text(entry.title,
+  Widget _getBody(BuildContext ctx) {
+    var title = Text(_entry.title,
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
 
@@ -118,7 +143,7 @@ class _SingleNews extends State<SingleNews> {
       Divider(),
       Html(
           useRichText: true,
-          data: entry.content,
+          data: _entry.content,
           padding: EdgeInsets.all(20.0)),
       Divider(),
       _source(ctx),
@@ -129,21 +154,19 @@ class _SingleNews extends State<SingleNews> {
   }
 
   Widget _cover(BuildContext ctx) {
-    if (widget.entry.hasPicture) {
+    if (_entry.hasPicture) {
       return CoverImageDecoration(
-          url: widget.entry.picture, height: 250.0, width: null);
+          url: _entry.picture, height: 250.0, width: null);
     } else {
       return Container(
         width: double.infinity,
         height: 250.0,
-        color: Colors.teal,
+        color: Colors.blueGrey,
       );
     }
   }
 
   Widget _actions(BuildContext ctx, bool includeDate) {
-    final Entry entry = widget.entry;
-
     List<Widget> actions = [
       GestureDetector(
           onTap: () {
@@ -151,10 +174,10 @@ class _SingleNews extends State<SingleNews> {
           },
           child: Column(children: [
             Icon(Icons.bookmark,
-                color: _bookmarked ? Colors.teal : Colors.black),
+                color: _bookmarked ? Colors.green : Colors.black),
             Text("Simpan",
                 style:
-                    TextStyle(color: _bookmarked ? Colors.teal : Colors.black))
+                    TextStyle(color: _bookmarked ? Colors.green : Colors.black))
           ])),
       // Column(children: [
       //   Icon(Icons.comment, color: Colors.black),
@@ -162,7 +185,7 @@ class _SingleNews extends State<SingleNews> {
       // ]),
       GestureDetector(
           onTap: () {
-            Share.share("${entry.url} via #GatraBaliApp");
+            Share.share("${_entry.url} via #GatraBaliApp");
           },
           child: Column(children: [
             Icon(Icons.share, color: Colors.black),
@@ -174,7 +197,7 @@ class _SingleNews extends State<SingleNews> {
       actions.insert(
         0,
         Column(
-            children: [Icon(Icons.calendar_today), Text(entry.formattedDate)]),
+            children: [Icon(Icons.calendar_today), Text(_entry.formattedDate)]),
       );
     }
 
@@ -188,17 +211,16 @@ class _SingleNews extends State<SingleNews> {
   }
 
   Widget _source(BuildContext ctx) {
-    final Entry entry = widget.entry;
-
     return GestureDetector(
         onTap: () {
-          launch(entry.url, forceSafariVC: false);
+          launch(_entry.url, forceSafariVC: false);
         },
         child: Padding(
             padding: EdgeInsets.all(10),
             child: ListTile(
               title: Text("Sumber:"),
-              subtitle: Text(entry.url, style: TextStyle(color: Colors.teal)),
+              subtitle:
+                  Text(_entry.url, style: TextStyle(color: Colors.blueGrey)),
             )));
   }
 }

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Gatra Bali',
-        theme: ThemeData(primarySwatch: Colors.teal),
+        theme: ThemeData(primarySwatch: Colors.blueGrey),
         onGenerateRoute: _generateRoute,
         home: ScopedModel<News>(
           model: _model,
@@ -53,8 +53,11 @@ class MyApp extends StatelessWidget {
     if (settings.name == SingleNews.routeName) {
       final SingleNewsArgs args = settings.arguments;
       return MaterialPageRoute(
-          builder: (context) =>
-              SingleNews(title: args.title, entry: args.entry, model: _model));
+          builder: (context) => SingleNews(
+              title: args.title,
+              entry: args.entry,
+              model: _model,
+              id: args.id));
     }
     // handles /Profile
     if (settings.name == Profile.routeName) {
@@ -101,6 +104,13 @@ class _GatraBaliState extends State<GatraBali> {
 
   @override
   Widget build(BuildContext ctx) {
+    var user = News.of(ctx).currentUser;
+    Widget profileIcon = Icon(Icons.account_circle);
+    if (user != null) {
+      profileIcon =
+          CircleAvatar(backgroundImage: NetworkImage(user.avatar), radius: 12);
+    }
+
     return Scaffold(
       appBar: AppBar(
           title: widget._appBarTitles[_selectedIndex],
@@ -109,7 +119,7 @@ class _GatraBaliState extends State<GatraBali> {
             Padding(
                 padding: EdgeInsets.only(right: 10.0),
                 child: IconButton(
-                    icon: Icon(Icons.account_circle),
+                    icon: profileIcon,
                     onPressed: () {
                       Navigator.of(ctx).pushNamed(Profile.routeName);
                     }))

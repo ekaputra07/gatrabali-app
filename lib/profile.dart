@@ -41,8 +41,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(
-            ctx, "Login dengan Google berhasil", Colors.teal);
+        _toast(ctx, "Login dengan Google berhasil", Colors.blueGrey);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -58,8 +57,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(
-            ctx, "Login dengan Facebook berhasil", Colors.teal);
+        _toast(ctx, "Login dengan Facebook berhasil", Colors.blueGrey);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -85,9 +83,7 @@ class _ProfileState extends State<Profile> {
         _user = null;
         _toast(ctx, 'Anda berhasil logout', Colors.black);
       });
-    }).catchError((err) {
-      print(err);
-    });
+    }).catchError((err) => print(err));
   }
 
   @override
