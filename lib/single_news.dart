@@ -144,7 +144,18 @@ class _SingleNews extends State<SingleNews> {
       Html(
           useRichText: true,
           data: _entry.content,
-          padding: EdgeInsets.all(20.0)),
+          padding: EdgeInsets.all(20.0),
+          defaultTextStyle: TextStyle(fontSize: 16),
+          linkStyle: const TextStyle(
+            color: Colors.blueGrey,
+          ),
+          onLinkTap: (url) {
+            Toast.show(
+                'Silahkan buka link tersebut di halaman asli berita ini.',
+                context,
+                duration: Toast.LENGTH_LONG,
+                backgroundColor: Colors.black);
+          }),
       Divider(),
       _source(ctx),
       Divider(),

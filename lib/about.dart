@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
   static final routeName = '/About';
@@ -30,7 +31,7 @@ class About extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0),
               ),
               Text(
-                'balipost.com, metrobali.com, nusabali.com',
+                'balipost.com, metrobali.com',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
               ),
@@ -44,11 +45,16 @@ class About extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13.0, color: Colors.grey),
               ),
-              Text(
-                'https://github.com/apps4bali/gatrabali-app.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13.0, color: Colors.grey),
-              ),
+              GestureDetector(
+                  child: Text(
+                    'https://github.com/apps4bali/gatrabali-app.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13.0, color: Colors.blueGrey),
+                  ),
+                  onTap: () {
+                    launch('https://github.com/apps4bali/gatrabali-app',
+                        forceSafariVC: false);
+                  }),
               SizedBox(
                 height: 10.0,
               ),
