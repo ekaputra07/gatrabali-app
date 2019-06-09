@@ -17,8 +17,10 @@ class About extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset('assets/images/icon.png', width: 50, height: 50),
+              SizedBox(height: 20),
               Text(
-                'Gatra Bali adalah sebuah layanan yang mengumpulkan berita dari berbagai sumber berita online dan dirangkum sedemikian rupa dalam sebuah aplikasi.',
+                'Gatra Bali adalah sebuah aplikasi yang merangkum berita dari berbagai sumber berita online, ditampilkan sedemikian rupa supaya mudah dan menyenangkan dibaca.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
