@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "com.gatrabali.android"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
@@ -63,6 +63,9 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

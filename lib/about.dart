@@ -69,7 +69,7 @@ class About extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                'Gatra Bali v0.1.0',
+                'Gatra Bali v1.0.0',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 13.0,
