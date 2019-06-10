@@ -186,6 +186,8 @@ class _ProfileState extends State<Profile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset('assets/images/icon.png', width: 50, height: 50),
+          SizedBox(height: 30.0),
           Text(
             'Untuk dapat menyimpan berita silahkan login dengan salah satu dari layanan media sosial berikut ini:',
             textAlign: TextAlign.center,
