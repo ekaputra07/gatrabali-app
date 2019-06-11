@@ -147,7 +147,7 @@ class _SingleNews extends State<SingleNews> {
           padding: EdgeInsets.all(20.0),
           defaultTextStyle: TextStyle(fontSize: 16),
           linkStyle: const TextStyle(
-            color: Colors.blueGrey,
+            color: Colors.green,
           ),
           onLinkTap: (url) {
             Toast.show(
@@ -172,7 +172,7 @@ class _SingleNews extends State<SingleNews> {
       return Container(
         width: double.infinity,
         height: 250.0,
-        color: Colors.blueGrey,
+        color: Colors.green,
       );
     }
   }
@@ -231,7 +231,7 @@ class _SingleNews extends State<SingleNews> {
             child: ListTile(
               title: Text("Sumber:"),
               subtitle:
-                  Text(_entry.url, style: TextStyle(color: Colors.blueGrey)),
+                  Text(_entry.url, style: TextStyle(color: Colors.green)),
             )));
   }
 }

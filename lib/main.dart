@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Gatra Bali',
-        theme: ThemeData(primarySwatch: Colors.blueGrey),
+        theme: ThemeData(primarySwatch: Colors.green),
         onGenerateRoute: _generateRoute,
         home: ScopedModel<News>(
           model: _model,

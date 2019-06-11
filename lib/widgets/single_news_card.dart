@@ -55,7 +55,7 @@ class SingleNewsCard extends StatelessWidget {
       return Container(
         width: double.infinity,
         height: 150.0,
-        color: Colors.blueGrey,
+        color: Colors.green,
       );
     }
   }

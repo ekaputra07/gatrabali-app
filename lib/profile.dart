@@ -41,7 +41,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(ctx, "Login dengan Google berhasil", Colors.blueGrey);
+        _toast(ctx, "Login dengan Google berhasil", Colors.green);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -57,7 +57,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(ctx, "Login dengan Facebook berhasil", Colors.blueGrey);
+        _toast(ctx, "Login dengan Facebook berhasil", Colors.green);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -138,7 +138,7 @@ class _ProfileState extends State<Profile> {
           Text(
             'Terima kasih telah membuat akun di aplikasi Gatra Bali. Dengan membuat akun anda bisa menyimpan/bookmark berita dan otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14.0, color: Colors.blueGrey),
+            style: TextStyle(fontSize: 14.0, color: Colors.green),
           ),
           SizedBox(height: 30.0),
           logoutButton
@@ -186,7 +186,7 @@ class _ProfileState extends State<Profile> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/icon.png', width: 50, height: 50),
+          Image.asset('assets/images/icon.png', width: 80, height: 80),
           SizedBox(height: 30.0),
           Text(
             'Untuk dapat menyimpan berita silahkan login dengan salah satu dari layanan media sosial berikut ini:',

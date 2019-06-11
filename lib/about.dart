@@ -17,7 +17,7 @@ class About extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/images/icon.png', width: 50, height: 50),
+              Image.asset('assets/images/icon.png', width: 80, height: 80),
               SizedBox(height: 20),
               Text(
                 'Gatra Bali adalah sebuah aplikasi yang merangkum berita dari berbagai sumber berita online, ditampilkan sedemikian rupa supaya mudah dan menyenangkan dibaca.',
@@ -51,7 +51,7 @@ class About extends StatelessWidget {
                   child: Text(
                     'https://github.com/apps4bali/gatrabali-app.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 13.0, color: Colors.blueGrey),
+                    style: TextStyle(fontSize: 13.0, color: Colors.green),
                   ),
                   onTap: () {
                     launch('https://github.com/apps4bali/gatrabali-app',
@@ -69,7 +69,7 @@ class About extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                'Gatra Bali v1.0.0',
+                'Gatra Bali v1.0.1',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 13.0,
