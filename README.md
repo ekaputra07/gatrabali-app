@@ -1,4 +1,4 @@
-# gatrabali_app
+# Gatra Bali - Balinese News Reader
 
 Balinese news reader app. Now available on Google Play:
 
