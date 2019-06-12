@@ -196,7 +196,7 @@ class _SingleNews extends State<SingleNews> {
       // ]),
       GestureDetector(
           onTap: () {
-            Share.share("${_entry.url} via #GatraBaliApp");
+            Share.share("${_entry.url} via Gatra Bali App (http://bit.ly/gatrabali)");
           },
           child: Column(children: [
             Icon(Icons.share, color: Colors.black),
