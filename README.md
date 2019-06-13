@@ -10,9 +10,9 @@ Balinese news reader app. Now available on Google Play:
 # How it works
 <img src="https://raw.githubusercontent.com/apps4bali/gatrabali-app/master/howitworks.png"/>
 
-1. Miniflux (an opensource Feed reader written in Go) will periodically check for new articles on a given feeds. Since its quite full featured we're able to add new feed sources, categorize the feed, manage users, etc. Miniflux works independently know nothing about the other parts, store its own data to its own database (PostgreSQL).
+1. [Miniflux](https://github.com/apps4bali/miniflux) (an opensource Feed reader written in Go) will periodically check for new articles on a given feeds. Since its quite full featured we're able to add new feed sources, categorize the feed, manage users, etc. Miniflux works independently know nothing about the other parts, store its own data to its own database (PostgreSQL).
 
-1. I don't want the app to talk directly to Miniflux Api but I want Firebase as the app backend instead. So I need a way to transfer data from Miniflux to Firestore. Here I utilise the Google PubSub to trigger a Cloud Function, whenever an Article is added/updated, Feed is added/updated/deleted, Category is added/updated/deteled Miniflux will publish a message to a Topic and it will trigger the Cloud Function to running. 
+1. I don't want the app to talk directly to Miniflux Api but I want Firebase as the app backend instead. So I need a way to transfer data from Miniflux to Firestore. Here I utilise the Google PubSub to trigger a [Cloud Function](https://github.com/apps4bali/gatrabali-functions), whenever an Article is added/updated, Feed is added/updated/deleted, Category is added/updated/deteled Miniflux will publish a message to a Topic and it will trigger the Cloud Function to running. 
 
 1. When the PubSub triggered Function is running, based on the message it received it will make a HTTP request back to the Miniflux REST api to get the Article, Feed or Category object and store them to Firestore.
 
