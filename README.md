@@ -22,4 +22,4 @@ Balinese news reader app. Now available on Google Play:
 
 1. For the bookmarks, app read and write directly to Firestore, users are only allowed to read and write to their own bookmarks collection by using Firestore rules.
 
-Thats it! you may think its a bit overkill for such a simple News Reader app, but for me its about an experience to build a distributed systems, thinking scalability, each parts of the stack doing one thing and doing good. If for example the server that host Miniflux is crash and lost all the data in database, the app will still running without any problem.
+Thats it! you may think its a bit overkill for such a simple News Reader app, but for me its about scalability and stability of the system. If for example the server that host Miniflux somehow lost all of its data in database, the app will continue to works without a problem.
