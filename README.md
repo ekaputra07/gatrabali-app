@@ -21,5 +21,3 @@ Balinese news reader app. Now available on Google Play:
 1. Because most of the data will be public (user doesn't need to register to use the app except for bookmarks) and to reduce the Firestore reads, some Http Function were used as API frontends to take advantage of caching and some other useful stuff that we can do to our data at this stage. And the last but not least, I put Firebase hosting at very front to take advantage of rewrites (to have a beautiful API url) and also CDN caching.
 
 1. For the bookmarks, app read and write directly to Firestore, users are only allowed to read and write to their own bookmarks collection by using Firestore rules.
-
-Thats it! you may think its a bit overkill for such a simple News Reader app, but for me its about scalability and stability of the system. If for example the server that host Miniflux somehow lost all of its data in database, the app will continue to works without a problem.
