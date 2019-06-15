@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
 class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Berita Terbaru"),
-    Text("Berita Kabupaten / Kota"),
+    Text("Berita Daerah"),
     Text("Berita Disimpan")
   ];
 
@@ -117,44 +117,68 @@ class _GatraBaliState extends State<GatraBali> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-          title: widget._appBarTitles[_selectedIndex],
+        appBar: AppBar(
+            title: widget._appBarTitles[_selectedIndex],
+            elevation: 0,
+            actions: [
+              IconButton(
+                  icon: profileIcon,
+                  onPressed: () {
+                    Navigator.of(ctx).pushNamed(Profile.routeName);
+                  }),
+              Padding(
+                  padding: EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                      icon: Icon(Icons.help),
+                      onPressed: () {
+                        Navigator.of(ctx).pushNamed(About.routeName);
+                      })),
+            ]),
+        body: IndexedStack(
+          children: _pages,
+          index: _selectedIndex,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              News.of(ctx).setSelectedTabIndex(index);
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: Text("Terbaru")),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.grain), title: Text("Daerah")),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark), title: Text("Disimpan")),
+          ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: _drawerItems(),
+          ),
+        ));
+  }
+
+  List<Widget> _drawerItems() {
+    var items = <Widget>[];
+
+    News.of(context).categories.forEach((id, title) {
+      items.add(Card(
           elevation: 0,
-          actions: [
-            IconButton(
-                icon: profileIcon,
-                onPressed: () {
-                  Navigator.of(ctx).pushNamed(Profile.routeName);
-                }),
-            Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: IconButton(
-                    icon: Icon(Icons.help),
-                    onPressed: () {
-                      Navigator.of(ctx).pushNamed(About.routeName);
-                    })),
-          ]),
-      body: IndexedStack(
-        children: _pages,
-        index: _selectedIndex,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-            News.of(ctx).setSelectedTabIndex(index);
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), title: Text("Terbaru")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.grain), title: Text("Kabupaten")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark), title: Text("Disimpan")),
-        ],
-      ),
-    );
+          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),
+          child: ListTile(
+            leading: Icon(Icons.folder_open, color: Colors.green),
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            title: Text('Berita $title'),
+            onTap: () {
+              Navigator.of(context).popAndPushNamed(CategoryNews.routeName,
+                  arguments: CategoryNewsArgs(id, title));
+            },
+          )));
+    });
+    return items;
   }
 }

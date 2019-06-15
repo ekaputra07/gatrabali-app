@@ -103,14 +103,13 @@ class _ProfileState extends State<Profile> {
     final logoutButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(5.0),
-      color: Colors.black,
+      color: Colors.grey,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           _signOut(ctx);
         },
-        child: Text("Logout / Keluar",
+        child: Text("Log out",
             textAlign: TextAlign.center,
             style: _style.copyWith(color: Colors.white, fontSize: 20)),
       ),
@@ -138,7 +137,7 @@ class _ProfileState extends State<Profile> {
           Text(
             'Terima kasih telah membuat akun di aplikasi Gatra Bali. Dengan membuat akun anda bisa menyimpan/bookmark berita dan otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14.0, color: Colors.green),
+            style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
           SizedBox(height: 30.0),
           logoutButton

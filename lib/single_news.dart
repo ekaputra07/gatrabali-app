@@ -117,6 +117,7 @@ class _SingleNews extends State<SingleNews> {
   }
 
   Widget _getBody(BuildContext ctx) {
+    print(_entry.content);
     var title = Text(_entry.title,
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
@@ -127,7 +128,7 @@ class _SingleNews extends State<SingleNews> {
         children: [
           _cover(ctx),
           Container(
-            height: 250,
+            height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -144,7 +145,7 @@ class _SingleNews extends State<SingleNews> {
       Html(
           useRichText: true,
           data: _entry.content,
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           defaultTextStyle: TextStyle(fontSize: 16),
           linkStyle: const TextStyle(
             color: Colors.green,
@@ -167,11 +168,11 @@ class _SingleNews extends State<SingleNews> {
   Widget _cover(BuildContext ctx) {
     if (_entry.hasPicture) {
       return CoverImageDecoration(
-          url: _entry.picture, height: 250.0, width: null);
+          url: _entry.picture, height: 200.0, width: null);
     } else {
       return Container(
         width: double.infinity,
-        height: 250.0,
+        height: 200.0,
         color: Colors.green,
       );
     }
@@ -196,7 +197,8 @@ class _SingleNews extends State<SingleNews> {
       // ]),
       GestureDetector(
           onTap: () {
-            Share.share("${_entry.url} via Gatra Bali App (http://bit.ly/gatrabali)");
+            Share.share(
+                "${_entry.url} via Gatra Bali App (http://bit.ly/gatrabali)");
           },
           child: Column(children: [
             Icon(Icons.share, color: Colors.black),
@@ -230,8 +232,7 @@ class _SingleNews extends State<SingleNews> {
             padding: EdgeInsets.all(10),
             child: ListTile(
               title: Text("Sumber:"),
-              subtitle:
-                  Text(_entry.url, style: TextStyle(color: Colors.green)),
+              subtitle: Text(_entry.url, style: TextStyle(color: Colors.green)),
             )));
   }
 }

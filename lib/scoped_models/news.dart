@@ -9,6 +9,17 @@ class News extends Model {
   User currentUser;
   int selectedTabIndex;
   String whatIsChanged;
+  Map<int, String> categories = {
+    2: 'Badung',
+    3: 'Bangli',
+    4: 'Buleleng',
+    5: 'Denpasar',
+    6: 'Gianyar',
+    7: 'Jembrana',
+    8: 'Karangasem',
+    9: 'Klungkung',
+    10: 'Tabanan',
+  };
 
   void setFeeds(List<Feed> feeds) {
     this.feeds = feeds;

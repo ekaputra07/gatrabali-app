@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:gatrabali/config.dart';
 
 class About extends StatelessWidget {
   static final routeName = '/About';
@@ -33,7 +34,7 @@ class About extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0),
               ),
               Text(
-                'balipost.com, metrobali.com',
+                FEED_SOURCES,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
               ),
@@ -69,7 +70,7 @@ class About extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                'Gatra Bali v1.0.1',
+                'Gatra Bali v$APP_VERSION',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 13.0,

@@ -13,7 +13,8 @@ class SingleNewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final feeds = News.of(ctx).feeds;
-    final feedTitle = entry.getFeedTitle(feeds);
+    final categories = News.of(ctx).categories;
+    final feedTitle = entry.getFeedTitle(feeds, categories);
     final source = feedTitle == null ? '' : feedTitle;
 
     return Card(
@@ -24,8 +25,12 @@ class SingleNewsCard extends StatelessWidget {
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
-                child: Text(entry.title,
-                    style: TextStyle(fontWeight: FontWeight.bold))),
+                child: Text(
+                  entry.title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                )),
             subtitle: Padding(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 child: Text("$source (${entry.formattedDate})")),
@@ -45,7 +50,7 @@ class SingleNewsCard extends StatelessWidget {
           CoverImageDecoration(
               url: entry.picture,
               width: null,
-              height: 150.0,
+              height: 120.0,
               onTap: () {
                 _openDetail(ctx, source);
               }),
@@ -54,7 +59,7 @@ class SingleNewsCard extends StatelessWidget {
     } else {
       return Container(
         width: double.infinity,
-        height: 150.0,
+        height: 120.0,
         color: Colors.green,
       );
     }

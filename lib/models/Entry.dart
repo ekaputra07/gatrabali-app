@@ -18,13 +18,18 @@ class Entry {
   String get formattedDate => DateFormat("d/MM/yyyy")
       .format(DateTime.fromMillisecondsSinceEpoch(publishedAt));
 
-  String getFeedTitle(List<Feed> feeds) {
+  String getFeedTitle(List<Feed> feeds, Map<int, String> categories) {
+    var title;
+
     for (var f in feeds) {
       if (f.id == this.feedId) {
-        return f.title;
+        title = f.title;
       }
     }
-    return null;
+    if (title == null) {
+      title = categories[categoryId];
+    }
+    return title;
   }
 
   static Entry fromJson(dynamic json) {

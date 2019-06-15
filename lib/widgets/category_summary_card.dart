@@ -17,9 +17,9 @@ class CategorySummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     final feeds = News.of(ctx).feeds;
-
+    final categories = News.of(ctx).categories;
     final firstEntry = entries.first;
-    final feedTitle = firstEntry.getFeedTitle(feeds);
+    final feedTitle = firstEntry.getFeedTitle(feeds, categories);
     final source = feedTitle == null ? '' : feedTitle;
 
     return Card(
@@ -40,7 +40,7 @@ class CategorySummaryCard extends StatelessWidget {
             },
           ),
           Divider(),
-          _relatedNews(ctx, feeds, entries.sublist(1)),
+          _relatedNews(ctx, feeds, categories, entries.sublist(1)),
           _moreNews(ctx)
         ],
       ),
@@ -75,10 +75,11 @@ class CategorySummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _relatedNews(BuildContext ctx, List<Feed> feeds, List<Entry> related) {
+  Widget _relatedNews(BuildContext ctx, List<Feed> feeds,
+      Map<int, String> categories, List<Entry> related) {
     return Column(
         children: related.map((entry) {
-      final source = entry.getFeedTitle(feeds);
+      final source = entry.getFeedTitle(feeds, categories);
       return Column(
         children: [
           ListTile(
