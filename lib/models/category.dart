@@ -10,7 +10,7 @@ class CategorySummary {
     cs.id = json['id'];
     cs.title = json['title'];
     cs.entries =
-        (json['news'] as List<dynamic>).map((e) => Entry.fromJson(e)).toList();
+        (json['entries'] as List<dynamic>).map((e) => Entry.fromJson(e)).toList();
     return cs;
   }
 

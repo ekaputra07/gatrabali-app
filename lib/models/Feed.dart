@@ -10,11 +10,11 @@ class Feed {
 
     feed.id = json['id'];
     feed.title = json['title'];
-    feed.feedUrl = json['feed_url'];
-    feed.siteUrl = json['site_url'];
-    if (json['icon_data'] != null) {
-      feed.iconData = json['icon_data'];
-    }
+    // feed.feedUrl = json['feed_url'];
+    // feed.siteUrl = json['site_url'];
+    // if (json['icon_data'] != null) {
+    //   feed.iconData = json['icon_data'];
+    // }
     return feed;
   }
 

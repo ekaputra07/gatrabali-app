@@ -13,8 +13,8 @@ class EntryService {
       {int categoryId, int cursor, int limit = 10}) {
     var category = categoryId == null ? '' : categoryId;
     var url = cursor == null
-        ? '$API_HOST/api/v1/news?categoryId=$category&limit=$limit'
-        : '$API_HOST/api/v1/news?categoryId=$category&cursor=$cursor&limit=$limit';
+        ? '$API_HOST/api/v1/entries?categoryId=$category&limit=$limit'
+        : '$API_HOST/api/v1/entries?categoryId=$category&cursor=$cursor&limit=$limit';
     print('EntryService.fetchEntries() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.fetchEntries() finished.');
@@ -29,7 +29,7 @@ class EntryService {
   /// Returns summary of Category news.
   static Future<List<CategorySummary>> fetchCategorySummary() {
     print('EntryService.fetchCategorySummary()...');
-    return http.get('$API_HOST/api/v1/category_news_summary').then((resp) {
+    return http.get('$API_HOST/api/v1/categories/summary').then((resp) {
       print('EntryService.fetchCategorySummary() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> summaries = convert.jsonDecode(resp.body);

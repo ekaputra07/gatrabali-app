@@ -1,3 +1,3 @@
-const API_HOST = "https://gatrabali.web.app";
-const APP_VERSION = "1.0.2";
+const API_HOST = "https://gatrabali.appspot.com";
+const APP_VERSION = "1.0.3";
 const FEED_SOURCES = "balipost.com, metrobali.com, balipuspanews.com";
