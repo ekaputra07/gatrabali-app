@@ -54,10 +54,10 @@ class EntryService {
   /// Bookmark an entry
   static Future<void> bookmark(String userId, Entry entry,
       {bool delete = false}) {
-    var collestionName = '/users/$userId/bookmarks';
+    var collectionName = '/users/$userId/bookmarks';
     if (!delete) {
       return Firestore.instance
-          .collection(collestionName)
+          .collection(collectionName)
           .document(entry.id.toString())
           .setData({
         'entry_id': entry.id,
@@ -69,7 +69,7 @@ class EntryService {
       });
     } else {
       return Firestore.instance
-          .collection(collestionName)
+          .collection(collectionName)
           .document(entry.id.toString())
           .delete();
     }

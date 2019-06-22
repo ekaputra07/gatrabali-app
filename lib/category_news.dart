@@ -2,11 +2,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:toast/toast.dart';
 
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/repository/entries.dart';
+import 'package:gatrabali/repository/subscriptions.dart';
+
 import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/models/subscription.dart';
 import 'package:gatrabali/widgets/single_news_card.dart';
+import 'package:gatrabali/profile.dart';
 
 class CategoryNewsArgs {
   int id;
@@ -30,13 +35,19 @@ class CategoryNews extends StatefulWidget {
 class _CategoryNewsState extends State<CategoryNews> {
   List<Entry> _entries;
   int _cursor;
-  StreamSubscription _sub;
+  StreamSubscription _sub; // entries
   RefreshController _refreshController;
+
+  // notification
+  Subscription _subscription;
+  StreamSubscription _subNotification;
 
   @override
   void initState() {
     _refreshEntries();
     _refreshController = RefreshController(initialRefresh: false);
+    _loadSubscription();
+
     super.initState();
   }
 
@@ -45,8 +56,79 @@ class _CategoryNewsState extends State<CategoryNews> {
     if (_sub != null) {
       _sub.cancel();
     }
+    if (_subNotification != null) {
+      _subNotification.cancel();
+    }
     _refreshController.dispose();
     super.dispose();
+  }
+
+  bool _allowSubscription() {
+    if (widget.model.currentUser == null) return false;
+    return true;
+  }
+
+  void _loadSubscription() {
+    if (!_allowSubscription()) return;
+
+    _subNotification = SubscriptionService.getCategorySubscription(
+            widget.model.currentUser.id, widget.categoryId)
+        .asStream()
+        .listen((sub) {
+      setState(() {
+        _subscription = sub;
+
+        _updateSubscription();
+      });
+    });
+    _subNotification.onError((err) {
+      print(err);
+    });
+  }
+
+  void _subscribe() async {
+    if (!_allowSubscription()) {
+      var isLogin = await Navigator.of(context)
+          .pushNamed(Profile.routeName, arguments: true);
+      if (isLogin == true) {
+        _loadSubscription();
+      }
+      return;
+    }
+
+    var delete = _subscription != null;
+    setState(() {
+      if (delete) {
+        _subscription = null;
+      } else {
+        _subscription = Subscription();
+      }
+    });
+
+    SubscriptionService.subscribeToCategory(
+            widget.model.currentUser.id, widget.categoryId,
+            delete: delete)
+        .then((_) {
+      if (!delete) {
+        Toast.show('Notifikasi diaktifkan', context,
+            backgroundColor: Colors.black);
+      } else {
+        Toast.show('Notifikasi dinonaktifkan', context,
+            backgroundColor: Colors.black);
+      }
+    }).catchError((err) {
+      print(err);
+    });
+  }
+
+  void _updateSubscription() {
+    if (!_allowSubscription() || _subscription == null) return;
+
+    SubscriptionService.subscribeToCategory(
+            widget.model.currentUser.id, widget.categoryId)
+        .catchError((err) {
+      print(err);
+    });
   }
 
   void _refreshEntries() {
@@ -59,6 +141,7 @@ class _CategoryNewsState extends State<CategoryNews> {
           _entries = entries;
         }
         _refreshController.refreshCompleted();
+        _updateSubscription();
       });
     });
     _sub.onError((err) {
@@ -87,12 +170,28 @@ class _CategoryNewsState extends State<CategoryNews> {
 
   @override
   Widget build(BuildContext ctx) {
+    var notificationIcon = Icons.notifications;
+    var notificationIconColor = Colors.white;
+
+    if (_subscription != null) {
+      notificationIcon = Icons.notifications_active;
+      notificationIconColor = Colors.yellow;
+    }
+
     return ScopedModel<News>(
         model: widget.model,
         child: Scaffold(
             appBar: AppBar(
               title: Text('Berita ${widget.categoryName}'),
               elevation: 0,
+              actions: [
+                Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: IconButton(
+                        icon: Icon(notificationIcon),
+                        color: notificationIconColor,
+                        onPressed: _subscribe))
+              ],
             ),
             body: SmartRefresher(
               controller: _refreshController,

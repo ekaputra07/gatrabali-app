@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
@@ -13,6 +14,8 @@ import 'package:gatrabali/bookmarks.dart';
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
 import 'package:gatrabali/about.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -90,9 +93,12 @@ class GatraBali extends StatefulWidget {
 class _GatraBaliState extends State<GatraBali> {
   int _selectedIndex;
   List<Widget> _pages;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
+    Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
+
     _selectedIndex = 0;
     _pages = [
       LatestNews(),
@@ -104,7 +110,37 @@ class _GatraBaliState extends State<GatraBali> {
       News.of(context).setUser(user);
     });
 
+    _setupMessaging();
+
     super.initState();
+  }
+
+  _setupMessaging() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("IosNotificationSettings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      if (token != null) {
+        setState(() {
+          _fcmToken = token;
+          print("Push Messaging token: $token");
+        });
+      }
+    });
   }
 
   @override

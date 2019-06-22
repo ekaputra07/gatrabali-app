@@ -84,17 +84,22 @@ class _SingleNews extends State<SingleNews> {
       return;
     }
 
-    EntryService.bookmark(widget.model.currentUser.id, _entry,
-            delete: _bookmarked)
+    var delete = _bookmarked;
+    setState(() {
+      if (_bookmarked) {
+        _bookmarked = false;
+      } else {
+        _bookmarked = true;
+      }
+    });
+
+    EntryService.bookmark(widget.model.currentUser.id, _entry, delete: delete)
         .then((_) {
-      setState(() {
-        if (_bookmarked) {
-          _bookmarked = false;
-        } else {
-          _bookmarked = true;
-          Toast.show('Berita disimpan', ctx, backgroundColor: Colors.black);
-        }
-      });
+      if (!delete) {
+        Toast.show('Berita disimpan', ctx, backgroundColor: Colors.black);
+      }
+    }).catchError((err) {
+      print(err);
     });
   }
 
@@ -117,7 +122,6 @@ class _SingleNews extends State<SingleNews> {
   }
 
   Widget _getBody(BuildContext ctx) {
-    print(_entry.content);
     var title = Text(_entry.title,
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));

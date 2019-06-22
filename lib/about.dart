@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
+import 'package:launch_review/launch_review.dart';
+
 import 'package:gatrabali/config.dart';
 
 class About extends StatelessWidget {
   static final routeName = '/About';
+
+  void _rate() {
+    LaunchReview.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID);
+  }
+
+  void _share() {
+    Share.share(
+        "Dapatkan berita bali terkini dengan aplikasi Gatra Bali. Download disini http://bit.ly/gatrabali");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +24,15 @@ class About extends StatelessWidget {
           title: Text('Tentang Gatra Bali'),
           elevation: 0,
         ),
-        body: Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
+        body: SingleChildScrollView(
+            child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('assets/images/icon.png', width: 80, height: 80),
               SizedBox(height: 20),
               Text(
-                'Gatra Bali adalah sebuah aplikasi yang merangkum berita dari berbagai sumber berita online, ditampilkan sedemikian rupa supaya mudah dan menyenangkan dibaca.',
+                'Gatra Bali merangkum berita dari berbagai sumber berita online, cepat dan mudah dibaca.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -29,7 +40,7 @@ class About extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                'Sumber berita Gatra Bali berasal dari RSS feed media-media online berikut ini:',
+                'Sumber berita Gatra Bali berasal dari media-media online berikut ini:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -38,6 +49,39 @@ class About extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
               ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Divider(),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text('Dukung Gatra Bali:',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                Column(children: [
+                  IconButton(
+                    icon: Icon(Icons.star),
+                    iconSize: 40,
+                    onPressed: _rate,
+                  ),
+                  Text('Berikan Rating')
+                ]),
+                Column(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      iconSize: 40,
+                      onPressed: _share,
+                    ),
+                    Text('Bagikan')
+                  ],
+                )
+              ]),
               SizedBox(
                 height: 10.0,
               ),
@@ -79,6 +123,6 @@ class About extends StatelessWidget {
               ),
             ],
           ),
-        ));
+        )));
   }
 }
