@@ -93,13 +93,14 @@ class EntryService {
 
   /// Return entry by ID
   static Future<Entry> getEntryById(int id) {
-    return Firestore.instance
-        .collection('/entries')
-        .document(id.toString())
-        .get()
-        .then((doc) {
-      if (!doc.exists) throw Exception('entry $id not exists');
-      return Entry.fromJson(doc.data);
+    print('EntryService.getEntryById()...');
+    return http.get('$API_HOST/api/v1/entries/$id').then((resp) {
+      print('EntryService.getEntryById() finished.');
+      if (resp.statusCode == 200) {
+        Map<String, dynamic> e = convert.jsonDecode(resp.body);
+        return Entry.fromJson(e);
+      }
+      throw Exception(resp.body);
     });
   }
 }

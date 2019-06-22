@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
@@ -15,7 +15,6 @@ import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
 import 'package:gatrabali/about.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -97,8 +96,6 @@ class _GatraBaliState extends State<GatraBali> {
 
   @override
   void initState() {
-    Firestore.instance.settings(timestampsInSnapshotsEnabled: true);
-
     _selectedIndex = 0;
     _pages = [
       LatestNews(),
@@ -110,7 +107,7 @@ class _GatraBaliState extends State<GatraBali> {
       News.of(context).setUser(user);
     });
 
-    _setupMessaging();
+    // _setupMessaging();
 
     super.initState();
   }
@@ -136,7 +133,6 @@ class _GatraBaliState extends State<GatraBali> {
     _firebaseMessaging.getToken().then((String token) {
       if (token != null) {
         setState(() {
-          _fcmToken = token;
           print("Push Messaging token: $token");
         });
       }

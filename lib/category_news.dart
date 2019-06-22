@@ -46,7 +46,7 @@ class _CategoryNewsState extends State<CategoryNews> {
   void initState() {
     _refreshEntries();
     _refreshController = RefreshController(initialRefresh: false);
-    _loadSubscription();
+    // _loadSubscription();
 
     super.initState();
   }
@@ -185,12 +185,12 @@ class _CategoryNewsState extends State<CategoryNews> {
               title: Text('Berita ${widget.categoryName}'),
               elevation: 0,
               actions: [
-                Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: IconButton(
-                        icon: Icon(notificationIcon),
-                        color: notificationIconColor,
-                        onPressed: _subscribe))
+                // Padding(
+                //     padding: EdgeInsets.only(right: 10),
+                //     child: IconButton(
+                //         icon: Icon(notificationIcon),
+                //         color: notificationIconColor,
+                //         onPressed: _subscribe))
               ],
             ),
             body: SmartRefresher(

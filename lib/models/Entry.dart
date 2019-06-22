@@ -32,7 +32,7 @@ class Entry {
     return title;
   }
 
-  static Entry fromJson(dynamic json) {
+  static Entry fromJson(dynamic json) {    
     var e = new Entry();
     e.id = json['id'];
     e.title = json['title'];

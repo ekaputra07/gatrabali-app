@@ -49,7 +49,10 @@ class _SingleNews extends State<SingleNews> {
           _loading = false;
         });
       }).catchError((err) {
-        _notFound = true;
+        print(err);
+        setState(() {
+          _notFound = true;
+        });
       });
     }
 
