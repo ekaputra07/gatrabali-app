@@ -107,7 +107,7 @@ class _GatraBaliState extends State<GatraBali> {
       News.of(context).setUser(user);
     });
 
-    // _setupMessaging();
+    _setupMessaging();
 
     super.initState();
   }
