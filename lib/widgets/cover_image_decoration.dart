@@ -10,6 +10,7 @@ class CoverImageDecoration extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
+    final imgUrl = url == null ? "" : url;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -17,7 +18,7 @@ class CoverImageDecoration extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: Colors.grey,
-          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+          image: DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover),
         ),
       ),
     );

@@ -3,10 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
+import 'package:gatrabali/repository/subscriptions.dart';
+import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/user.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final News model;
+
+  Auth(this.model);
 
   Future<User> googleSignIn() {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -48,8 +53,20 @@ class Auth {
     });
   }
 
-  Future<void> signOut() {
-    return _auth.signOut();
+  Future<void> signOut() async {
+    // Delete FCM token before logout
+    try {
+      final user = model.currentUser;
+      if (user != null && user.fcmToken != null) {
+        await SubscriptionService.updateMessagingToken(user.id, user.fcmToken,
+            delete: true);
+      }
+    } catch (err) {
+      print(err);
+    } finally {
+      await _auth.signOut();
+    }
+    return;
   }
 
   static User userFromFirebaseUser(FirebaseUser firebaseUser) {

@@ -4,8 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
+import 'package:gatrabali/repository/subscriptions.dart';
 import 'package:gatrabali/scoped_models/news.dart';
 import 'package:gatrabali/models/feed.dart';
+import 'package:gatrabali/models/user.dart';
 
 import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
@@ -14,7 +16,6 @@ import 'package:gatrabali/bookmarks.dart';
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
 import 'package:gatrabali/about.dart';
-
 
 void main() => runApp(MyApp());
 
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
       var closeAfterLogin = settings.arguments as bool == true;
       return MaterialPageRoute(
           builder: (context) =>
-              Profile(auth: Auth(), closeAfterLogin: closeAfterLogin),
+              Profile(auth: Auth(_model), closeAfterLogin: closeAfterLogin),
           fullscreenDialog: true);
     }
     // handles /About
@@ -93,6 +94,7 @@ class _GatraBaliState extends State<GatraBali> {
   int _selectedIndex;
   List<Widget> _pages;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String _fcmToken;
 
   @override
   void initState() {
@@ -103,16 +105,17 @@ class _GatraBaliState extends State<GatraBali> {
       Bookmarks(),
     ];
 
-    Auth.onAuthStateChanged((user) {
+    Auth.onAuthStateChanged((User user) {
       News.of(context).setUser(user);
+      if (user != null) {
+        _enableMessaging(user);
+      }
     });
-
-    _setupMessaging();
 
     super.initState();
   }
 
-  _setupMessaging() {
+  _enableMessaging(User user) {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -130,11 +133,15 @@ class _GatraBaliState extends State<GatraBali> {
         .listen((IosNotificationSettings settings) {
       print("IosNotificationSettings registered: $settings");
     });
-    _firebaseMessaging.getToken().then((String token) {
+    _firebaseMessaging.getToken().then((String token) async {
       if (token != null) {
-        setState(() {
-          print("Push Messaging token: $token");
-        });
+        try {
+          await SubscriptionService.updateMessagingToken(user.id, token);
+          user.fcmToken = token;
+          News.of(context).setUser(user);
+        } catch (err) {
+          print(err);
+        }
       }
     });
   }
