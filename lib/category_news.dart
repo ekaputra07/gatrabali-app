@@ -4,7 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:toast/toast.dart';
 
-import 'package:gatrabali/scoped_models/news.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
 
@@ -24,7 +24,7 @@ class CategoryNews extends StatefulWidget {
   static final String routeName = '/CategoryNews';
   final int categoryId;
   final String categoryName;
-  final News model;
+  final AppModel model;
 
   CategoryNews({this.categoryId, this.categoryName, this.model});
 
@@ -77,8 +77,6 @@ class _CategoryNewsState extends State<CategoryNews> {
         .listen((sub) {
       setState(() {
         _subscription = sub;
-
-        // _updateSubscription();
       });
     });
     _subNotification.onError((err) {
@@ -121,16 +119,6 @@ class _CategoryNewsState extends State<CategoryNews> {
     });
   }
 
-  void _updateSubscription() {
-    if (!_allowSubscription() || _subscription == null) return;
-
-    SubscriptionService.subscribeToCategory(
-            widget.model.currentUser.id, widget.categoryId)
-        .catchError((err) {
-      print(err);
-    });
-  }
-
   void _refreshEntries() {
     _sub = EntryService.fetchEntries(categoryId: widget.categoryId)
         .asStream()
@@ -141,7 +129,6 @@ class _CategoryNewsState extends State<CategoryNews> {
           _entries = entries;
         }
         _refreshController.refreshCompleted();
-        _updateSubscription();
       });
     });
     _sub.onError((err) {
@@ -178,7 +165,7 @@ class _CategoryNewsState extends State<CategoryNews> {
       notificationIconColor = Colors.yellow;
     }
 
-    return ScopedModel<News>(
+    return ScopedModel<AppModel>(
         model: widget.model,
         child: Scaffold(
             appBar: AppBar(

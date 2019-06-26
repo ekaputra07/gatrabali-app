@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
 
-class News extends Model {
+class AppModel extends Model {
   List<Feed> feeds = <Feed>[];
   User currentUser;
   int selectedTabIndex;
@@ -40,6 +40,6 @@ class News extends Model {
     notifyListeners();
   }
 
-  static News of(BuildContext ctx) =>
-      ScopedModel.of<News>(ctx, rebuildOnChange: false);
+  static AppModel of(BuildContext ctx) =>
+      ScopedModel.of<AppModel>(ctx, rebuildOnChange: false);
 }

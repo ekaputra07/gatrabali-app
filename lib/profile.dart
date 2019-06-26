@@ -18,6 +18,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   User _user;
   bool _isLoggedIn = false;
+  bool _loggingOut = false;
   TextStyle _style = TextStyle(fontFamily: 'Montserrat');
 
   @override
@@ -41,7 +42,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(ctx, "Login dengan Google berhasil", Colors.green);
+        _toast(ctx, "Login dengan Google berhasil", Colors.black);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -57,7 +58,7 @@ class _ProfileState extends State<Profile> {
       setState(() {
         _user = user;
         _isLoggedIn = true;
-        _toast(ctx, "Login dengan Facebook berhasil", Colors.green);
+        _toast(ctx, "Login dengan Facebook berhasil", Colors.black);
         if (widget.closeAfterLogin) {
           Navigator.of(ctx).pop(true);
         }
@@ -77,9 +78,14 @@ class _ProfileState extends State<Profile> {
   }
 
   void _signOut(BuildContext ctx) {
+    setState(() {
+      _loggingOut = true;
+    });
+
     widget.auth.signOut().then((_) {
       setState(() {
         _isLoggedIn = false;
+        _loggingOut = false;
         _user = null;
         _toast(ctx, 'Anda berhasil logout', Colors.black);
       });
@@ -115,6 +121,8 @@ class _ProfileState extends State<Profile> {
       ),
     );
 
+    final logoutLoading = CircularProgressIndicator();
+
     return Container(
       padding: EdgeInsets.only(left: 30, right: 30),
       child: Column(
@@ -135,12 +143,12 @@ class _ProfileState extends State<Profile> {
           Divider(),
           SizedBox(height: 30.0),
           Text(
-            'Terima kasih telah membuat akun di aplikasi Gatra Bali. Dengan membuat akun anda bisa menyimpan/bookmark berita dan otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
+            'Terima kasih telah membuat akun di Gatra Bali. Anda bisa menyimpan berita, mengaktifkan notifikasi berita serta otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
           SizedBox(height: 30.0),
-          logoutButton
+          (_loggingOut ? logoutLoading : logoutButton)
         ],
       ),
     );
@@ -188,7 +196,7 @@ class _ProfileState extends State<Profile> {
           Image.asset('assets/images/icon.png', width: 80, height: 80),
           SizedBox(height: 30.0),
           Text(
-            'Untuk dapat menyimpan berita silahkan login dengan salah satu dari layanan media sosial berikut ini:',
+            'Untuk dapat menyimpan berita, menerima notifikasi, silahkan login dengan salah satu dari layanan media sosial berikut ini:',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 16.0),
           ),

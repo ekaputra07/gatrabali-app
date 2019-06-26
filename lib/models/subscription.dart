@@ -2,16 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Subscription {
   String userId;
-  int lastChecked;
-  bool acceptNotification;
+  int subscribedAt;
 
-  Subscription({this.userId, this.lastChecked, this.acceptNotification});
+  Subscription({this.userId, this.subscribedAt});
 
   Map<String, dynamic> toMap() {
     return {
       'user_id': userId,
-      'last_checked': lastChecked,
-      'accept_notification': acceptNotification
+      'subscribed_at': subscribedAt,
     };
   }
 
@@ -20,8 +18,7 @@ class Subscription {
     var sub = Subscription();
 
     sub.userId = data['user_id'];
-    sub.lastChecked = data['last_checked'];
-    sub.acceptNotification = data['accept_notification'];
+    sub.subscribedAt = data['subscribed_at'];
     return sub;
   }
 }

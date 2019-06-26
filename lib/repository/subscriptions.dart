@@ -63,9 +63,7 @@ class SubscriptionService {
     var collectionName = '/categories/$categoryId/subscribers';
     if (!delete) {
       var sub = Subscription(
-          userId: userId,
-          lastChecked: DateTime.now().millisecondsSinceEpoch,
-          acceptNotification: true);
+          userId: userId, subscribedAt: DateTime.now().millisecondsSinceEpoch);
       return Firestore.instance
           .collection(collectionName)
           .document(userId)

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gatrabali/models/entry.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
-import 'package:gatrabali/scoped_models/news.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
 
@@ -20,7 +21,7 @@ import 'package:gatrabali/about.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final News _model = News();
+  final AppModel _model = AppModel();
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +29,13 @@ class MyApp extends StatelessWidget {
         title: 'Gatra Bali',
         theme: ThemeData(primarySwatch: Colors.green),
         onGenerateRoute: _generateRoute,
-        home: ScopedModel<News>(
+        home: ScopedModel<AppModel>(
           model: _model,
           child: FutureBuilder<List<Feed>>(
             future: FeedService.fetchFeeds(),
             builder: (ctx, result) {
               if (result.hasData) {
-                News.of(ctx).setFeeds(result.data);
+                AppModel.of(ctx).setFeeds(result.data);
               }
               return GatraBali();
             },
@@ -94,7 +95,6 @@ class _GatraBaliState extends State<GatraBali> {
   int _selectedIndex;
   List<Widget> _pages;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  String _fcmToken;
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _GatraBaliState extends State<GatraBali> {
     ];
 
     Auth.onAuthStateChanged((User user) {
-      News.of(context).setUser(user);
+      AppModel.of(context).setUser(user);
       if (user != null) {
         _enableMessaging(user);
       }
@@ -115,6 +115,7 @@ class _GatraBaliState extends State<GatraBali> {
     super.initState();
   }
 
+  // TODO: Move this code to its own package
   _enableMessaging(User user) {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -122,9 +123,11 @@ class _GatraBaliState extends State<GatraBali> {
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        _handleMessagingData(message);
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        _handleMessagingData(message);
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
@@ -138,7 +141,7 @@ class _GatraBaliState extends State<GatraBali> {
         try {
           await SubscriptionService.updateMessagingToken(user.id, token);
           user.fcmToken = token;
-          News.of(context).setUser(user);
+          AppModel.of(context).setUser(user);
         } catch (err) {
           print(err);
         }
@@ -146,9 +149,29 @@ class _GatraBaliState extends State<GatraBali> {
     });
   }
 
+  // TODO: Move this code to its own package
+  _handleMessagingData(Map<String, dynamic> message) {
+    // final dataType = message["data_type"];
+    final entryId = int.parse(message["entry_id"]);
+    final entryTitle = message["entry_title"];
+    final categoryId = int.parse(message["category_id"]);
+    final categoryTitle = message["category_title"];
+    final feedId = int.parse(message["feed_id"]);
+    final publishedAt = int.parse(message["published_at"]);
+
+    var entry = Entry();
+    entry.categoryId = categoryId;
+    entry.feedId = feedId;
+    entry.publishedAt = publishedAt;
+    entry.title = entryTitle;
+
+    Navigator.of(context).pushNamed(SingleNews.routeName,
+        arguments: SingleNewsArgs(categoryTitle, entry, id: entryId));
+  }
+
   @override
   Widget build(BuildContext ctx) {
-    var user = News.of(ctx).currentUser;
+    var user = AppModel.of(ctx).currentUser;
     Widget profileIcon = Icon(Icons.account_circle);
     if (user != null) {
       profileIcon =
@@ -182,7 +205,7 @@ class _GatraBaliState extends State<GatraBali> {
           onTap: (int index) {
             setState(() {
               _selectedIndex = index;
-              News.of(ctx).setSelectedTabIndex(index);
+              AppModel.of(ctx).setSelectedTabIndex(index);
             });
           },
           items: [
@@ -204,7 +227,7 @@ class _GatraBaliState extends State<GatraBali> {
   List<Widget> _drawerItems() {
     var items = <Widget>[];
 
-    News.of(context).categories.forEach((id, title) {
+    AppModel.of(context).categories.forEach((id, title) {
       items.add(Card(
           elevation: 0,
           margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),

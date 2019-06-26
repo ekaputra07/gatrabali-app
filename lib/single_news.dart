@@ -5,7 +5,7 @@ import 'package:share/share.dart';
 import 'package:toast/toast.dart';
 
 import 'package:gatrabali/repository/entries.dart';
-import 'package:gatrabali/scoped_models/news.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/profile.dart';
@@ -23,7 +23,7 @@ class SingleNews extends StatefulWidget {
   final int id;
   final String title;
   final Entry entry;
-  final News model;
+  final AppModel model;
 
   SingleNews({this.title, this.entry, this.model, this.id});
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
-import 'package:gatrabali/scoped_models/news.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/user.dart';
 import 'package:gatrabali/models/entry.dart';
@@ -19,10 +19,10 @@ class _BookmarksState extends State<Bookmarks> {
 
   @override
   void initState() {
-    News.of(context).addListener(() {
+    AppModel.of(context).addListener(() {
       if (!mounted) return;
 
-      final model = News.of(context);
+      final model = AppModel.of(context);
       final whatIsChanged = model.whatIsChanged;
       // - reload bookmarks when bookmarks screen visible
       // - load bookmarks when user state changed from loggged-out to logged-in.
@@ -48,16 +48,17 @@ class _BookmarksState extends State<Bookmarks> {
   }
 
   void _deleteBookmark(BookmarkEntry bookmarkEntry) {
-    var user = News.of(context).currentUser;
+    var user = AppModel.of(context).currentUser;
     var entry = Entry();
     entry.id = bookmarkEntry.entryId;
     EntryService.bookmark(user.id, entry, delete: true).then((_) {
+      var entries = _entries
+          .skipWhile((e) => e.entryId == bookmarkEntry.entryId)
+          .toList();
       setState(() {
-        _entries = _entries
-            .skipWhile((e) => e.entryId == bookmarkEntry.entryId)
-            .toList();
-        Toast.show('Berita dihapus', context, backgroundColor: Colors.black);
+        _entries = entries;
       });
+      Toast.show('Berita dihapus', context, backgroundColor: Colors.black);
     }).catchError((err) {
       print(err);
       Toast.show('Gagal menghapus berita', context,
@@ -67,7 +68,7 @@ class _BookmarksState extends State<Bookmarks> {
 
   @override
   Widget build(BuildContext ctx) {
-    var user = News.of(ctx).currentUser;
+    var user = AppModel.of(ctx).currentUser;
     if (user == null) {
       return _buildPlaceholder(
           'Silahkan login untuk mengakses berita yang telah anda simpan.');
@@ -104,7 +105,7 @@ class _BookmarksState extends State<Bookmarks> {
   }
 
   Widget _listItem(BuildContext ctx, BookmarkEntry bookmark) {
-    var feeds = News.of(ctx).feeds;
+    var feeds = AppModel.of(ctx).feeds;
 
     Widget thumbnail;
     if (bookmark.hasPicture) {
