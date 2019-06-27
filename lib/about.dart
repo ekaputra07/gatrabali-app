@@ -32,7 +32,7 @@ class About extends StatelessWidget {
               Image.asset('assets/images/icon.png', width: 80, height: 80),
               SizedBox(height: 20),
               Text(
-                'Gatra Bali merangkum berita dari berbagai sumber berita online, cepat dan mudah dibaca.',
+                'Gatra Bali merangkum berita dari berbagai sumber berita online, mengutamakan kecepatan dan kemudahan membaca.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -40,7 +40,7 @@ class About extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                'Sumber berita Gatra Bali berasal dari media-media online berikut ini:',
+                'Berita Gatra Bali bersumber dari media-media online berikut ini:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -88,7 +88,7 @@ class About extends StatelessWidget {
               Divider(),
               SizedBox(height: 10.0),
               Text(
-                'Gatra Bali merupakan sebuah proyek Open Source (Sumber Terbuka), apabila anda ingin berkontribusi dalam pengembangannya silahkan cek kodenya di website Github:',
+                'Gatra Bali merupakan sebuah proyek Open Source (Sumber Terbuka), apabila anda ingin berkontribusi dalam pengembangannya silahkan cek kodenya di:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13.0, color: Colors.grey),
               ),
@@ -106,7 +106,7 @@ class About extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                'Apabila anda menemukan bug, permintaan fitur, ingin memberikan saran juga bisa melalui situs tersebut atau langsung email ke ekaputra07@gmail.com.',
+                'Anda menemukan bug/kendala, permintaan fitur dan memberi saran juga bisa melalui situs tersebut atau langsung email ke ekaputra07@gmail.com.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13.0, color: Colors.grey),
               ),

@@ -143,7 +143,7 @@ class _ProfileState extends State<Profile> {
           Divider(),
           SizedBox(height: 30.0),
           Text(
-            'Terima kasih telah membuat akun di Gatra Bali. Anda bisa menyimpan berita, mengaktifkan notifikasi berita serta otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
+            'Terima kasih telah membuat akun di Gatra Bali. Anda bisa menyimpan, mengaktifkan notifikasi berita serta otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14.0, color: Colors.grey),
           ),
