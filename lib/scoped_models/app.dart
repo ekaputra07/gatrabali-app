@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
@@ -9,6 +10,7 @@ class AppModel extends Model {
   User currentUser;
   int selectedTabIndex;
   String whatIsChanged;
+  RemoteConfig remoteConfig;
   Map<int, String> categories = {
     2: 'Badung',
     3: 'Bangli',
@@ -37,6 +39,12 @@ class AppModel extends Model {
     this.currentUser = user;
     this.whatIsChanged = 'currentUser';
     print("currentUser SET: $user");
+    notifyListeners();
+  }
+
+  void setRemoteConfig(RemoteConfig config) {
+    this.remoteConfig = config;
+    print("remoteConfig SET: $config");
     notifyListeners();
   }
 

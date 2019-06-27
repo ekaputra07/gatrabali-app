@@ -19,6 +19,7 @@ dependencies:
   firebase_auth: 0.7.0 #https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility#avoiding-androidx
   google_sign_in: 3.2.4
   firebase_messaging: 2.1.0
+  firebase_remote_config: 0.0.6+1
   flutter_facebook_login: 1.2.0
   intl: ^0.15.7
   flutter_html: ^0.9.4

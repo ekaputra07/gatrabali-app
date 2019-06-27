@@ -32,7 +32,17 @@ class Entry {
     return title;
   }
 
-  static Entry fromJson(dynamic json) {    
+  Entry setCloudinaryPicture(String cloudinaryFetchUrl) {
+    if (this.picture == null ||
+        this.picture == "" ||
+        cloudinaryFetchUrl == "") {
+      return this;
+    }
+    this.picture = "$cloudinaryFetchUrl${this.picture}";
+    return this;
+  }
+
+  static Entry fromJson(dynamic json) {
     var e = new Entry();
     e.id = json['id'];
     e.title = json['title'];

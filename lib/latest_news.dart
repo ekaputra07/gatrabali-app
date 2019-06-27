@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:gatrabali/repository/entries.dart';
@@ -89,6 +90,9 @@ class _LatestNewsState extends State<LatestNews> {
   }
 
   Widget _listItem(BuildContext ctx, Entry entry) {
+    final cloudinaryFetchUrl = AppModel.of(ctx).remoteConfig.getString("cloudinary_fetch_url");
+    entry = entry.setCloudinaryPicture(cloudinaryFetchUrl);
+    
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: SingleNewsCard(key: ValueKey(entry.id), entry: entry),

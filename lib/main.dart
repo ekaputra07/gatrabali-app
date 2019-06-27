@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
+import 'package:gatrabali/repository/remote_config.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
@@ -105,6 +107,12 @@ class _GatraBaliState extends State<GatraBali> {
       Bookmarks(),
     ];
 
+    // Get remote config and store it to model
+    setupRemoteConfig().then((config) {
+      AppModel.of(context).setRemoteConfig(config);
+    });
+
+    // Listen for Firebase auth changed
     Auth.onAuthStateChanged((User user) {
       AppModel.of(context).setUser(user);
       if (user != null) {
@@ -116,7 +124,7 @@ class _GatraBaliState extends State<GatraBali> {
   }
 
   // TODO: Move this code to its own package
-  _enableMessaging(User user) {
+  void _enableMessaging(User user) {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
@@ -150,7 +158,7 @@ class _GatraBaliState extends State<GatraBali> {
   }
 
   // TODO: Move this code to its own package
-  _handleMessagingData(Map<String, dynamic> message) {
+  void _handleMessagingData(Map<String, dynamic> message) {
     // final dataType = message["data_type"];
     final entryId = int.parse(message["entry_id"]);
     final entryTitle = message["entry_title"];

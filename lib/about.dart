@@ -40,7 +40,7 @@ class About extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                'Berita Gatra Bali bersumber dari media-media online berikut ini:',
+                'Berita Gatra Bali bersumber dari media online berikut ini:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
