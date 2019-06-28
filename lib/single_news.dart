@@ -174,8 +174,7 @@ class _SingleNews extends State<SingleNews> {
 
   Widget _cover(BuildContext ctx) {
     if (_entry.hasPicture) {
-      final cloudinaryFetchUrl =
-          widget.model.remoteConfig.getString("cloudinary_fetch_url");
+      final cloudinaryFetchUrl = widget.model.getCloudinaryUrl();
       final entry = _entry.setCloudinaryPicture(cloudinaryFetchUrl);
       return CoverImageDecoration(
           url: entry.picture, height: 200.0, width: null);

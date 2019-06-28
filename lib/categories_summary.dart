@@ -70,8 +70,7 @@ class _CategoriesSummaryState extends State<CategoriesSummary> {
   }
 
   Widget _listItem(BuildContext ctx, CategorySummary summary) {
-    final cloudinaryFetchUrl =
-        AppModel.of(ctx).remoteConfig.getString("cloudinary_fetch_url");
+    final cloudinaryFetchUrl = AppModel.of(ctx).getCloudinaryUrl();
 
     final entries = summary.entries
         .map<Entry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))

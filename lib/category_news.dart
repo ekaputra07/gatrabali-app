@@ -195,8 +195,7 @@ class _CategoryNewsState extends State<CategoryNews> {
   }
 
   Widget _buildList(BuildContext ctx) {
-    final cloudinaryFetchUrl =
-        widget.model.remoteConfig.getString("cloudinary_fetch_url");
+    final cloudinaryFetchUrl = widget.model.getCloudinaryUrl();
 
     var entries = _entries == null
         ? []

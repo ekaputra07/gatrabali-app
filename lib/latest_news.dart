@@ -83,17 +83,20 @@ class _LatestNewsState extends State<LatestNews> {
   }
 
   Widget _buildList(BuildContext ctx) {
-    var entries = _entries == null ? [] : _entries;
+    final cloudinaryFetchUrl = AppModel.of(ctx).getCloudinaryUrl();
+
+    var entries = _entries == null
+        ? []
+        : _entries
+            .map<Entry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))
+            .toList();
+
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         children: entries.map((entry) => _listItem(ctx, entry)).toList());
   }
 
   Widget _listItem(BuildContext ctx, Entry entry) {
-    final cloudinaryFetchUrl =
-        AppModel.of(ctx).remoteConfig.getString("cloudinary_fetch_url");
-    entry = entry.setCloudinaryPicture(cloudinaryFetchUrl);
-
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: SingleNewsCard(key: ValueKey(entry.id), entry: entry),

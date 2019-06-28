@@ -44,8 +44,14 @@ class AppModel extends Model {
 
   void setRemoteConfig(RemoteConfig config) {
     this.remoteConfig = config;
-    print("remoteConfig SET:cloudinary_fetch_url=${config.getString('cloudinary_fetch_url')}");
+    print(
+        "remoteConfig SET:cloudinary_fetch_url=${config.getString('cloudinary_fetch_url')}");
     notifyListeners();
+  }
+
+  String getCloudinaryUrl() {
+    if (remoteConfig == null) return '';
+    return remoteConfig.getString('cloudinary_fetch_url');
   }
 
   static AppModel of(BuildContext ctx) =>
