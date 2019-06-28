@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/category.dart';
+import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/category_summary_card.dart';
 
 class CategoriesSummary extends StatefulWidget {
@@ -68,12 +70,19 @@ class _CategoriesSummaryState extends State<CategoriesSummary> {
   }
 
   Widget _listItem(BuildContext ctx, CategorySummary summary) {
+    final cloudinaryFetchUrl =
+        AppModel.of(ctx).remoteConfig.getString("cloudinary_fetch_url");
+
+    final entries = summary.entries
+        .map<Entry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))
+        .toList();
+
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
       child: CategorySummaryCard(
           categoryId: summary.id,
           categoryName: summary.title,
-          entries: summary.entries),
+          entries: entries),
     );
   }
 }

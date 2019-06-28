@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/repository/feeds.dart';
@@ -108,8 +107,17 @@ class _GatraBaliState extends State<GatraBali> {
     ];
 
     // Get remote config and store it to model
-    setupRemoteConfig().then((config) {
+    setupRemoteConfig().then((config) async {
       AppModel.of(context).setRemoteConfig(config);
+
+      try {
+        // Using default duration to force fetching from remote server.
+        await config.fetch(expiration: const Duration(seconds: 0));
+        await config.activateFetched();
+        AppModel.of(context).setRemoteConfig(config);
+      } catch (err) {
+        print(err);
+      }
     });
 
     // Listen for Firebase auth changed

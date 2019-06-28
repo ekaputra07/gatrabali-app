@@ -195,7 +195,14 @@ class _CategoryNewsState extends State<CategoryNews> {
   }
 
   Widget _buildList(BuildContext ctx) {
-    var entries = _entries == null ? [] : _entries;
+    final cloudinaryFetchUrl =
+        widget.model.remoteConfig.getString("cloudinary_fetch_url");
+
+    var entries = _entries == null
+        ? []
+        : _entries
+            .map<Entry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))
+            .toList();
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         children: entries.map((entry) => _listItem(ctx, entry)).toList());

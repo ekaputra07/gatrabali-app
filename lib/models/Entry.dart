@@ -38,6 +38,10 @@ class Entry {
         cloudinaryFetchUrl == "") {
       return this;
     }
+    // dont replace image that already come from cloudinary.
+    if (this.picture.startsWith('https://res.cloudinary.com')) {
+      return this;
+    }
     this.picture = "$cloudinaryFetchUrl${this.picture}";
     return this;
   }
@@ -91,6 +95,20 @@ class BookmarkEntry {
       }
     }
     return null;
+  }
+
+  BookmarkEntry setCloudinaryPicture(String cloudinaryFetchUrl) {
+    if (this.picture == null ||
+        this.picture == "" ||
+        cloudinaryFetchUrl == "") {
+      return this;
+    }
+    // dont replace image that already come from cloudinary.
+    if (this.picture.startsWith('https://res.cloudinary.com')) {
+      return this;
+    }
+    this.picture = "$cloudinaryFetchUrl${this.picture}";
+    return this;
   }
 
   static BookmarkEntry fromDocument(DocumentSnapshot doc) {

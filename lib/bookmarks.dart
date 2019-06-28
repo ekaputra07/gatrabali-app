@@ -99,6 +99,13 @@ class _BookmarksState extends State<Bookmarks> {
   }
 
   Widget _buildList(BuildContext ctx, List<BookmarkEntry> entries) {
+    final cloudinaryFetchUrl =
+        AppModel.of(ctx).remoteConfig.getString("cloudinary_fetch_url");
+
+    entries = entries
+        .map<BookmarkEntry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))
+        .toList();
+
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         children: entries.map((entry) => _listItem(ctx, entry)).toList());
