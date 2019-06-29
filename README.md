@@ -8,4 +8,4 @@ Balinese news reader app. Now available on Google Play:
 
 
 # How it works
-Please read [Here](https://github.com/apps4bali/gatrabali-backend) on how the App connected to the backend services.
+Please read [here](https://github.com/apps4bali/gatrabali-backend#how-it-works) on how the App connected to the backend services.
