@@ -44,8 +44,29 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
+   	<array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+
+	<key>FacebookAppID</key>
+    <string>0000000000</string>
+    <key>FacebookDisplayName</key>
+    <string>Gatra Bali</string>
+	
+	<key>CFBundleURLTypes</key>
 	<array>
-		<string>itms</string>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.0000000000</string>
+				<string>fb0000000000</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

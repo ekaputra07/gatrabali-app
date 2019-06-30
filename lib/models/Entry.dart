@@ -117,9 +117,15 @@ class BookmarkEntry {
     be.entryId = data['entry_id'];
     be.title = data['title'];
     be.picture = data['picture'];
-    be.publishedAt = data["published_at"];
-    be.bookmarkedAt = data["bookmarked_at"];
     be.feedId = data['feed_id'];
+    be.publishedAt = data["published_at"];
+
+    // Ios and Android will not receive same type.
+    // Ios receive the timestamps as TimeStamp and Android receive it as DateTime already.
+    be.bookmarkedAt = data["bookmarked_at"] is DateTime
+        ? data["bookmarked_at"]
+        : data["bookmarked_at"].toDate();
+
     return be;
   }
 }
