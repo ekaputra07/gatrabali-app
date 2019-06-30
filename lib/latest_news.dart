@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/widgets/single_news_nocard.dart';
 import 'package:gatrabali/widgets/single_news_card.dart';
 
 class LatestNews extends StatefulWidget {
@@ -93,13 +94,20 @@ class _LatestNewsState extends State<LatestNews> {
 
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 10.0),
-        children: entries.map((entry) => _listItem(ctx, entry)).toList());
+        children: entries
+            .asMap()
+            .map(
+                (index, entry) => MapEntry(index, _listItem(ctx, index, entry)))
+            .values
+            .toList());
   }
 
-  Widget _listItem(BuildContext ctx, Entry entry) {
+  Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: SingleNewsCard(key: ValueKey(entry.id), entry: entry),
+      child: index > 1 // the first 2 items use card
+          ? SingleNewsNoCard(key: ValueKey(entry.id), entry: entry)
+          : SingleNewsCard(key: ValueKey(entry.id), entry: entry),
     );
   }
 }

@@ -4,9 +4,15 @@ class CoverImageDecoration extends StatelessWidget {
   final String url;
   final double width;
   final double height;
+  final double borderRadius;
   final VoidCallback onTap;
 
-  CoverImageDecoration({this.url, this.height, this.width = 0, this.onTap});
+  CoverImageDecoration(
+      {this.url,
+      this.height,
+      this.width = 0,
+      this.borderRadius = 0,
+      this.onTap});
 
   @override
   Widget build(BuildContext ctx) {
@@ -17,8 +23,10 @@ class CoverImageDecoration extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius),
           color: Colors.grey,
-          image: DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover),
+          image:
+              DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover),
         ),
       ),
     );

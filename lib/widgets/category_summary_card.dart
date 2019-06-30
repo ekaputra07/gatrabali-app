@@ -50,7 +50,7 @@ class CategorySummaryCard extends StatelessWidget {
   Widget _header(BuildContext ctx, String source, Entry entry) {
     var titleWidget = Text(categoryName.toUpperCase(),
         style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white));
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white));
 
     return Stack(
       children: [
@@ -83,9 +83,13 @@ class CategorySummaryCard extends StatelessWidget {
       return Column(
         children: [
           ListTile(
-            leading:
-                CoverImageDecoration(url: entry.picture, width: 40, height: 40),
-            title: Text(entry.title, style: TextStyle(fontSize: 14)),
+            leading: ClipRRect(
+                child: Image.network(entry.picture, width: 50),
+                borderRadius: BorderRadius.circular(3.0)),
+            title: Text(entry.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             onTap: () {
               _openDetail(ctx, source, entry);
             },
@@ -100,7 +104,10 @@ class CategorySummaryCard extends StatelessWidget {
     return GestureDetector(
       child: Padding(
         padding: new EdgeInsets.fromLTRB(0, 7, 0, 15),
-        child: Text("Berita lainnya dari $categoryName..."),
+        child: Text(
+          "Berita $categoryName lainnya...",
+          style: TextStyle(color: Colors.green, fontWeight: FontWeight.w500),
+        ),
       ),
       onTap: () {
         Navigator.of(ctx).pushNamed(CategoryNews.routeName,

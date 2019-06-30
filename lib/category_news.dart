@@ -10,7 +10,7 @@ import 'package:gatrabali/repository/subscriptions.dart';
 
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/subscription.dart';
-import 'package:gatrabali/widgets/single_news_card.dart';
+import 'package:gatrabali/widgets/single_news_nocard.dart';
 import 'package:gatrabali/profile.dart';
 
 class CategoryNewsArgs {
@@ -210,7 +210,7 @@ class _CategoryNewsState extends State<CategoryNews> {
   Widget _listItem(BuildContext ctx, Entry entry) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: SingleNewsCard(key: ValueKey(entry.id), entry: entry),
+      child: SingleNewsNoCard(key: ValueKey(entry.id), entry: entry),
     );
   }
 }

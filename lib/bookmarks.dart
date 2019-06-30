@@ -116,7 +116,7 @@ class _BookmarksState extends State<Bookmarks> {
     Widget thumbnail;
     if (bookmark.hasPicture) {
       thumbnail = CoverImageDecoration(
-          url: bookmark.picture, width: 50.0, height: 50.0);
+          url: bookmark.picture, width: 70, height: 50, borderRadius: 5.0);
     } else {
       thumbnail = CharThumbnail(char: bookmark.title[0]);
     }
@@ -141,14 +141,14 @@ class _BookmarksState extends State<Bookmarks> {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Colors.black87,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600)),
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold)),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 3.0),
               child: Text("${bookmark.formattedDate}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 13)),
+                  style: TextStyle(fontSize: 12)),
             )));
   }
 }
