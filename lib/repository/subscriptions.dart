@@ -33,11 +33,7 @@ class SubscriptionService {
       } else {
         tokens[token] = true;
       }
-
-      await Firestore.instance
-          .collection('/users')
-          .document(userID)
-          .setData({tokensField: tokens}, merge: true);
+      await user.reference.updateData({tokensField: tokens});
     }
     print("user + fcm token updated/deleted");
     return;
