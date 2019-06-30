@@ -19,21 +19,21 @@ class SingleNewsNoCard extends StatelessWidget {
 
     return ListTile(
       leading: CoverImageDecoration(
-        url: entry.picture,
+        url: entry.cdnPicture != null ? entry.cdnPicture : entry.picture,
         width: 70,
         height: 50,
         borderRadius: 5.0,
       ),
       title: Text(
         entry.title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        maxLines: 2,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Padding(
           padding: EdgeInsets.only(top: 3),
           child: Text(
-            "${entry.formattedDate}",
+            source,
             style: TextStyle(fontSize: 12),
           )),
       onTap: () {

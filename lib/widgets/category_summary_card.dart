@@ -55,7 +55,7 @@ class CategorySummaryCard extends StatelessWidget {
     return Stack(
       children: [
         CoverImageDecoration(
-            url: entry.picture,
+            url: entry.cdnPicture != null ? entry.cdnPicture : entry.picture,
             width: null,
             height: 150,
             onTap: () {
@@ -84,7 +84,9 @@ class CategorySummaryCard extends StatelessWidget {
         children: [
           ListTile(
             leading: ClipRRect(
-                child: Image.network(entry.picture, width: 50),
+                child: Image.network(
+                    entry.cdnPicture != null ? entry.cdnPicture : entry.picture,
+                    width: 60),
                 borderRadius: BorderRadius.circular(3.0)),
             title: Text(entry.title,
                 maxLines: 2,

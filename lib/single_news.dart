@@ -8,6 +8,7 @@ import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/widgets/picture_view.dart';
 import 'package:gatrabali/profile.dart';
 
 class SingleNewsArgs {
@@ -144,6 +145,17 @@ class _SingleNews extends State<SingleNews> {
                     colors: const [Colors.black87, Colors.transparent])),
             child: Padding(padding: new EdgeInsets.all(20), child: title),
             alignment: Alignment.bottomLeft,
+          ),
+          Positioned(
+            top: 5,
+            right: 15,
+            child: IconButton(
+                icon: Icon(Icons.fullscreen, size: 40, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return PictureView(tag: 'fullscreen', url: _entry.picture);
+                  }));
+                }),
           )
         ],
       ),

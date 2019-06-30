@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CoverImageDecoration extends StatelessWidget {
   final String url;
@@ -25,8 +26,8 @@ class CoverImageDecoration extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           color: Colors.grey,
-          image:
-              DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.cover),
+          image: DecorationImage(
+              image: CachedNetworkImageProvider(imgUrl), fit: BoxFit.cover),
         ),
       ),
     );

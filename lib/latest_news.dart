@@ -105,7 +105,7 @@ class _LatestNewsState extends State<LatestNews> {
   Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: index > 1 // the first 2 items use card
+      child: index > 0 // the first 2 items use card
           ? SingleNewsNoCard(key: ValueKey(entry.id), entry: entry)
           : SingleNewsCard(key: ValueKey(entry.id), entry: entry),
     );

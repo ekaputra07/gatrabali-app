@@ -116,7 +116,12 @@ class _BookmarksState extends State<Bookmarks> {
     Widget thumbnail;
     if (bookmark.hasPicture) {
       thumbnail = CoverImageDecoration(
-          url: bookmark.picture, width: 70, height: 50, borderRadius: 5.0);
+          url: bookmark.cdnPicture != null
+              ? bookmark.cdnPicture
+              : bookmark.picture,
+          width: 70,
+          height: 50,
+          borderRadius: 5.0);
     } else {
       thumbnail = CharThumbnail(char: bookmark.title[0]);
     }

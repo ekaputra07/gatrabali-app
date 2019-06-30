@@ -12,6 +12,7 @@ class Entry {
   String url;
   String content;
   String picture;
+  String cdnPicture;
   String author;
 
   bool get hasPicture => picture != null;
@@ -38,11 +39,7 @@ class Entry {
         cloudinaryFetchUrl == "") {
       return this;
     }
-    // dont replace image that already come from cloudinary.
-    if (this.picture.startsWith('https://res.cloudinary.com')) {
-      return this;
-    }
-    this.picture = "$cloudinaryFetchUrl${this.picture}";
+    this.cdnPicture = "$cloudinaryFetchUrl${this.picture}";
     return this;
   }
 
@@ -83,6 +80,7 @@ class BookmarkEntry {
   String title;
   String url;
   String picture;
+  String cdnPicture;
 
   bool get hasPicture => picture != null;
   String get formattedDate => DateFormat("d/MM/yyyy")
@@ -103,11 +101,7 @@ class BookmarkEntry {
         cloudinaryFetchUrl == "") {
       return this;
     }
-    // dont replace image that already come from cloudinary.
-    if (this.picture.startsWith('https://res.cloudinary.com')) {
-      return this;
-    }
-    this.picture = "$cloudinaryFetchUrl${this.picture}";
+    this.cdnPicture = "$cloudinaryFetchUrl${this.picture}";
     return this;
   }
 

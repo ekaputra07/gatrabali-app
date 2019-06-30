@@ -48,7 +48,7 @@ class SingleNewsCard extends StatelessWidget {
       return Stack(
         children: [
           CoverImageDecoration(
-              url: entry.picture,
+              url: entry.cdnPicture != null ? entry.cdnPicture : entry.picture,
               width: null,
               height: 120.0,
               onTap: () {

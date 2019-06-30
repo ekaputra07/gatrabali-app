@@ -10,6 +10,7 @@ import 'package:gatrabali/repository/subscriptions.dart';
 
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/subscription.dart';
+import 'package:gatrabali/widgets/single_news_card.dart';
 import 'package:gatrabali/widgets/single_news_nocard.dart';
 import 'package:gatrabali/profile.dart';
 
@@ -204,13 +205,20 @@ class _CategoryNewsState extends State<CategoryNews> {
             .toList();
     return ListView(
         padding: EdgeInsets.symmetric(vertical: 10.0),
-        children: entries.map((entry) => _listItem(ctx, entry)).toList());
+        children: entries
+            .asMap()
+            .map(
+                (index, entry) => MapEntry(index, _listItem(ctx, index, entry)))
+            .values
+            .toList());
   }
 
-  Widget _listItem(BuildContext ctx, Entry entry) {
+  Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: SingleNewsNoCard(key: ValueKey(entry.id), entry: entry),
+      child: index > 0 // the first 2 items use card
+          ? SingleNewsNoCard(key: ValueKey(entry.id), entry: entry)
+          : SingleNewsCard(key: ValueKey(entry.id), entry: entry),
     );
   }
 }
