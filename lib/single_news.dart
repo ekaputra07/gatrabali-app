@@ -44,7 +44,8 @@ class _SingleNews extends State<SingleNews> {
 
     if (widget.id != null) {
       _loading = true;
-      EntryService.getEntryById(widget.id).then((entry) {
+      EntryService.getEntryById(widget.id, categoryID: widget.entry.categoryId)
+          .then((entry) {
         setState(() {
           _entry = entry;
           _loading = false;

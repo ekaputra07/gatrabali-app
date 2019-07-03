@@ -26,6 +26,36 @@ class EntryService {
     });
   }
 
+  /// Returns all Kriminal entries.
+  static Future<List<Entry>> fetchKriminalEntries(
+      {int cursor = 0, int limit = 10}) {
+    var url = '$API_HOST/api/v1/kriminal/entries?cursor=$cursor&limit=$limit';
+    print('EntryService.fetchKriminalEntries() => $url ...');
+    return http.get(url).then((resp) {
+      print('EntryService.fetchKriminalEntries() finished.');
+      if (resp.statusCode == 200) {
+        List<dynamic> entries = convert.jsonDecode(resp.body);
+        return entries.map((f) => Entry.fromJson(f)).toList();
+      }
+      throw Exception(resp.body);
+    });
+  }
+
+  /// Returns all BU entries.
+  static Future<List<Entry>> fetchBaliUnitedEntries(
+      {int cursor = 0, int limit = 10}) {
+    var url = '$API_HOST/api/v1/baliunited/entries?cursor=$cursor&limit=$limit';
+    print('EntryService.fetchBaliUnitedEntries() => $url ...');
+    return http.get(url).then((resp) {
+      print('EntryService.fetchBaliUnitedEntries() finished.');
+      if (resp.statusCode == 200) {
+        List<dynamic> entries = convert.jsonDecode(resp.body);
+        return entries.map((f) => Entry.fromJson(f)).toList();
+      }
+      throw Exception(resp.body);
+    });
+  }
+
   /// Returns summary of Category news.
   static Future<List<CategorySummary>> fetchCategorySummary() {
     print('EntryService.fetchCategorySummary()...');
@@ -65,6 +95,7 @@ class EntryService {
         'title': entry.title,
         'picture': entry.picture,
         'feed_id': entry.feedId,
+        'category_id': entry.categoryId,
         'published_at': entry.publishedAt
       });
     } else {
@@ -92,9 +123,18 @@ class EntryService {
   }
 
   /// Return entry by ID
-  static Future<Entry> getEntryById(int id) {
+  static Future<Entry> getEntryById(int id, {int categoryID}) {
+    var url = '$API_HOST/api/v1/entries/$id';
+    if (categoryID != null) {
+      if (categoryID == 11) {
+        url = '$API_HOST/api/v1/kriminal/entries/$id';
+      } else if (categoryID == 12) {
+        url = '$API_HOST/api/v1/baliunited/entries/$id';
+      }
+    }
+
     print('EntryService.getEntryById()...');
-    return http.get('$API_HOST/api/v1/entries/$id').then((resp) {
+    return http.get(url).then((resp) {
       print('EntryService.getEntryById() finished.');
       if (resp.statusCode == 200) {
         Map<String, dynamic> e = convert.jsonDecode(resp.body);

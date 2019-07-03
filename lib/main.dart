@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
 
 class GatraBali extends StatefulWidget {
   final _appBarTitles = [
-    Text("Berita Terbaru"),
+    Text("Bali Terkini"),
     Text("Berita Daerah"),
     Text("Berita Disimpan")
   ];

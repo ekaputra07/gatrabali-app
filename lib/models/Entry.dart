@@ -51,9 +51,9 @@ class Entry {
     e.content = json['content'];
     e.publishedAt = json["published_at"];
     e.feedId = json['feed_id'];
+    e.categoryId = json['category_id'];
     if (json['author'] != null) e.author = json['author'];
     if (json['enclosures'] != null) e.picture = json['enclosures'][0]['url'];
-    if (json['categories'] != null) e.categoryId = json['categories'][0];
     return e;
   }
 
@@ -63,6 +63,7 @@ class Entry {
     e.title = bookmark.title;
     e.publishedAt = bookmark.publishedAt;
     e.feedId = bookmark.feedId;
+    e.categoryId = bookmark.categoryId;
     e.picture = bookmark.picture;
     return e;
   }
@@ -75,6 +76,7 @@ class Entry {
 class BookmarkEntry {
   int entryId;
   int feedId;
+  int categoryId;
   int publishedAt;
   DateTime bookmarkedAt;
   String title;
@@ -112,6 +114,7 @@ class BookmarkEntry {
     be.title = data['title'];
     be.picture = data['picture'];
     be.feedId = data['feed_id'];
+    be.categoryId = data['category_id'];
     be.publishedAt = data["published_at"];
 
     // Ios and Android will not receive same type.

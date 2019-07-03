@@ -6,7 +6,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/single_news_nocard.dart';
-import 'package:gatrabali/widgets/single_news_card.dart';
+import 'package:gatrabali/widgets/main_cover.dart';
+import 'package:gatrabali/widgets/main_featured.dart';
 
 class LatestNews extends StatefulWidget {
   @override
@@ -92,22 +93,27 @@ class _LatestNewsState extends State<LatestNews> {
             .map<Entry>((e) => e.setCloudinaryPicture(cloudinaryFetchUrl))
             .toList();
 
-    return ListView(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        children: entries
-            .asMap()
-            .map(
-                (index, entry) => MapEntry(index, _listItem(ctx, index, entry)))
-            .values
-            .toList());
+    return CustomScrollView(
+      slivers: [
+        SliverList(
+            delegate: SliverChildListDelegate([
+          Column(children: [
+            MainCover(),
+            MainFeatured(),
+            Divider(height: 1),
+            SizedBox(height: 15)
+          ])
+        ])),
+        SliverList(
+            delegate: SliverChildListDelegate(
+                entries.map((entry) => _listItem(ctx, entry)).toList()))
+      ],
+    );
   }
 
-  Widget _listItem(BuildContext ctx, int index, Entry entry) {
+  Widget _listItem(BuildContext ctx, Entry entry) {
     return Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: index > 0 // the first 2 items use card
-          ? SingleNewsNoCard(key: ValueKey(entry.id), entry: entry)
-          : SingleNewsCard(key: ValueKey(entry.id), entry: entry),
-    );
+        padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        child: SingleNewsNoCard(key: ValueKey(entry.id), entry: entry));
   }
 }

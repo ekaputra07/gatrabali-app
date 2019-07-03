@@ -7,8 +7,9 @@ import 'package:gatrabali/widgets/cover_image_decoration.dart';
 
 class SingleNewsNoCard extends StatelessWidget {
   final Entry entry;
+  final int maxLines;
 
-  SingleNewsNoCard({Key key, this.entry}) : super(key: key);
+  SingleNewsNoCard({Key key, this.entry, this.maxLines = 3}) : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
@@ -27,7 +28,7 @@ class SingleNewsNoCard extends StatelessWidget {
       title: Text(
         entry.title,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-        maxLines: 3,
+        maxLines: maxLines,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Padding(
