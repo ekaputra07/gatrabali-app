@@ -12,6 +12,8 @@ class AppModel extends Model {
   String whatIsChanged;
   RemoteConfig remoteConfig;
   Map<int, String> categories = {
+    11: 'Hukum & Kriminal',
+    12: 'Bali United',
     2: 'Badung',
     3: 'Bangli',
     4: 'Buleleng',

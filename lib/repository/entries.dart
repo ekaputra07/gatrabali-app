@@ -12,6 +12,13 @@ class EntryService {
   static Future<List<Entry>> fetchEntries(
       {int categoryId, int cursor, int limit = 10}) {
     var category = categoryId == null ? '' : categoryId;
+
+    if (category == 11) {
+      return fetchKriminalEntries(cursor: cursor, limit: limit);
+    } else if (category == 12) {
+      return fetchBaliUnitedEntries(cursor: cursor, limit: limit);
+    }
+
     var url = cursor == null
         ? '$API_HOST/api/v1/entries?categoryId=$category&limit=$limit'
         : '$API_HOST/api/v1/entries?categoryId=$category&cursor=$cursor&limit=$limit';
