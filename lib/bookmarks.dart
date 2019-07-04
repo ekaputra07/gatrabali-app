@@ -74,7 +74,7 @@ class _BookmarksState extends State<Bookmarks> {
           'Silahkan login untuk mengakses berita yang telah anda simpan.');
     }
 
-    if (_entries.isEmpty) {
+    if (_entries == null || _entries.isEmpty) {
       return _buildPlaceholder('Anda belum memiliki berita disimpan.');
     }
 

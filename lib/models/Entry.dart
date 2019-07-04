@@ -117,12 +117,15 @@ class BookmarkEntry {
     be.categoryId = data['category_id'];
     be.publishedAt = data["published_at"];
 
-    // Ios and Android will not receive same type.
-    // Ios receive the timestamps as TimeStamp and Android receive it as DateTime already.
-    be.bookmarkedAt = data["bookmarked_at"] is DateTime
-        ? data["bookmarked_at"]
-        : data["bookmarked_at"].toDate();
-
+    if (data["bookmarked_at"] == null) {
+      be.bookmarkedAt = DateTime.now();
+    } else {
+      // Ios and Android will not receive same type.
+      // Ios receive the timestamps as TimeStamp and Android receive it as DateTime already.
+      be.bookmarkedAt = data["bookmarked_at"] is DateTime
+          ? data["bookmarked_at"]
+          : data["bookmarked_at"].toDate();
+    }
     return be;
   }
 }
