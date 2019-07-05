@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Gatra Bali',
         theme: ThemeData(primarySwatch: Colors.green),
         onGenerateRoute: _generateRoute,
