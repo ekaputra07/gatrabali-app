@@ -1,6 +1,6 @@
 # Aplikasi berita Bali terkini
 
-Kini telah hadir aplikasi baca berita Bali Gatra Bali yang cepat dan mudah untuk digunakan. Gatra Bali mengutamakan kecepatan akses dan kemudahan membaca ditambah dengan fitur-fitur yang akan membuat anda selalu ter-update dengan **berita-berita di seputaran pulau Bali**.
+Kini telah hadir aplikasi berita Bali Gatra Bali yang cepat dan mudah untuk digunakan. Gatra Bali mengutamakan keamanan, kecepatan akses dan kemudahan membaca ditambah dengan fitur-fitur yang akan membuat anda selalu ter-update dengan **berita-berita di seputaran pulau Bali**.
 
 <img src="https://raw.githubusercontent.com/apps4bali/gatrabali-app/master/appstore/v1.0.0/Banner.png"/>
 
@@ -32,7 +32,7 @@ Anda menemukan berita menarik tetapi belum ada waktu untuk membacanya? tenang, s
 **Gatra Bali** saat ini dikembangkan seorang diri oleh [Eka Putra](https://ekaputra07.github.io/) dengan meluangkan waktu disela-sela kesibukannya bekerja di Australia. Apabila anda merasa aplikasi ini bermanfaat maka mohon dukungannya berupa [Rating di Google Play](https://play.google.com/store/apps/details?id=com.gatrabali.android) atau berupa donasi kecil untuk menjaga sistem Gatra Bali tetap berjalan dan pengembangan lebih lanjut (_untuk donasi silahkan hubungi Eka Putra via WhatsApp: **081-237-826-626**_).
 
 ## Cara kerja Gatra Bali
-Ketika anda membuka aplikasi Gatra Bali dan merasakan pengalaman mengekplorasi berita dengan cepat dan mudah itu karena di belakangnya ada sebuah sistem yang dikembangkan dengan selalu memperhatikan kecepatan dan kenyamanan pengguna.
+Ketika anda membuka aplikasi Gatra Bali dan merasakan pengalaman mengekplorasi berita dengan cepat dan mudah itu karena di belakangnya ada sebuah sistem yang dikembangkan dengan selalu memperhatikan keamanan, kecepatan dan kenyamanan pengguna.
 
 Gatra Bali berjalan diatas platfrom Google Cloud (komputasi awan Google) yang terdiri dari beberapa bagian dan bekerja secara otomatis menghadirkan berita terbaru di HP anda (apabila anda tertarik untuk mengetahui teknologi di balik Gatra Bali anda bisa baca di [sini](https://github.com/apps4bali/gatrabali-backend#how-it-works)).
 
