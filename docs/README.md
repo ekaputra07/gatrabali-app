@@ -24,3 +24,21 @@ Apabila anda tidak ingin mengecek HP setiap saat untuk mendapatkan berita terbar
 
 ### 6. Anda lagi sibuk? simpan dulu beritanya, bacanya nanti saja
 Anda menemukan berita menarik tetapi belum ada waktu untuk membacanya? tenang, simpan/bookmark dahulu beritanya dan bisa dibaca ketika lagi santai bersama keluarga. Fitur ini memerlukan anda membuat akun di Gatra Bali.
+
+
+## Dukung Gatra Bali
+**Gatra Bali** aplikasi berita Bali mempunyai misi untuk menyebarkan virus gemar membaca kepada masyarakat umum dan Bali khususnya. Di era digital saat ini dimana perputaran informasi begitu cepat terutama di media sosial dan informasi tersebut juga belum tentu kebenarannya maka perlu diimbangi dengan kebiasaan untuk mencari informasi sebanyak-banyaknya sebelum beropini.
+
+**Gatra Bali** saat ini dikembangkan seorang diri oleh [Eka Putra](https://ekaputra07.github.io/) dengan meluangkan waktu disela-sela kesibukannya bekerja di Australia. Apabila anda merasa aplikasi ini bermanfaat maka mohon dukungannya berupa [Rating di Google Play](https://play.google.com/store/apps/details?id=com.gatrabali.android) atau berupa donasi kecil untuk menjaga sistem Gatra Bali tetap berjalan dan pengembangan lebih lanjut (_untuk donasi silahkan hubungi Eka Putra via WhatsApp: **081-237-826-626**_).
+
+## Cara kerja Gatra Bali
+Ketika anda membuka aplikasi Gatra Bali dan merasakan pengalaman mengekplorasi berita dengan cepat dan mudah itu karena di belakangnya ada sebuah sistem yang dikembangkan dengan selalu memperhatikan kecepatan dan kenyamanan pengguna.
+
+Gatra Bali berjalan diatas platfrom Google Cloud (komputasi awan Google) yang terdiri dari beberapa bagian dan bekerja secara otomatis menghadirkan berita terbaru di HP anda (apabila anda tertarik untuk mengetahui teknologi di balik Gatra Bali anda bisa baca di [sini](https://github.com/apps4bali/gatrabali-backend#how-it-works)).
+
+Untuk sumber berita, Gatra Bali menggunakan RSS Feed dari media-media online berikut ini:
+
+1. [balipost.com](http://www.balipost.com/)
+1. [metrobali.com](http://metrobali.com/)
+1. [balipuspanews.com](https://www.balipuspanews.com/)
+1. [radarbali.jawapos.com](https://radarbali.jawapos.com)
