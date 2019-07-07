@@ -1,4 +1,6 @@
 title: Gatra Bali
-description: Baca berita Bali Terkini
-show_downloads: true
+description: Aplikasi baca berita Bali Terkini
+show_downloads: false
 theme: jekyll-theme-cayman
+gatrabali:
+  android_download_url: https://play.google.com/store/apps/details?id=com.gatrabali.android
