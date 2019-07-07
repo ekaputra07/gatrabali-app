@@ -17,6 +17,7 @@ import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/balebengong.dart';
 import 'package:gatrabali/about.dart';
 
 void main() => runApp(MyApp());
@@ -86,6 +87,7 @@ class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Bali Terkini"),
     Text("Berita Daerah"),
+    Text("Bale Bengong"),
     Text("Berita Disimpan")
   ];
 
@@ -104,6 +106,7 @@ class _GatraBaliState extends State<GatraBali> {
     _pages = [
       LatestNews(),
       CategoriesSummary(),
+      BaleBengong(),
       Bookmarks(),
     ];
 
@@ -218,6 +221,7 @@ class _GatraBaliState extends State<GatraBali> {
           index: _selectedIndex,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: (int index) {
             setState(() {
@@ -230,6 +234,9 @@ class _GatraBaliState extends State<GatraBali> {
                 icon: Icon(Icons.home), title: Text("Terbaru")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.grain), title: Text("Daerah")),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.supervised_user_circle),
+                title: Text("Bale Bengong")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark), title: Text("Disimpan")),
           ],
