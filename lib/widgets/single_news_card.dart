@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
@@ -7,21 +8,24 @@ import 'package:gatrabali/single_news.dart';
 
 class SingleNewsCard extends StatelessWidget {
   final Entry entry;
+  final bool showCategoryName;
 
-  SingleNewsCard({Key key, this.entry}) : super(key: key);
+  SingleNewsCard({Key key, this.entry, this.showCategoryName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
-    final feeds = AppModel.of(ctx).feeds;
     final categories = AppModel.of(ctx).categories;
-    final feedTitle = entry.getFeedTitle(feeds, categories);
-    final source = feedTitle == null ? '' : feedTitle;
+    final categoryName = entry.getCategoryName(categories);
+    final subTitle = showCategoryName
+        ? "$categoryName, ${entry.formattedDate}"
+        : StringUtils.capitalize(entry.formattedDate);
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(ctx, source),
+          _header(ctx, subTitle),
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
@@ -33,9 +37,9 @@ class SingleNewsCard extends StatelessWidget {
                 )),
             subtitle: Padding(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
-                child: Text("$source (${entry.formattedDate})")),
+                child: Text(subTitle, maxLines: 1)),
             onTap: () {
-              _openDetail(ctx, source);
+              _openDetail(ctx, categoryName);
             },
           ),
         ],
@@ -66,8 +70,8 @@ class SingleNewsCard extends StatelessWidget {
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx, String source) {
+  void _openDetail(BuildContext ctx, String categoryName) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(source, entry));
+        arguments: SingleNewsArgs(categoryName, entry));
   }
 }

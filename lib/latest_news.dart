@@ -40,7 +40,7 @@ class _LatestNewsState extends State<LatestNews> {
     _sub = EntryService.fetchEntries().asStream().listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
-          _cursor = entries.last.id;
+          _cursor = entries.last.publishedAt;
           _entries = entries;
         }
         _refreshController.refreshCompleted();
@@ -57,7 +57,7 @@ class _LatestNewsState extends State<LatestNews> {
         EntryService.fetchEntries(cursor: _cursor).asStream().listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
-          _cursor = entries.last.id;
+          _cursor = entries.last.publishedAt;
           _entries.addAll(entries);
           _refreshController.loadComplete();
         } else {
@@ -114,6 +114,7 @@ class _LatestNewsState extends State<LatestNews> {
   Widget _listItem(BuildContext ctx, Entry entry) {
     return Padding(
         padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: SingleNewsNoCard(key: ValueKey(entry.id), entry: entry));
+        child: SingleNewsNoCard(
+            key: ValueKey(entry.id), entry: entry, showCategoryName: true));
   }
 }

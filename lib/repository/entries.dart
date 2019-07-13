@@ -20,8 +20,8 @@ class EntryService {
     }
 
     var url = cursor == null
-        ? '$API_HOST/api/v1/entries?categoryId=$category&limit=$limit'
-        : '$API_HOST/api/v1/entries?categoryId=$category&cursor=$cursor&limit=$limit';
+        ? '$API_HOST/entries?categoryId=$category&limit=$limit'
+        : '$API_HOST/entries?categoryId=$category&cursor=$cursor&limit=$limit';
     print('EntryService.fetchEntries() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.fetchEntries() finished.');
@@ -36,7 +36,7 @@ class EntryService {
   /// Returns all Kriminal entries.
   static Future<List<Entry>> fetchKriminalEntries(
       {int cursor = 0, int limit = 10}) {
-    var url = '$API_HOST/api/v1/kriminal/entries?cursor=$cursor&limit=$limit';
+    var url = '$API_HOST/kriminal/entries?cursor=$cursor&limit=$limit';
     print('EntryService.fetchKriminalEntries() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.fetchKriminalEntries() finished.');
@@ -51,7 +51,7 @@ class EntryService {
   /// Returns all BU entries.
   static Future<List<Entry>> fetchBaliUnitedEntries(
       {int cursor = 0, int limit = 10}) {
-    var url = '$API_HOST/api/v1/baliunited/entries?cursor=$cursor&limit=$limit';
+    var url = '$API_HOST/baliunited/entries?cursor=$cursor&limit=$limit';
     print('EntryService.fetchBaliUnitedEntries() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.fetchBaliUnitedEntries() finished.');
@@ -66,7 +66,7 @@ class EntryService {
   /// Returns summary of Category news.
   static Future<List<CategorySummary>> fetchCategorySummary() {
     print('EntryService.fetchCategorySummary()...');
-    return http.get('$API_HOST/api/v1/categories/summary').then((resp) {
+    return http.get('$API_HOST/categories/summary').then((resp) {
       print('EntryService.fetchCategorySummary() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> summaries = convert.jsonDecode(resp.body);
@@ -131,12 +131,12 @@ class EntryService {
 
   /// Return entry by ID
   static Future<Entry> getEntryById(int id, {int categoryID}) {
-    var url = '$API_HOST/api/v1/entries/$id';
+    var url = '$API_HOST/entries/$id';
     if (categoryID != null) {
       if (categoryID == 11) {
-        url = '$API_HOST/api/v1/kriminal/entries/$id';
+        url = '$API_HOST/kriminal/entries/$id';
       } else if (categoryID == 12) {
-        url = '$API_HOST/api/v1/baliunited/entries/$id';
+        url = '$API_HOST/baliunited/entries/$id';
       }
     }
 

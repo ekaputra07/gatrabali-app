@@ -126,7 +126,7 @@ class _CategoryNewsState extends State<CategoryNews> {
         .listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
-          _cursor = entries.last.id;
+          _cursor = entries.last.publishedAt;
           _entries = entries;
         }
         _refreshController.refreshCompleted();
@@ -145,7 +145,7 @@ class _CategoryNewsState extends State<CategoryNews> {
         .listen((entries) {
       setState(() {
         if (entries.isNotEmpty) {
-          _cursor = entries.last.id;
+          _cursor = entries.last.publishedAt;
           _entries.addAll(entries);
           _refreshController.loadComplete();
         } else {
@@ -217,8 +217,10 @@ class _CategoryNewsState extends State<CategoryNews> {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       child: index > 0 // the first 2 items use card
-          ? SingleNewsNoCard(key: ValueKey(entry.id), entry: entry)
-          : SingleNewsCard(key: ValueKey(entry.id), entry: entry),
+          ? SingleNewsNoCard(
+              key: ValueKey(entry.id), entry: entry, showCategoryName: false)
+          : SingleNewsCard(
+              key: ValueKey(entry.id), entry: entry, showCategoryName: false),
     );
   }
 }

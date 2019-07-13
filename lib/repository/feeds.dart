@@ -9,7 +9,7 @@ class FeedService {
   /// Returns all feeds.
   static Future<List<Feed>> fetchFeeds() {
     print('FeedService.fetchFeeds()...');
-    return http.get('$API_HOST/api/v1/feeds').then((resp) {
+    return http.get('$API_HOST/feeds').then((resp) {
       print('FeedService.fetchFeeds() finished.');
       if (resp.statusCode == 200) {
         List<dynamic> feeds = convert.jsonDecode(resp.body);

@@ -111,7 +111,7 @@ class _BookmarksState extends State<Bookmarks> {
   }
 
   Widget _listItem(BuildContext ctx, BookmarkEntry bookmark) {
-    var feeds = AppModel.of(ctx).feeds;
+    var categories = AppModel.of(ctx).categories;
 
     Widget thumbnail;
     if (bookmark.hasPicture) {
@@ -132,7 +132,8 @@ class _BookmarksState extends State<Bookmarks> {
             onTap: () {
               var entry = Entry.fromBookmarkEntry(bookmark);
               Navigator.of(ctx).pushNamed(SingleNews.routeName,
-                  arguments: SingleNewsArgs(bookmark.getFeedTitle(feeds), entry,
+                  arguments: SingleNewsArgs(
+                      bookmark.getCategoryName(categories), entry,
                       id: bookmark.entryId));
             },
             leading: thumbnail,

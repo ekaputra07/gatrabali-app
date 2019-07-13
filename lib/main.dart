@@ -34,15 +34,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: _generateRoute,
         home: ScopedModel<AppModel>(
           model: _model,
-          child: FutureBuilder<List<Feed>>(
-            future: FeedService.fetchFeeds(),
-            builder: (ctx, result) {
-              if (result.hasData) {
-                AppModel.of(ctx).setFeeds(result.data);
-              }
-              return GatraBali();
-            },
-          ),
+          child: GatraBali(),
         ));
   }
 

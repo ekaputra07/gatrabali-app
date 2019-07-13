@@ -231,8 +231,10 @@ class _SingleNews extends State<SingleNews> {
     if (includeDate) {
       actions.insert(
         0,
-        Column(
-            children: [Icon(Icons.calendar_today), Text(_entry.formattedDate)]),
+        Column(children: [
+          Icon(Icons.calendar_today),
+          Text(_entry.formattedDateSimple())
+        ]),
       );
     }
 

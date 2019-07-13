@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
@@ -8,15 +9,19 @@ import 'package:gatrabali/widgets/cover_image_decoration.dart';
 class SingleNewsNoCard extends StatelessWidget {
   final Entry entry;
   final int maxLines;
+  final bool showCategoryName;
 
-  SingleNewsNoCard({Key key, this.entry, this.maxLines = 3}) : super(key: key);
+  SingleNewsNoCard(
+      {Key key, this.entry, this.showCategoryName, this.maxLines = 3})
+      : super(key: key);
 
   @override
   Widget build(BuildContext ctx) {
-    final feeds = AppModel.of(ctx).feeds;
     final categories = AppModel.of(ctx).categories;
-    final feedTitle = entry.getFeedTitle(feeds, categories);
-    final source = feedTitle == null ? '' : feedTitle;
+    final categoryName = entry.getCategoryName(categories);
+    final subTitle = showCategoryName
+        ? "$categoryName, ${entry.formattedDate}"
+        : StringUtils.capitalize(entry.formattedDate);
 
     return ListTile(
       leading: CoverImageDecoration(
@@ -34,18 +39,19 @@ class SingleNewsNoCard extends StatelessWidget {
       subtitle: Padding(
           padding: EdgeInsets.only(top: 3),
           child: Text(
-            source,
+            subTitle,
+            maxLines: 1,
             style: TextStyle(fontSize: 12),
           )),
       onTap: () {
-        _openDetail(ctx, source);
+        _openDetail(ctx, categoryName);
       },
     );
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx, String source) {
+  void _openDetail(BuildContext ctx, String categoryName) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(source, entry));
+        arguments: SingleNewsArgs(categoryName, entry));
   }
 }
