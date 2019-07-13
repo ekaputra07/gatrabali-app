@@ -98,8 +98,8 @@ class About extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 13.0, color: Colors.green),
                   ),
-                  onTap: () {
-                    launch('https://github.com/apps4bali/gatrabali-app',
+                  onTap: () async {
+                    await launch('https://github.com/apps4bali/gatrabali-app',
                         forceSafariVC: false);
                   }),
               SizedBox(

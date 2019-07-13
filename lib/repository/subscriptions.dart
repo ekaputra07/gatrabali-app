@@ -41,7 +41,7 @@ class SubscriptionService {
 
   // Get user's alert subscription for a category
   static Future<Subscription> getCategorySubscription(
-      String userId, int categoryId) {
+      String userId, String categoryId) {
     return Firestore.instance
         .collection('/categories/$categoryId/subscribers')
         .document(userId)
@@ -54,7 +54,7 @@ class SubscriptionService {
   }
 
   // Subscribe to a category
-  static Future<void> subscribeToCategory(String userId, int categoryId,
+  static Future<void> subscribeToCategory(String userId, String categoryId,
       {bool delete = false}) {
     var collectionName = '/categories/$categoryId/subscribers';
     if (!delete) {

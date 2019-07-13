@@ -130,8 +130,10 @@ class EntryService {
   }
 
   /// Return entry by ID
-  static Future<Entry> getEntryById(int id, {int categoryID}) {
+  static Future<Entry> getEntryById(int id, {int categoryID, int feedID}) {
     var url = '$API_HOST/entries/$id';
+
+    // Override url if category is kriminal or baliunited
     if (categoryID != null) {
       if (categoryID == 11) {
         url = '$API_HOST/kriminal/entries/$id';
@@ -140,7 +142,14 @@ class EntryService {
       }
     }
 
-    print('EntryService.getEntryById()...');
+    // Override url if feed ID is belongs to BaleBengong
+    if (feedID != null) {
+      if ([33, 34, 35, 36, 37, 38, 39, 40].indexOf(feedID) != -1) {
+        url = '$API_HOST/balebengong/entries/$id';
+      }
+    }
+
+    print('EntryService.getEntryById() => $url ...');
     return http.get(url).then((resp) {
       print('EntryService.getEntryById() finished.');
       if (resp.statusCode == 200) {

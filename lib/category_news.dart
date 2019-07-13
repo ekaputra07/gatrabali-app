@@ -73,7 +73,7 @@ class _CategoryNewsState extends State<CategoryNews> {
     if (!_allowSubscription()) return;
 
     _subNotification = SubscriptionService.getCategorySubscription(
-            widget.model.currentUser.id, widget.categoryId)
+            widget.model.currentUser.id, widget.categoryId.toString())
         .asStream()
         .listen((sub) {
       setState(() {
@@ -105,7 +105,7 @@ class _CategoryNewsState extends State<CategoryNews> {
     });
 
     SubscriptionService.subscribeToCategory(
-            widget.model.currentUser.id, widget.categoryId,
+            widget.model.currentUser.id, widget.categoryId.toString(),
             delete: delete)
         .then((_) {
       if (!delete) {

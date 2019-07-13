@@ -79,7 +79,7 @@ class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Bali Terkini"),
     Text("Berita Daerah"),
-    Text("Bale Bengong"),
+    Text("BaleBengong"),
     Text("Berita Disimpan")
   ];
 
@@ -228,7 +228,7 @@ class _GatraBaliState extends State<GatraBali> {
                 icon: Icon(Icons.grain), title: Text("Daerah")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.supervised_user_circle),
-                title: Text("Bale Bengong")),
+                title: Text("BaleBengong")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark), title: Text("Disimpan")),
           ],

@@ -44,7 +44,8 @@ class _SingleNews extends State<SingleNews> {
 
     if (widget.id != null) {
       _loading = true;
-      EntryService.getEntryById(widget.id, categoryID: widget.entry.categoryId)
+      EntryService.getEntryById(widget.id,
+              categoryID: widget.entry.categoryId, feedID: widget.entry.feedId)
           .then((entry) {
         setState(() {
           _entry = entry;
@@ -249,8 +250,8 @@ class _SingleNews extends State<SingleNews> {
 
   Widget _source(BuildContext ctx) {
     return GestureDetector(
-        onTap: () {
-          launch(_entry.url, forceSafariVC: false);
+        onTap: () async {
+          await launch(_entry.url, forceSafariVC: false);
         },
         child: Padding(
             padding: EdgeInsets.all(10),
