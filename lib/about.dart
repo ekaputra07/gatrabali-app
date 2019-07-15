@@ -26,7 +26,7 @@ class About extends StatelessWidget {
         ),
         body: SingleChildScrollView(
             child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
           child: Column(
             children: [
               Image.asset('assets/images/icon.png', width: 80, height: 80),

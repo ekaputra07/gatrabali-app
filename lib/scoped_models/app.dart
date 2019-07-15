@@ -11,6 +11,7 @@ class AppModel extends Model {
   int selectedTabIndex;
   String whatIsChanged;
   RemoteConfig remoteConfig;
+
   Map<int, String> categories = {
     11: 'Hukum & Kriminal',
     12: 'Bali United',
@@ -23,6 +24,14 @@ class AppModel extends Model {
     8: 'Karangasem',
     9: 'Klungkung',
     10: 'Tabanan',
+    13: 'Opini',
+    14: 'Teknologi',
+    15: 'Lingkungan',
+    16: 'Sosok',
+    17: 'Budaya',
+    18: 'Sosial',
+    19: 'Agenda',
+    20: 'Travel'
   };
 
   void setFeeds(List<Feed> feeds) {

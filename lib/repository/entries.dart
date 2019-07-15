@@ -63,6 +63,24 @@ class EntryService {
     });
   }
 
+  /// Returns all entries in Balebengong.
+  static Future<List<Entry>> fetchBalebengongEntries(
+      {int categoryId, int cursor = 0, int limit = 10}) {
+    var category = categoryId == 0 ? '' : categoryId;
+
+    var url =
+        '$API_HOST/balebengong/entries?categoryId=$category&cursor=$cursor&limit=$limit';
+    print('EntryService.fetchBalebengongEntries() => $url ...');
+    return http.get(url).then((resp) {
+      print('EntryService.fetchBalebengongEntries() finished.');
+      if (resp.statusCode == 200) {
+        List<dynamic> entries = convert.jsonDecode(resp.body);
+        return entries.map((f) => Entry.fromJson(f)).toList();
+      }
+      throw Exception(resp.body);
+    });
+  }
+
   /// Returns summary of Category news.
   static Future<List<CategorySummary>> fetchCategorySummary() {
     print('EntryService.fetchCategorySummary()...');

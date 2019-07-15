@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gatrabali/widgets/balebengong_entries.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:toast/toast.dart';
 
@@ -208,15 +209,15 @@ class _BaleBengongState extends State<BaleBengong> {
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
+            BalebengongEntries(0, "Semua"),
+            BalebengongEntries(13, "Opini"),
+            BalebengongEntries(18, "Sosial"),
+            BalebengongEntries(17, "Budaya"),
+            BalebengongEntries(15, "Lingkungan"),
+            BalebengongEntries(16, "Sosok"),
+            BalebengongEntries(14, "Teknologi"),
+            BalebengongEntries(19, "Agenda"),
+            BalebengongEntries(20, "Travel"),
           ],
         ),
       ),

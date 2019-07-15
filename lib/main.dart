@@ -79,7 +79,7 @@ class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Bali Terkini"),
     Text("Berita Daerah"),
-    Text("BaleBengong"),
+    Text("Bale Bengong"),
     Text("Berita Disimpan")
   ];
 
@@ -228,7 +228,7 @@ class _GatraBaliState extends State<GatraBali> {
                 icon: Icon(Icons.grain), title: Text("Daerah")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.supervised_user_circle),
-                title: Text("BaleBengong")),
+                title: Text("Bale Bengong")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark), title: Text("Disimpan")),
           ],
@@ -244,18 +244,21 @@ class _GatraBaliState extends State<GatraBali> {
     var items = <Widget>[];
 
     AppModel.of(context).categories.forEach((id, title) {
-      items.add(Card(
-          elevation: 0,
-          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),
-          child: ListTile(
-            leading: Icon(Icons.folder_open, color: Colors.green),
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            title: Text('Berita $title'),
-            onTap: () {
-              Navigator.of(context).popAndPushNamed(CategoryNews.routeName,
-                  arguments: CategoryNewsArgs(id, title));
-            },
-          )));
+      // Don;t show balebengong categories.
+      if (id < 13) {
+        items.add(Card(
+            elevation: 0,
+            margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),
+            child: ListTile(
+              leading: Icon(Icons.folder_open, color: Colors.green),
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              title: Text('Berita $title'),
+              onTap: () {
+                Navigator.of(context).popAndPushNamed(CategoryNews.routeName,
+                    arguments: CategoryNewsArgs(id, title));
+              },
+            )));
+      }
     });
     return items;
   }
