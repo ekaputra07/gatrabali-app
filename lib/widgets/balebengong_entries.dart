@@ -102,9 +102,13 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
   }
 
   Widget _buildList() {
-    return ListView(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        addAutomaticKeepAlives: true,
-        children: _entries.map((entry) => _listItem(context, entry)).toList());
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(vertical: 10),
+      itemCount: _entries.length,
+      itemBuilder: (BuildContext ctx, int index) {
+        return _listItem(ctx, _entries[index]);
+      },
+    );
   }
 }
