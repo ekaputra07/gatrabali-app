@@ -4,12 +4,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gatrabali/auth.dart';
-import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
 import 'package:gatrabali/repository/remote_config.dart';
 import 'package:gatrabali/scoped_models/app.dart';
-import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
+import 'package:gatrabali/icons.dart';
 
 import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
@@ -53,10 +52,12 @@ class MyApp extends StatelessWidget {
       final SingleNewsArgs args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => SingleNews(
-              title: args.title,
-              entry: args.entry,
-              model: _model,
-              id: args.id));
+                title: args.title,
+                entry: args.entry,
+                model: _model,
+                id: args.id,
+                showAuthor: args.showAuthor,
+              ));
     }
     // handles /Profile
     if (settings.name == Profile.routeName) {
@@ -227,7 +228,7 @@ class _GatraBaliState extends State<GatraBali> {
             BottomNavigationBarItem(
                 icon: Icon(Icons.grain), title: Text("Daerah")),
             BottomNavigationBarItem(
-                icon: Icon(Icons.supervised_user_circle),
+                icon: Icon(GatraBaliIcons.balebengong, size: 20),
                 title: Text("Bale Bengong")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark), title: Text("Disimpan")),

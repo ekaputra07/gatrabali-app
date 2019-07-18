@@ -15,8 +15,9 @@ class SingleNewsArgs {
   int id;
   String title;
   Entry entry;
+  bool showAuthor;
 
-  SingleNewsArgs(this.title, this.entry, {this.id});
+  SingleNewsArgs(this.title, this.entry, {this.id, this.showAuthor = false});
 }
 
 class SingleNews extends StatefulWidget {
@@ -25,8 +26,10 @@ class SingleNews extends StatefulWidget {
   final String title;
   final Entry entry;
   final AppModel model;
+  final bool showAuthor;
 
-  SingleNews({this.title, this.entry, this.model, this.id});
+  SingleNews(
+      {this.title, this.entry, this.model, this.id, this.showAuthor = false});
 
   @override
   _SingleNews createState() => _SingleNews();
@@ -133,7 +136,7 @@ class _SingleNews extends State<SingleNews> {
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
 
     return SingleChildScrollView(
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Stack(
         children: [
           _cover(ctx),
@@ -163,6 +166,7 @@ class _SingleNews extends State<SingleNews> {
       ),
       _actions(ctx, true),
       Divider(),
+      _author(),
       Html(
           useRichText: true,
           data: _entry.content,
@@ -259,5 +263,15 @@ class _SingleNews extends State<SingleNews> {
               title: Text("Sumber:"),
               subtitle: Text(_entry.url, style: TextStyle(color: Colors.green)),
             )));
+  }
+
+  Widget _author() {
+    if (!widget.showAuthor) return Container();
+
+    return Padding(
+        padding: EdgeInsets.only(top: 10, left: 20, bottom: 10),
+        child: Text("Oleh: ${_entry.author}",
+            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+            textAlign: TextAlign.left));
   }
 }

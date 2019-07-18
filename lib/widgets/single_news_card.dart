@@ -9,8 +9,10 @@ import 'package:gatrabali/single_news.dart';
 class SingleNewsCard extends StatelessWidget {
   final Entry entry;
   final bool showCategoryName;
+  final bool showAuthor;
 
-  SingleNewsCard({Key key, this.entry, this.showCategoryName})
+  SingleNewsCard(
+      {Key key, this.entry, this.showCategoryName, this.showAuthor = false})
       : super(key: key);
 
   @override
@@ -72,6 +74,6 @@ class SingleNewsCard extends StatelessWidget {
   // Open detail page
   void _openDetail(BuildContext ctx, String categoryName) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(categoryName, entry));
+        arguments: SingleNewsArgs(categoryName, entry, showAuthor: showAuthor));
   }
 }

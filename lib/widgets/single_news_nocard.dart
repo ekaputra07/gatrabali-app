@@ -10,9 +10,14 @@ class SingleNewsNoCard extends StatelessWidget {
   final Entry entry;
   final int maxLines;
   final bool showCategoryName;
+  final bool showAuthor;
 
   SingleNewsNoCard(
-      {Key key, this.entry, this.showCategoryName, this.maxLines = 3})
+      {Key key,
+      this.entry,
+      this.showCategoryName,
+      this.maxLines = 3,
+      this.showAuthor = false})
       : super(key: key);
 
   @override
@@ -52,6 +57,6 @@ class SingleNewsNoCard extends StatelessWidget {
   // Open detail page
   void _openDetail(BuildContext ctx, String categoryName) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(categoryName, entry));
+        arguments: SingleNewsArgs(categoryName, entry, showAuthor: showAuthor));
   }
 }

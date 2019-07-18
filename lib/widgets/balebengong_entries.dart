@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/repository/entries.dart';
+import 'package:gatrabali/widgets/single_news_card.dart';
 import 'package:gatrabali/widgets/single_news_nocard.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -74,13 +75,20 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
     });
   }
 
-  Widget _listItem(BuildContext ctx, Entry entry) {
+  Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
         padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: SingleNewsNoCard(
-            key: ValueKey(entry.id),
-            entry: entry,
-            showCategoryName: widget.categoryId == 0));
+        child: index == 0
+            ? SingleNewsCard(
+                key: ValueKey(entry.id),
+                entry: entry,
+                showCategoryName: widget.categoryId == 0,
+                showAuthor: true)
+            : SingleNewsNoCard(
+                key: ValueKey(entry.id),
+                entry: entry,
+                showCategoryName: widget.categoryId == 0,
+                showAuthor: true));
   }
 
   @override
@@ -107,7 +115,7 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
       padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: _entries.length,
       itemBuilder: (BuildContext ctx, int index) {
-        return _listItem(ctx, _entries[index]);
+        return _listItem(ctx, index, _entries[index]);
       },
     );
   }
