@@ -166,7 +166,6 @@ class _SingleNews extends State<SingleNews> {
       ),
       _actions(ctx, true),
       Divider(),
-      _author(),
       Html(
           useRichText: true,
           data: _entry.content,
@@ -182,6 +181,7 @@ class _SingleNews extends State<SingleNews> {
                 duration: Toast.LENGTH_LONG,
                 backgroundColor: Colors.black);
           }),
+      _author(),
       Divider(),
       _source(ctx),
       Divider(),

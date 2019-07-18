@@ -134,7 +134,7 @@ class _BookmarksState extends State<Bookmarks> {
               Navigator.of(ctx).pushNamed(SingleNews.routeName,
                   arguments: SingleNewsArgs(
                       bookmark.getCategoryName(categories), entry,
-                      id: bookmark.entryId));
+                      id: bookmark.entryId, showAuthor: true));
             },
             leading: thumbnail,
             trailing: GestureDetector(
