@@ -27,7 +27,7 @@ class SingleNewsCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(ctx, subTitle),
+          _header(ctx, categoryName),
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
@@ -49,7 +49,7 @@ class SingleNewsCard extends StatelessWidget {
     );
   }
 
-  Widget _header(BuildContext ctx, String source) {
+  Widget _header(BuildContext ctx, String categoryName) {
     if (entry.hasPicture) {
       return Stack(
         children: [
@@ -58,7 +58,7 @@ class SingleNewsCard extends StatelessWidget {
               width: null,
               height: 120.0,
               onTap: () {
-                _openDetail(ctx, source);
+                _openDetail(ctx, categoryName);
               }),
         ],
       );
