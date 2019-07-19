@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:basic_utils/basic_utils.dart';
 
-import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/single_news.dart';
 import 'package:gatrabali/category_news.dart';
@@ -16,17 +15,14 @@ class CategorySummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final feeds = AppModel.of(ctx).feeds;
-    final categories = AppModel.of(ctx).categories;
     final firstEntry = entries.first;
-    final feedTitle = firstEntry.getFeedTitle(feeds, categories);
-    final source = feedTitle == null ? '' : feedTitle;
+    final subTitle = StringUtils.capitalize(firstEntry.formattedDate);
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          _header(ctx, source, firstEntry),
+          _header(ctx, firstEntry),
           ListTile(
             title: Padding(
                 padding: EdgeInsets.only(top: 7),
@@ -34,20 +30,20 @@ class CategorySummaryCard extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold))),
             subtitle: Padding(
                 padding: new EdgeInsets.only(top: 5),
-                child: Text("$source (${firstEntry.formattedDate})")),
+                child: Text(subTitle, maxLines: 1)),
             onTap: () {
-              _openDetail(ctx, source, firstEntry);
+              _openDetail(ctx, firstEntry);
             },
           ),
           Divider(),
-          _relatedNews(ctx, feeds, categories, entries.sublist(1)),
+          _relatedNews(ctx, entries.sublist(1)),
           _moreNews(ctx)
         ],
       ),
     );
   }
 
-  Widget _header(BuildContext ctx, String source, Entry entry) {
+  Widget _header(BuildContext ctx, Entry entry) {
     var titleWidget = Text(categoryName.toUpperCase(),
         style: TextStyle(
             fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white));
@@ -59,7 +55,7 @@ class CategorySummaryCard extends StatelessWidget {
             width: null,
             height: 150,
             onTap: () {
-              _openDetail(ctx, source, entry);
+              _openDetail(ctx, entry);
             }),
         Container(
           height: 50,
@@ -75,11 +71,9 @@ class CategorySummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _relatedNews(BuildContext ctx, List<Feed> feeds,
-      Map<int, String> categories, List<Entry> related) {
+  Widget _relatedNews(BuildContext ctx, List<Entry> related) {
     return Column(
         children: related.map((entry) {
-      final source = entry.getFeedTitle(feeds, categories);
       return Column(
         children: [
           ListTile(
@@ -93,7 +87,7 @@ class CategorySummaryCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
             onTap: () {
-              _openDetail(ctx, source, entry);
+              _openDetail(ctx, entry);
             },
           ),
           Divider(),
@@ -119,8 +113,8 @@ class CategorySummaryCard extends StatelessWidget {
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx, String source, Entry entry) {
+  void _openDetail(BuildContext ctx, Entry entry) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(source, entry));
+        arguments: SingleNewsArgs(categoryName, entry));
   }
 }

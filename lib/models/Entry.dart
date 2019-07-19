@@ -1,7 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:gatrabali/models/feed.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Entry {
   int id;
@@ -15,21 +13,20 @@ class Entry {
   String cdnPicture;
   String author;
 
+  Entry() {
+    timeago.setLocaleMessages('id', timeago.IdMessages());
+  }
+
   bool get hasPicture => picture != null;
-  String get formattedDate => DateFormat("d/MM/yyyy")
-      .format(DateTime.fromMillisecondsSinceEpoch(publishedAt));
+  String get formattedDate => timeago
+      .format(DateTime.fromMillisecondsSinceEpoch(publishedAt), locale: 'id');
+  String formattedDateSimple() {
+    var date = DateTime.fromMillisecondsSinceEpoch(publishedAt);
+    return "${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}";
+  }
 
-  String getFeedTitle(List<Feed> feeds, Map<int, String> categories) {
-    var title;
-
-    for (var f in feeds) {
-      if (f.id == this.feedId) {
-        title = f.title;
-      }
-    }
-    if (title == null) {
-      title = categories[categoryId];
-    }
+  String getCategoryName(Map<int, String> categories) {
+    var title = categories[categoryId];
     return title;
   }
 
@@ -85,16 +82,12 @@ class BookmarkEntry {
   String cdnPicture;
 
   bool get hasPicture => picture != null;
-  String get formattedDate => DateFormat("d/MM/yyyy")
-      .format(DateTime.fromMillisecondsSinceEpoch(publishedAt));
+  String get formattedDate => timeago
+      .format(DateTime.fromMillisecondsSinceEpoch(publishedAt), locale: 'id');
 
-  String getFeedTitle(List<Feed> feeds) {
-    for (var f in feeds) {
-      if (f.id == this.feedId) {
-        return f.title;
-      }
-    }
-    return null;
+  String getCategoryName(Map<int, String> categories) {
+    var title = categories[categoryId];
+    return title;
   }
 
   BookmarkEntry setCloudinaryPicture(String cloudinaryFetchUrl) {

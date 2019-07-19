@@ -13,10 +13,9 @@ class FeaturedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final feeds = AppModel.of(ctx).feeds;
     final categories = AppModel.of(ctx).categories;
-    final feedTitle = entry.getFeedTitle(feeds, categories);
-    final source = feedTitle == null ? '' : feedTitle;
+    final categoryName = entry.getCategoryName(categories);
+    final subTitle = "$categoryName, ${entry.formattedDate}";
 
     return ListTile(
       contentPadding: EdgeInsets.all(15),
@@ -28,25 +27,28 @@ class FeaturedCard extends StatelessWidget {
       ),
       title: Text(
         entry.title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Padding(
           padding: EdgeInsets.only(top: 3),
           child: Text(
-            source,
-            style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.7)),
+            subTitle,
+            maxLines: 1,
+            style:
+                TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.7)),
           )),
       onTap: () {
-        _openDetail(ctx, source);
+        _openDetail(ctx, categoryName);
       },
     );
   }
 
   // Open detail page
-  void _openDetail(BuildContext ctx, String source) {
+  void _openDetail(BuildContext ctx, String categoryName) {
     Navigator.of(ctx).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(source, entry));
+        arguments: SingleNewsArgs(categoryName, entry));
   }
 }

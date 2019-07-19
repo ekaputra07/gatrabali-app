@@ -15,8 +15,9 @@ class SingleNewsArgs {
   int id;
   String title;
   Entry entry;
+  bool showAuthor;
 
-  SingleNewsArgs(this.title, this.entry, {this.id});
+  SingleNewsArgs(this.title, this.entry, {this.id, this.showAuthor = false});
 }
 
 class SingleNews extends StatefulWidget {
@@ -25,8 +26,10 @@ class SingleNews extends StatefulWidget {
   final String title;
   final Entry entry;
   final AppModel model;
+  final bool showAuthor;
 
-  SingleNews({this.title, this.entry, this.model, this.id});
+  SingleNews(
+      {this.title, this.entry, this.model, this.id, this.showAuthor = false});
 
   @override
   _SingleNews createState() => _SingleNews();
@@ -44,7 +47,8 @@ class _SingleNews extends State<SingleNews> {
 
     if (widget.id != null) {
       _loading = true;
-      EntryService.getEntryById(widget.id, categoryID: widget.entry.categoryId)
+      EntryService.getEntryById(widget.id,
+              categoryID: widget.entry.categoryId, feedID: widget.entry.feedId)
           .then((entry) {
         setState(() {
           _entry = entry;
@@ -132,7 +136,7 @@ class _SingleNews extends State<SingleNews> {
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
 
     return SingleChildScrollView(
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Stack(
         children: [
           _cover(ctx),
@@ -177,6 +181,7 @@ class _SingleNews extends State<SingleNews> {
                 duration: Toast.LENGTH_LONG,
                 backgroundColor: Colors.black);
           }),
+      _author(),
       Divider(),
       _source(ctx),
       Divider(),
@@ -231,8 +236,10 @@ class _SingleNews extends State<SingleNews> {
     if (includeDate) {
       actions.insert(
         0,
-        Column(
-            children: [Icon(Icons.calendar_today), Text(_entry.formattedDate)]),
+        Column(children: [
+          Icon(Icons.calendar_today),
+          Text(_entry.formattedDateSimple())
+        ]),
       );
     }
 
@@ -247,8 +254,8 @@ class _SingleNews extends State<SingleNews> {
 
   Widget _source(BuildContext ctx) {
     return GestureDetector(
-        onTap: () {
-          launch(_entry.url, forceSafariVC: false);
+        onTap: () async {
+          await launch(_entry.url, forceSafariVC: false);
         },
         child: Padding(
             padding: EdgeInsets.all(10),
@@ -256,5 +263,15 @@ class _SingleNews extends State<SingleNews> {
               title: Text("Sumber:"),
               subtitle: Text(_entry.url, style: TextStyle(color: Colors.green)),
             )));
+  }
+
+  Widget _author() {
+    if (!widget.showAuthor) return Container();
+
+    return Padding(
+        padding: EdgeInsets.only(top: 10, left: 20, bottom: 10),
+        child: Text("Oleh: ${_entry.author}",
+            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+            textAlign: TextAlign.left));
   }
 }

@@ -52,9 +52,9 @@ class _MainCover extends State<MainCover> {
     return Center(child: CircularProgressIndicator(strokeWidth: 2));
   }
 
-  void _onTitleTap(BuildContext context, String source, Entry entry) {
+  void _onTitleTap(BuildContext context, String categoryName, Entry entry) {
     Navigator.of(context).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(source, entry));
+        arguments: SingleNewsArgs(categoryName, entry));
   }
 
   void _onCategoryTap() {
@@ -63,9 +63,8 @@ class _MainCover extends State<MainCover> {
   }
 
   Widget _buildCover(BuildContext context, Entry entry) {
-    var feeds = AppModel.of(context).feeds;
     var categories = AppModel.of(context).categories;
-    var source = entry.getFeedTitle(feeds, categories);
+    var categoryName = entry.getCategoryName(categories);
 
     return Stack(
       children: [
@@ -91,7 +90,7 @@ class _MainCover extends State<MainCover> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        _onTitleTap(context, source, entry);
+                        _onTitleTap(context, categoryName, entry);
                       },
                       child: Text(entry.title,
                           textAlign: TextAlign.start,
@@ -100,7 +99,7 @@ class _MainCover extends State<MainCover> {
                               fontSize: 18,
                               fontWeight: FontWeight.w600))),
                   SizedBox(height: 5),
-                  Text("$source (${entry.formattedDate})".toUpperCase(),
+                  Text("${entry.formattedDate}".toUpperCase(),
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           color: Colors.white.withOpacity(0.6), fontSize: 12)),

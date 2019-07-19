@@ -4,12 +4,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gatrabali/auth.dart';
-import 'package:gatrabali/repository/feeds.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
 import 'package:gatrabali/repository/remote_config.dart';
 import 'package:gatrabali/scoped_models/app.dart';
-import 'package:gatrabali/models/feed.dart';
 import 'package:gatrabali/models/user.dart';
+import 'package:gatrabali/icons.dart';
 
 import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
@@ -17,6 +16,7 @@ import 'package:gatrabali/categories_summary.dart';
 import 'package:gatrabali/bookmarks.dart';
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/balebengong.dart';
 import 'package:gatrabali/about.dart';
 
 void main() => runApp(MyApp());
@@ -33,15 +33,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: _generateRoute,
         home: ScopedModel<AppModel>(
           model: _model,
-          child: FutureBuilder<List<Feed>>(
-            future: FeedService.fetchFeeds(),
-            builder: (ctx, result) {
-              if (result.hasData) {
-                AppModel.of(ctx).setFeeds(result.data);
-              }
-              return GatraBali();
-            },
-          ),
+          child: GatraBali(),
         ));
   }
 
@@ -60,10 +52,12 @@ class MyApp extends StatelessWidget {
       final SingleNewsArgs args = settings.arguments;
       return MaterialPageRoute(
           builder: (context) => SingleNews(
-              title: args.title,
-              entry: args.entry,
-              model: _model,
-              id: args.id));
+                title: args.title,
+                entry: args.entry,
+                model: _model,
+                id: args.id,
+                showAuthor: args.showAuthor,
+              ));
     }
     // handles /Profile
     if (settings.name == Profile.routeName) {
@@ -86,6 +80,7 @@ class GatraBali extends StatefulWidget {
   final _appBarTitles = [
     Text("Bali Terkini"),
     Text("Berita Daerah"),
+    Text("Bale Bengong"),
     Text("Berita Disimpan")
   ];
 
@@ -104,6 +99,7 @@ class _GatraBaliState extends State<GatraBali> {
     _pages = [
       LatestNews(),
       CategoriesSummary(),
+      BaleBengong(),
       Bookmarks(),
     ];
 
@@ -218,6 +214,7 @@ class _GatraBaliState extends State<GatraBali> {
           index: _selectedIndex,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: (int index) {
             setState(() {
@@ -230,6 +227,9 @@ class _GatraBaliState extends State<GatraBali> {
                 icon: Icon(Icons.home), title: Text("Terbaru")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.grain), title: Text("Daerah")),
+            BottomNavigationBarItem(
+                icon: Icon(GatraBaliIcons.balebengong, size: 20),
+                title: Text("Bale Bengong")),
             BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark), title: Text("Disimpan")),
           ],
@@ -245,18 +245,21 @@ class _GatraBaliState extends State<GatraBali> {
     var items = <Widget>[];
 
     AppModel.of(context).categories.forEach((id, title) {
-      items.add(Card(
-          elevation: 0,
-          margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),
-          child: ListTile(
-            leading: Icon(Icons.folder_open, color: Colors.green),
-            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-            title: Text('Berita $title'),
-            onTap: () {
-              Navigator.of(context).popAndPushNamed(CategoryNews.routeName,
-                  arguments: CategoryNewsArgs(id, title));
-            },
-          )));
+      // Don;t show balebengong categories.
+      if (id < 13) {
+        items.add(Card(
+            elevation: 0,
+            margin: EdgeInsets.symmetric(horizontal: 0, vertical: 1.0),
+            child: ListTile(
+              leading: Icon(Icons.folder_open, color: Colors.green),
+              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              title: Text('Berita $title'),
+              onTap: () {
+                Navigator.of(context).popAndPushNamed(CategoryNews.routeName,
+                    arguments: CategoryNewsArgs(id, title));
+              },
+            )));
+      }
     });
     return items;
   }
