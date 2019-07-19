@@ -114,11 +114,7 @@ class _SingleNews extends State<SingleNews> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(widget.title == null ? _entry.title : widget.title)),
-      body: _loading ? _loader() : _getBody(ctx),
-    );
+    return Scaffold(body: _loading ? _loader() : _getBody(ctx));
   }
 
   Widget _loader() {
@@ -141,7 +137,7 @@ class _SingleNews extends State<SingleNews> {
         children: [
           _cover(ctx),
           Container(
-            height: 200,
+            height: 250,
             width: double.infinity,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -152,7 +148,17 @@ class _SingleNews extends State<SingleNews> {
             alignment: Alignment.bottomLeft,
           ),
           Positioned(
-            top: 5,
+            top: 40,
+            left: 0,
+            child: IconButton(
+                icon: Icon(Icons.keyboard_arrow_left,
+                    size: 40, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+          ),
+          Positioned(
+            top: 40,
             right: 15,
             child: IconButton(
                 icon: Icon(Icons.fullscreen, size: 40, color: Colors.white),
@@ -195,11 +201,11 @@ class _SingleNews extends State<SingleNews> {
       final cloudinaryFetchUrl = widget.model.getCloudinaryUrl();
       final entry = _entry.setCloudinaryPicture(cloudinaryFetchUrl);
       return CoverImageDecoration(
-          url: entry.picture, height: 200.0, width: null);
+          url: entry.picture, height: 250.0, width: null);
     } else {
       return Container(
         width: double.infinity,
-        height: 200.0,
+        height: 250.0,
         color: Colors.green,
       );
     }
