@@ -145,7 +145,7 @@ class _BaleBengongState extends State<BaleBengong> {
                       children: [
                         _header(),
                         Positioned(
-                            right: 5,
+                            right: 0,
                             top: 5,
                             child: IconButton(
                                 icon: Icon(
@@ -217,9 +217,9 @@ class _BaleBengongState extends State<BaleBengong> {
       SizedBox(height: 30),
       Image.asset('assets/images/balebengong.png', width: 255),
       Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Text(
-              "BaleBengong adalah portal media jurnalisme warga di Bali. Warga terlibat aktif untuk menulis atau sekadar memberi respon atas sebuah kabar.",
+              "BaleBengong adalah portal media jurnalisme warga di Bali. Warga terlibat aktif untuk menulis atau sekadar merespon sebuah kabar.",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w400))),
     ]);

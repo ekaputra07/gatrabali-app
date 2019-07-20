@@ -120,8 +120,22 @@ class _SingleNews extends State<SingleNews> {
   Widget _loader() {
     if (_notFound) {
       return Center(
-          child: Text('Berita tidak ditemukan.',
-              style: TextStyle(color: Colors.grey, fontSize: 16)));
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Berita tidak ditemukan.',
+              style: TextStyle(color: Colors.grey, fontSize: 16)),
+          SizedBox(height: 10),
+          RaisedButton(
+            color: Colors.green,
+            textColor: Colors.white,
+            child: Text('Kembali'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ));
     }
     return Center(child: CircularProgressIndicator());
   }
