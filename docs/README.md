@@ -2,7 +2,7 @@
 
 Kini telah hadir aplikasi berita Bali Gatra Bali yang cepat dan mudah untuk digunakan. Gatra Bali mengutamakan keamanan, kecepatan akses dan kemudahan membaca ditambah dengan fitur-fitur yang akan membuat anda selalu ter-update dengan **berita-berita di seputaran pulau Bali**.
 
-<img src="https://raw.githubusercontent.com/apps4bali/gatrabali-app/master/appstore/v1.0.0/Banner.png"/>
+<img src="https://raw.githubusercontent.com/apps4bali/gatrabali-app/master/appstore/Banner.png"/>
 
 
 ## Kenapa anda harus punya Gatra Bali?
