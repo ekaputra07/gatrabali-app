@@ -13,6 +13,12 @@ class Auth {
 
   Auth(this.model);
 
+  Future<User> anonymousSignIn() {
+    return _auth.signInAnonymously().then((firebaseUser) {
+      return Auth.userFromFirebaseUser(firebaseUser);
+    });
+  }
+
   Future<User> googleSignIn() {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     return _googleSignIn.signIn().then((user) {
@@ -74,6 +80,7 @@ class Auth {
         id: firebaseUser.uid,
         name: firebaseUser.displayName,
         provider: firebaseUser.providerId,
+        isAnonymous: firebaseUser.isAnonymous,
         avatar: firebaseUser.photoUrl);
   }
 
