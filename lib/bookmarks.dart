@@ -51,12 +51,10 @@ class _BookmarksState extends State<Bookmarks> {
     var user = AppModel.of(context).currentUser;
     var entry = Entry();
     entry.id = bookmarkEntry.entryId;
+
     EntryService.bookmark(user.id, entry, delete: true).then((_) {
-      var entries = _entries
-          .skipWhile((e) => e.entryId == bookmarkEntry.entryId)
-          .toList();
       setState(() {
-        _entries = entries;
+        _entries.removeWhere((e) => e.entryId == bookmarkEntry.entryId);
       });
       Toast.show('Berita dihapus', context, backgroundColor: Colors.black);
     }).catchError((err) {
