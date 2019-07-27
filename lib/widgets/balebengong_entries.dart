@@ -47,10 +47,12 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
         .asStream()
         .listen((entries) {
       _refreshController.refreshCompleted();
-      setState(() {
-        _cursor = entries.last.publishedAt;
-        _entries = entries;
-      });
+      if (entries.isNotEmpty) {
+        setState(() {
+          _cursor = entries.last.publishedAt;
+          _entries = entries;
+        });
+      }
     });
     _sub.onError((err) {
       _refreshController.refreshFailed();
@@ -63,11 +65,15 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
             categoryId: widget.categoryId, cursor: _cursor)
         .asStream()
         .listen((entries) {
-      _refreshController.loadComplete();
-      setState(() {
-        _cursor = entries.last.publishedAt;
-        _entries.addAll(entries);
-      });
+      if (entries.isNotEmpty) {
+        _refreshController.loadComplete();
+        setState(() {
+          _cursor = entries.last.publishedAt;
+          _entries.addAll(entries);
+        });
+      } else {
+        _refreshController.loadNoData();
+      }
     });
     _sub.onError((err) {
       _refreshController.loadNoData();
