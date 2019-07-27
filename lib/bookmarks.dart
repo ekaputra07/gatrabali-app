@@ -27,7 +27,7 @@ class _BookmarksState extends State<Bookmarks> {
       // - reload bookmarks when bookmarks screen visible
       // - load bookmarks when user state changed from loggged-out to logged-in.
       if (whatIsChanged == 'selectedTabIndex' &&
-          model.selectedTabIndex == 2 &&
+          model.selectedTabIndex == 3 &&
           model.currentUser != null) {
         _loadBookmarks(model.currentUser);
       } else if (whatIsChanged == 'currentUser' && model.currentUser != null) {

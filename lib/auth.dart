@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gatrabali/config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -19,7 +20,7 @@ class Auth {
     });
   }
 
-  Future<User> googleSignIn() {
+  Future<User> googleSignIn({bool linkAccount = false}) {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     return _googleSignIn.signIn().then((user) {
       return user.authentication;
@@ -27,13 +28,17 @@ class Auth {
       return GoogleAuthProvider.getCredential(
           idToken: auth.idToken, accessToken: auth.accessToken);
     }).then((credential) {
-      return _auth.signInWithCredential(credential);
+      if (linkAccount) {
+        return _auth.linkWithCredential(credential);
+      } else {
+        return _auth.signInWithCredential(credential);
+      }
     }).then((firebaseUser) {
       return Auth.userFromFirebaseUser(firebaseUser);
     });
   }
 
-  Future<User> facebookSignIn() {
+  Future<User> facebookSignIn({bool linkAccount = false}) {
     final _facebookSignin = FacebookLogin();
     return _facebookSignin.logInWithReadPermissions(['email']).then((result) {
       if (result.status == FacebookLoginStatus.cancelledByUser) {
@@ -45,7 +50,11 @@ class Auth {
       return FacebookAuthProvider.getCredential(
           accessToken: result.accessToken.token);
     }).then((credential) {
-      return _auth.signInWithCredential(credential);
+      if (linkAccount) {
+        return _auth.linkWithCredential(credential);
+      } else {
+        return _auth.signInWithCredential(credential);
+      }
     }).then((firebaseUser) {
       return Auth.userFromFirebaseUser(firebaseUser);
     });
@@ -76,12 +85,24 @@ class Auth {
   }
 
   static User userFromFirebaseUser(FirebaseUser firebaseUser) {
+    var isAnon = firebaseUser.isAnonymous;
+    var provider = firebaseUser.providerId;
+    var name = isAnon ? "Anonim" : firebaseUser.displayName;
+    var avatar = isAnon ? DEFAULT_AVATAR_IMAGE : firebaseUser.photoUrl;
+
+    if (firebaseUser.providerData.isNotEmpty) {
+      var info = firebaseUser.providerData.first;
+      provider = info.providerId;
+      name = info.displayName;
+      avatar = info.photoUrl;
+    }
+
     return User(
         id: firebaseUser.uid,
-        name: firebaseUser.displayName,
-        provider: firebaseUser.providerId,
-        isAnonymous: firebaseUser.isAnonymous,
-        avatar: firebaseUser.photoUrl);
+        name: name,
+        provider: provider,
+        isAnonymous: isAnon,
+        avatar: avatar);
   }
 
   static void onAuthStateChanged(Function callback) {
