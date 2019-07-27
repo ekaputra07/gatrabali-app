@@ -90,7 +90,7 @@ class Auth {
     var name = isAnon ? "Anonim" : firebaseUser.displayName;
     var avatar = isAnon ? DEFAULT_AVATAR_IMAGE : firebaseUser.photoUrl;
 
-    if (firebaseUser.providerData.isNotEmpty) {
+    if (!isAnon && firebaseUser.providerData.isNotEmpty) {
       var info = firebaseUser.providerData.first;
       provider = info.providerId;
       name = info.displayName;
