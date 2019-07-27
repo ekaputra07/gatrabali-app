@@ -145,10 +145,14 @@ class _SingleNews extends State<SingleNews> {
         style: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0));
 
-    return SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Stack(
-        children: [
+    return CustomScrollView(slivers: [
+      SliverAppBar(
+          floating: true,
+          snap: true,
+          title: Text(widget.title == null ? _entry.title : widget.title)),
+      SliverList(
+          delegate: SliverChildListDelegate([
+        Stack(children: [
           _cover(ctx),
           Container(
             height: 250,
@@ -162,17 +166,7 @@ class _SingleNews extends State<SingleNews> {
             alignment: Alignment.bottomLeft,
           ),
           Positioned(
-            top: 40,
-            left: 0,
-            child: IconButton(
-                icon: Icon(Icons.keyboard_arrow_left,
-                    size: 40, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-          ),
-          Positioned(
-            top: 40,
+            top: 10,
             right: 15,
             child: IconButton(
                 icon: Icon(Icons.fullscreen, size: 40, color: Colors.white),
@@ -182,32 +176,32 @@ class _SingleNews extends State<SingleNews> {
                   }));
                 }),
           )
-        ],
-      ),
-      _actions(ctx, true),
-      Divider(),
-      Html(
-          useRichText: true,
-          data: _entry.content,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          defaultTextStyle: TextStyle(fontSize: 16),
-          linkStyle: const TextStyle(
-            color: Colors.green,
-          ),
-          onLinkTap: (url) {
-            Toast.show(
-                'Silahkan buka link tersebut di halaman asli berita ini.',
-                context,
-                duration: Toast.LENGTH_LONG,
-                backgroundColor: Colors.black);
-          }),
-      _author(),
-      Divider(),
-      _source(ctx),
-      Divider(),
-      _actions(ctx, false),
-      Divider()
-    ]));
+        ]),
+        _actions(ctx, true),
+        Divider(),
+        Html(
+            useRichText: true,
+            data: _entry.content,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            defaultTextStyle: TextStyle(fontSize: 16),
+            linkStyle: const TextStyle(
+              color: Colors.green,
+            ),
+            onLinkTap: (url) {
+              Toast.show(
+                  'Silahkan buka link tersebut di halaman asli berita ini.',
+                  context,
+                  duration: Toast.LENGTH_LONG,
+                  backgroundColor: Colors.black);
+            }),
+        _author(),
+        Divider(),
+        _source(ctx),
+        Divider(),
+        _actions(ctx, false),
+        Divider()
+      ]))
+    ]);
   }
 
   Widget _cover(BuildContext ctx) {
