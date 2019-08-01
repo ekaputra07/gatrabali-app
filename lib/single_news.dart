@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:toast/toast.dart';
@@ -9,6 +10,7 @@ import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/picture_view.dart';
+import 'package:gatrabali/widgets/related_entries.dart';
 import 'package:gatrabali/profile.dart';
 
 class SingleNewsArgs {
@@ -148,7 +150,6 @@ class _SingleNews extends State<SingleNews> {
     return CustomScrollView(slivers: [
       SliverAppBar(
           floating: true,
-          snap: true,
           title: Text(widget.title == null ? _entry.title : widget.title)),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -198,8 +199,15 @@ class _SingleNews extends State<SingleNews> {
         Divider(),
         _source(ctx),
         Divider(),
-        _actions(ctx, false),
-        Divider()
+        // _actions(ctx, false),
+        // Divider(),
+        ScopedModel(
+            model: widget.model,
+            child: RelatedEntries(
+                title: "Berita lainnya",
+                categoryId: _entry.categoryId,
+                cursor: _entry.publishedAt,
+                limit: 6))
       ]))
     ]);
   }
