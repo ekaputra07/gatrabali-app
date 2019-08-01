@@ -32,7 +32,7 @@ class About extends StatelessWidget {
               Image.asset('assets/images/icon.png', width: 80, height: 80),
               SizedBox(height: 20),
               Text(
-                'Gatra Bali merangkum berita dari berbagai sumber berita online, mengutamakan kecepatan dan kemudahan membaca.',
+                'Gatra Bali mengumpulkan berita dari berbagai sumber berita online membuatnya mudah dibaca dengan satu aplikasi.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -40,7 +40,7 @@ class About extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                'Berita Gatra Bali bersumber dari media online berikut ini:',
+                'Sumber berita:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
