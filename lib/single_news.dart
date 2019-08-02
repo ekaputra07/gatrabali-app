@@ -150,7 +150,23 @@ class _SingleNews extends State<SingleNews> {
     return CustomScrollView(slivers: [
       SliverAppBar(
           floating: true,
-          title: Text(widget.title == null ? _entry.title : widget.title)),
+          title: Text(widget.title == null ? _entry.title : widget.title),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  _bookmark(ctx);
+                },
+                icon: Icon(Icons.bookmark,
+                    color: _bookmarked ? Colors.yellow : Colors.white)),
+            Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: IconButton(
+                    onPressed: () {
+                      Share.share(
+                          "${_entry.url} via Gatra Bali App (http://bit.ly/gatrabali)");
+                    },
+                    icon: Icon(Icons.share)))
+          ]),
       SliverList(
           delegate: SliverChildListDelegate([
         Stack(children: [
@@ -178,8 +194,7 @@ class _SingleNews extends State<SingleNews> {
                 }),
           )
         ]),
-        _actions(ctx, true),
-        Divider(),
+        SizedBox(height: 20),
         Html(
             useRichText: true,
             data: _entry.content,
@@ -195,12 +210,12 @@ class _SingleNews extends State<SingleNews> {
                   duration: Toast.LENGTH_LONG,
                   backgroundColor: Colors.black);
             }),
-        _author(),
+        SizedBox(height: 10),
         Divider(),
+        _author(),
+        _publishDate(),
         _source(ctx),
         Divider(),
-        // _actions(ctx, false),
-        // Divider(),
         ScopedModel(
             model: widget.model,
             child: RelatedEntries(
@@ -228,73 +243,36 @@ class _SingleNews extends State<SingleNews> {
     }
   }
 
-  Widget _actions(BuildContext ctx, bool includeDate) {
-    List<Widget> actions = [
-      GestureDetector(
-          onTap: () {
-            _bookmark(ctx);
-          },
-          child: Column(children: [
-            Icon(Icons.bookmark,
-                color: _bookmarked ? Colors.green : Colors.black),
-            Text("Simpan",
-                style:
-                    TextStyle(color: _bookmarked ? Colors.green : Colors.black))
-          ])),
-      // Column(children: [
-      //   Icon(Icons.comment, color: Colors.black),
-      //   Text("12 Komentar")
-      // ]),
-      GestureDetector(
-          onTap: () {
-            Share.share(
-                "${_entry.url} via Gatra Bali App (http://bit.ly/gatrabali)");
-          },
-          child: Column(children: [
-            Icon(Icons.share, color: Colors.black),
-            Text("Bagikan")
-          ]))
-    ];
-
-    if (includeDate) {
-      actions.insert(
-        0,
-        Column(children: [
-          Icon(Icons.calendar_today),
-          Text(_entry.formattedDateSimple())
-        ]),
-      );
-    }
-
-    return Padding(
-      padding: EdgeInsets.all(12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: actions,
-      ),
-    );
-  }
-
   Widget _source(BuildContext ctx) {
     return GestureDetector(
         onTap: () async {
           await launch(_entry.url, forceSafariVC: false);
         },
         child: Padding(
-            padding: EdgeInsets.all(10),
-            child: ListTile(
-              title: Text("Sumber:"),
-              subtitle: Text(_entry.url, style: TextStyle(color: Colors.green)),
-            )));
+            padding: EdgeInsets.only(top: 5, left: 25, bottom: 5),
+            child: Text("Sumber berita disini",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    TextStyle(color: Colors.green),
+                textAlign: TextAlign.left)));
   }
 
   Widget _author() {
     if (!widget.showAuthor) return Container();
 
     return Padding(
-        padding: EdgeInsets.only(top: 10, left: 20, bottom: 10),
+        padding: EdgeInsets.only(top: 10, left: 25),
         child: Text("Oleh: ${_entry.author}",
-            style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black),
+            style: TextStyle(color: Colors.black),
+            textAlign: TextAlign.left));
+  }
+
+  Widget _publishDate() {
+    return Padding(
+        padding: EdgeInsets.only(top: 5, left: 25),
+        child: Text("Tanggal publikasi: ${_entry.formattedDateSimple()}",
+            style: TextStyle(color: Colors.black),
             textAlign: TextAlign.left));
   }
 }
