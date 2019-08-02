@@ -162,7 +162,7 @@ class EntryService {
 
     // Override url if feed ID is belongs to BaleBengong
     if (feedID != null) {
-      if ([33, 34, 35, 36, 37, 38, 39, 40].indexOf(feedID) != -1) {
+      if (BALEBENGONG_FEED_IDS.indexOf(feedID) != -1) {
         url = '$API_HOST/balebengong/entries/$id';
       }
     }

@@ -206,6 +206,7 @@ class _SingleNews extends State<SingleNews> {
             child: RelatedEntries(
                 title: "Berita lainnya",
                 categoryId: _entry.categoryId,
+                feedId: _entry.feedId,
                 cursor: _entry.publishedAt,
                 limit: 6))
       ]))
