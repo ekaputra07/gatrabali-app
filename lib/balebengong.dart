@@ -160,34 +160,17 @@ class _BaleBengongState extends State<BaleBengong> {
                   Divider(height: 1),
                   new TabBar(
                     isScrollable: true,
+                    labelColor: Colors.black,
                     tabs: [
-                      Tab(
-                          child: Text("Semua",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Opini",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Sosial",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Budaya",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Lingkungan",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Sosok",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Teknologi",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Agenda",
-                              style: TextStyle(color: Colors.black87))),
-                      Tab(
-                          child: Text("Travel",
-                              style: TextStyle(color: Colors.black87))),
+                      Tab(child: Text("Semua")),
+                      Tab(child: Text("Opini")),
+                      Tab(child: Text("Sosial")),
+                      Tab(child: Text("Budaya")),
+                      Tab(child: Text("Lingkungan")),
+                      Tab(child: Text("Sosok")),
+                      Tab(child: Text("Teknologi")),
+                      Tab(child: Text("Agenda")),
+                      Tab(child: Text("Travel")),
                     ],
                   ),
                 ],

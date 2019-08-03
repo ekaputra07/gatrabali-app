@@ -12,7 +12,7 @@ import 'package:gatrabali/icons.dart';
 
 import 'package:gatrabali/profile.dart';
 import 'package:gatrabali/latest_news.dart';
-import 'package:gatrabali/categories_summary.dart';
+import 'package:gatrabali/category_news_tabbed.dart';
 import 'package:gatrabali/bookmarks.dart';
 import 'package:gatrabali/category_news.dart';
 import 'package:gatrabali/single_news.dart';
@@ -98,7 +98,7 @@ class _GatraBaliState extends State<GatraBali> {
     _selectedIndex = 0;
     _pages = [
       LatestNews(),
-      CategoriesSummary(),
+      CategoryNewsTabbed(),
       BaleBengong(),
       Bookmarks(),
     ];
