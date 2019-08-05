@@ -62,6 +62,7 @@ class RelatedEntries extends StatelessWidget {
                             showCategoryName: false);
                       });
                 }
+                return Container();
               }))
     ]);
   }
