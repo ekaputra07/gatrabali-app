@@ -11,6 +11,7 @@ import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/picture_view.dart';
 import 'package:gatrabali/widgets/related_entries.dart';
+import 'package:gatrabali/widgets/reaction.dart';
 import 'package:gatrabali/profile.dart';
 
 class SingleNewsArgs {
@@ -215,7 +216,7 @@ class _SingleNews extends State<SingleNews> {
         _author(),
         _publishDate(),
         _source(ctx),
-        Divider(),
+        Reaction(_entry),
         ScopedModel(
             model: widget.model,
             child: RelatedEntries(
@@ -250,11 +251,10 @@ class _SingleNews extends State<SingleNews> {
         },
         child: Padding(
             padding: EdgeInsets.only(top: 5, left: 25, bottom: 5),
-            child: Text("Sumber berita disini",
+            child: Text("Link sumber berita",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style:
-                    TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.green),
                 textAlign: TextAlign.left)));
   }
 
@@ -264,15 +264,13 @@ class _SingleNews extends State<SingleNews> {
     return Padding(
         padding: EdgeInsets.only(top: 10, left: 25),
         child: Text("Oleh: ${_entry.author}",
-            style: TextStyle(color: Colors.black),
-            textAlign: TextAlign.left));
+            style: TextStyle(color: Colors.black), textAlign: TextAlign.left));
   }
 
   Widget _publishDate() {
     return Padding(
         padding: EdgeInsets.only(top: 5, left: 25),
         child: Text("Tanggal publikasi: ${_entry.formattedDateSimple()}",
-            style: TextStyle(color: Colors.black),
-            textAlign: TextAlign.left));
+            style: TextStyle(color: Colors.black), textAlign: TextAlign.left));
   }
 }

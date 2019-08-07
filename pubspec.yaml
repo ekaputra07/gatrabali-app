@@ -57,6 +57,10 @@ flutter:
   assets:
    - assets/images/icon.png
    - assets/images/balebengong.png
+   - assets/images/happy.png
+   - assets/images/sad.png
+   - assets/images/angry.png
+   - assets/images/surprise.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
