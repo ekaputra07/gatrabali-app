@@ -361,7 +361,7 @@ class _ProfileState extends State<Profile> {
           _loginButton('anonymous', _anonymousButton(_anonymousSignIn)),
           SizedBox(height: 15.0),
           Text(
-            'Akun Anonim adalah akun yang bisa anda buat tanpa perlu data pribadi seperti Nama, Email dan Foto',
+            'Akun Anonim adalah akun yang bisa anda buat tanpa perlu data pribadi seperti Nama, Email dan Foto.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13.0, color: Colors.grey),
           ),

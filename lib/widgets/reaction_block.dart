@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gatrabali/models/entry.dart';
 
-class Reaction extends StatefulWidget {
+class ReactionBlock extends StatefulWidget {
   final Entry entry;
-  Reaction(this.entry);
+  ReactionBlock(this.entry);
 
   @override
-  State<StatefulWidget> createState() => _Reaction();
+  State<StatefulWidget> createState() => _ReactionBlock();
 }
 
-class _Reaction extends State<Reaction> {
+class _ReactionBlock extends State<ReactionBlock> {
   String _reaction;
 
   void _select(String reaction) {
@@ -59,7 +59,8 @@ class _Reaction extends State<Reaction> {
                   padding: EdgeInsets.all(15),
                   onPressed: () {},
                   color: Colors.white,
-                  child: Text("Berikan Komentar")))
+                  child:
+                      Text("Berikan Komentar", style: TextStyle(fontSize: 15))))
         ]));
   }
 

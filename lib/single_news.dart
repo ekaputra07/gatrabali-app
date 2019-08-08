@@ -11,7 +11,7 @@ import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/widgets/picture_view.dart';
 import 'package:gatrabali/widgets/related_entries.dart';
-import 'package:gatrabali/widgets/reaction.dart';
+import 'package:gatrabali/widgets/reaction_block.dart';
 import 'package:gatrabali/profile.dart';
 
 class SingleNewsArgs {
@@ -216,7 +216,7 @@ class _SingleNews extends State<SingleNews> {
         _author(),
         _publishDate(),
         _source(ctx),
-        Reaction(_entry),
+        ReactionBlock(_entry),
         ScopedModel(
             model: widget.model,
             child: RelatedEntries(
