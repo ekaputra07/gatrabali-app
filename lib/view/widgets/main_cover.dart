@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/scoped_models/app.dart';
-import 'package:gatrabali/single_news.dart';
-import 'package:gatrabali/category_news.dart';
+import 'package:gatrabali/view/single_news.dart';
+import 'package:gatrabali/view/category_news.dart';
 
 class MainCover extends StatefulWidget {
   @override

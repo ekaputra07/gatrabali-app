@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gatrabali/widgets/balebengong_entries.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:toast/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:gatrabali/view/widgets/balebengong_entries.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/subscriptions.dart';
 import 'package:gatrabali/models/subscription.dart';
-import 'package:gatrabali/profile.dart';
+import 'package:gatrabali/view/profile.dart';
 
 class BaleBengong extends StatefulWidget {
   @override

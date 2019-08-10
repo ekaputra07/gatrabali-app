@@ -8,11 +8,11 @@ import 'package:toast/toast.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/cover_image_decoration.dart';
-import 'package:gatrabali/widgets/picture_view.dart';
-import 'package:gatrabali/widgets/related_entries.dart';
-import 'package:gatrabali/widgets/reaction_block.dart';
-import 'package:gatrabali/profile.dart';
+import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/widgets/picture_view.dart';
+import 'package:gatrabali/view/widgets/related_entries.dart';
+import 'package:gatrabali/view/widgets/reaction_block.dart';
+import 'package:gatrabali/view/profile.dart';
 
 class SingleNewsArgs {
   int id;
@@ -117,7 +117,9 @@ class _SingleNews extends State<SingleNews> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(body: _loading ? _loader() : _getBody(ctx));
+    return Scaffold(
+        body: ScopedModel(
+            model: widget.model, child: _loading ? _loader() : _getBody(ctx)));
   }
 
   Widget _loader() {
@@ -217,14 +219,12 @@ class _SingleNews extends State<SingleNews> {
         _publishDate(),
         _source(ctx),
         ReactionBlock(_entry),
-        ScopedModel(
-            model: widget.model,
-            child: RelatedEntries(
-                title: "Berita lainnya",
-                categoryId: _entry.categoryId,
-                feedId: _entry.feedId,
-                cursor: _entry.publishedAt,
-                limit: 6))
+        RelatedEntries(
+            title: "Berita lainnya",
+            categoryId: _entry.categoryId,
+            feedId: _entry.feedId,
+            cursor: _entry.publishedAt,
+            limit: 6)
       ]))
     ]);
   }

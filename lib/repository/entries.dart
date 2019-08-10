@@ -13,9 +13,9 @@ class EntryService {
       {int categoryId, int cursor, int limit = 10}) {
     var category = categoryId == null ? '' : categoryId;
 
-    if (category == 11) {
+    if (category == KRIMINAL_CATEGORY_ID) {
       return fetchKriminalEntries(cursor: cursor, limit: limit);
-    } else if (category == 12) {
+    } else if (category == BALIUNITED_CATEGORY_ID) {
       return fetchBaliUnitedEntries(cursor: cursor, limit: limit);
     }
 

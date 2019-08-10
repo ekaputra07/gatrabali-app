@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/repository/entries.dart';
-import 'package:gatrabali/widgets/single_news_card.dart';
-import 'package:gatrabali/widgets/single_news_nocard.dart';
+import 'package:gatrabali/view/widgets/single_news_card.dart';
+import 'package:gatrabali/view/widgets/single_news_nocard.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BalebengongEntries extends StatefulWidget {

@@ -10,9 +10,9 @@ import 'package:gatrabali/repository/subscriptions.dart';
 
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/subscription.dart';
-import 'package:gatrabali/widgets/single_news_card.dart';
-import 'package:gatrabali/widgets/single_news_nocard.dart';
-import 'package:gatrabali/profile.dart';
+import 'package:gatrabali/view/widgets/single_news_card.dart';
+import 'package:gatrabali/view/widgets/single_news_nocard.dart';
+import 'package:gatrabali/view/profile.dart';
 
 class CategoryNewsArgs {
   int id;

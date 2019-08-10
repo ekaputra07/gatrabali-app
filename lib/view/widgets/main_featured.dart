@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/featured_card.dart';
-import 'package:gatrabali/category_news.dart';
+import 'package:gatrabali/view/widgets/featured_card.dart';
+import 'package:gatrabali/view/category_news.dart';
 
 class MainFeatured extends StatefulWidget {
   @override

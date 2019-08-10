@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:basic_utils/basic_utils.dart';
 
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/cover_image_decoration.dart';
-import 'package:gatrabali/single_news.dart';
-import 'package:gatrabali/category_news.dart';
+import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/single_news.dart';
+import 'package:gatrabali/view/category_news.dart';
 
 class CategorySummaryCard extends StatelessWidget {
   final int categoryId;

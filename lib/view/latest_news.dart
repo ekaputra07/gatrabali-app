@@ -5,9 +5,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/single_news_nocard.dart';
-import 'package:gatrabali/widgets/main_cover.dart';
-import 'package:gatrabali/widgets/main_featured.dart';
+import 'package:gatrabali/view/widgets/single_news_nocard.dart';
+import 'package:gatrabali/view/widgets/main_cover.dart';
+import 'package:gatrabali/view/widgets/main_featured.dart';
 
 class LatestNews extends StatefulWidget {
   @override

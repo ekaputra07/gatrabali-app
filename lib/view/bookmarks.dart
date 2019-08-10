@@ -5,9 +5,9 @@ import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/user.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/cover_image_decoration.dart';
-import 'package:gatrabali/widgets/char_thumbnail.dart';
-import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/widgets/char_thumbnail.dart';
+import 'package:gatrabali/view/single_news.dart';
 
 class Bookmarks extends StatefulWidget {
   @override

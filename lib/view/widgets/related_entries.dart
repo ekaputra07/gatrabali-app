@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/repository/entries.dart';
-import 'package:gatrabali/widgets/single_news_nocard.dart';
+import 'package:gatrabali/view/widgets/single_news_nocard.dart';
 import 'package:gatrabali/config.dart';
 
 class RelatedEntries extends StatelessWidget {

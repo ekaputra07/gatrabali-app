@@ -6,7 +6,7 @@ import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/category.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/category_summary_card.dart';
+import 'package:gatrabali/view/widgets/category_summary_card.dart';
 
 class CategoriesSummary extends StatefulWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gatrabali/widgets/category_entries.dart';
+import 'package:gatrabali/view/widgets/category_entries.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 
 class CategoryNewsTabbed extends StatefulWidget {

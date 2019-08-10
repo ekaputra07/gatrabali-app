@@ -3,8 +3,8 @@ import 'package:basic_utils/basic_utils.dart';
 
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/widgets/cover_image_decoration.dart';
-import 'package:gatrabali/single_news.dart';
+import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/single_news.dart';
 
 class SingleNewsCard extends StatelessWidget {
   final Entry entry;
