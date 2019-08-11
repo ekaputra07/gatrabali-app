@@ -216,7 +216,7 @@ class _CategoryNewsState extends State<CategoryNews> {
   Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
       padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      child: index > 0 // the first 2 items use card
+      child: index > 0 // the first item use card
           ? SingleNewsNoCard(
               key: ValueKey(entry.id), entry: entry, showCategoryName: false)
           : SingleNewsCard(

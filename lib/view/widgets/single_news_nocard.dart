@@ -5,6 +5,7 @@ import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/view/single_news.dart';
 import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/widgets/reaction_labels.dart';
 
 class SingleNewsNoCard extends StatelessWidget {
   final Entry entry;
@@ -43,11 +44,14 @@ class SingleNewsNoCard extends StatelessWidget {
       ),
       subtitle: Padding(
           padding: EdgeInsets.only(top: 3),
-          child: Text(
-            subTitle,
-            maxLines: 1,
-            style: TextStyle(fontSize: 12),
-          )),
+          child: Row(children: [
+            Opacity(opacity: 0.8, child: ReactionLabels(entry, imgWidth: 13)),
+            Text(
+              subTitle,
+              maxLines: 1,
+              style: TextStyle(fontSize: 12),
+            )
+          ])),
       onTap: () {
         _openDetail(ctx, categoryName);
       },

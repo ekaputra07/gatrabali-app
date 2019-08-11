@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/view/widgets/single_news_card.dart';
 import 'package:gatrabali/view/widgets/single_news_nocard.dart';
 import 'package:gatrabali/view/widgets/main_cover.dart';
 import 'package:gatrabali/view/widgets/main_featured.dart';
@@ -105,16 +106,23 @@ class _LatestNewsState extends State<LatestNews> {
           ])
         ])),
         SliverList(
-            delegate: SliverChildListDelegate(
-                entries.map((entry) => _listItem(ctx, entry)).toList()))
+            delegate: SliverChildListDelegate(entries
+                .asMap()
+                .map((index, entry) =>
+                    MapEntry(index, _listItem(ctx, index, entry)))
+                .values
+                .toList()))
       ],
     );
   }
 
-  Widget _listItem(BuildContext ctx, Entry entry) {
+  Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
         padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: SingleNewsNoCard(
-            key: ValueKey(entry.id), entry: entry, showCategoryName: true));
+        child: index > 0 // the first item use card
+            ? SingleNewsNoCard(
+                key: ValueKey(entry.id), entry: entry, showCategoryName: true)
+            : SingleNewsCard(
+                key: ValueKey(entry.id), entry: entry, showCategoryName: true));
   }
 }

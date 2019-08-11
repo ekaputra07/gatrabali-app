@@ -4,6 +4,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
+import 'package:gatrabali/view/widgets/reaction_labels.dart';
 import 'package:gatrabali/view/single_news.dart';
 
 class SingleNewsCard extends StatelessWidget {
@@ -39,7 +40,10 @@ class SingleNewsCard extends StatelessWidget {
                 )),
             subtitle: Padding(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
-                child: Text(subTitle, maxLines: 1)),
+                child: Row(children: [
+                  Opacity(opacity: 0.8, child: ReactionLabels(entry)),
+                  Text(subTitle, maxLines: 1)
+                ])),
             onTap: () {
               _openDetail(ctx, categoryName);
             },

@@ -6,6 +6,11 @@ class Entry {
   int categoryId;
   int feedId;
   int publishedAt;
+  int reactionHappyCount;
+  int reactionSurpriseCount;
+  int reactionSadCount;
+  int reactionAngryCount;
+  int commentCount;
   String title;
   String url;
   String content;
@@ -49,6 +54,11 @@ class Entry {
     e.publishedAt = json["published_at"];
     e.feedId = json['feed_id'];
     e.categoryId = json['category_id'];
+    e.reactionHappyCount = json['reaction_happy_count'];
+    e.reactionSurpriseCount = json['reaction_surprise_count'];
+    e.reactionSadCount = json['reaction_sad_count'];
+    e.reactionAngryCount = json['reaction_angry_count'];
+    e.commentCount = json['comment_count'];
     if (json['author'] != null) e.author = json['author'];
     if (json['enclosures'] != null) e.picture = json['enclosures'][0]['url'];
     return e;
