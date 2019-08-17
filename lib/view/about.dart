@@ -6,7 +6,7 @@ import 'package:launch_review/launch_review.dart';
 import 'package:gatrabali/config.dart';
 
 class About extends StatelessWidget {
-  static final routeName = '/About';
+  static final routeName = 'About';
 
   void _rate() {
     LaunchReview.launch(androidAppId: ANDROID_APP_ID, iOSAppId: IOS_APP_ID);

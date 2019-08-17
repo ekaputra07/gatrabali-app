@@ -22,7 +22,7 @@ class CategoryNewsArgs {
 }
 
 class CategoryNews extends StatefulWidget {
-  static final String routeName = '/CategoryNews';
+  static final String routeName = 'CategoryNews';
   final int categoryId;
   final String categoryName;
   final AppModel model;

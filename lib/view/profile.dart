@@ -5,7 +5,7 @@ import 'package:gatrabali/auth.dart';
 import 'package:gatrabali/models/user.dart';
 
 class Profile extends StatefulWidget {
-  static final routeName = '/Profile';
+  static final routeName = 'Profile';
   final Auth auth;
   final bool closeAfterLogin;
 
