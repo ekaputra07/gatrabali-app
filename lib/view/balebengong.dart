@@ -28,14 +28,12 @@ class _BaleBengongState extends State<BaleBengong> {
     AppModel.of(context).addListener(() {
       if (!mounted) return;
       final model = AppModel.of(context);
-      if (model.whatIsChanged == 'currentUser') {
-        if (model.currentUser == null) {
-          setState(() {
-            _subscription = null;
-          });
-        } else {
-          _loadSubscription();
-        }
+      if (model.currentUser == null) {
+        setState(() {
+          _subscription = null;
+        });
+      } else {
+        _loadSubscription();
       }
     });
 

@@ -147,6 +147,14 @@ class EntryService {
     }).catchError((err) => print(err));
   }
 
+  /// Returns bookmarks snapshot
+  static Stream<QuerySnapshot> bookmarksSnapshot(String userId) {
+    return Firestore.instance
+        .collection('users/$userId/bookmarks')
+        .orderBy('bookmarked_at', descending: true)
+        .snapshots();
+  }
+
   /// Return entry by ID
   static Future<Entry> getEntryById(int id, {int categoryID, int feedID}) {
     var url = '$API_HOST/entries/$id';

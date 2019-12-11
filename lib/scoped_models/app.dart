@@ -8,8 +8,6 @@ import 'package:gatrabali/models/user.dart';
 class AppModel extends Model {
   List<Feed> feeds = <Feed>[];
   User currentUser;
-  int selectedTabIndex;
-  String whatIsChanged;
   RemoteConfig remoteConfig;
 
   Map<int, String> categories = {
@@ -36,19 +34,11 @@ class AppModel extends Model {
 
   void setFeeds(List<Feed> feeds) {
     this.feeds = feeds;
-    this.whatIsChanged = 'feeds';
-    notifyListeners();
-  }
-
-  void setSelectedTabIndex(int index) {
-    this.selectedTabIndex = index;
-    this.whatIsChanged = 'selectedTabIndex';
     notifyListeners();
   }
 
   void setUser(User user) {
     this.currentUser = user;
-    this.whatIsChanged = 'currentUser';
     print("currentUser SET: $user");
     notifyListeners();
   }
