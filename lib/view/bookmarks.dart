@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'dart:async';
 
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/repository/entries.dart';
-import 'package:gatrabali/models/user.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/view/widgets/cover_image_decoration.dart';
 import 'package:gatrabali/view/widgets/char_thumbnail.dart';
@@ -15,6 +15,7 @@ class Bookmarks extends StatefulWidget {
 }
 
 class _BookmarksState extends State<Bookmarks> {
+  StreamSubscription _snapshotSubscription;
   List<BookmarkEntry> _entries = <BookmarkEntry>[];
 
   @override
@@ -23,28 +24,26 @@ class _BookmarksState extends State<Bookmarks> {
       if (!mounted) return;
 
       final model = AppModel.of(context);
-      final whatIsChanged = model.whatIsChanged;
-      // - reload bookmarks when bookmarks screen visible
-      // - load bookmarks when user state changed from loggged-out to logged-in.
-      if (whatIsChanged == 'selectedTabIndex' &&
-          model.selectedTabIndex == 3 &&
-          model.currentUser != null) {
-        _loadBookmarks(model.currentUser);
-      } else if (whatIsChanged == 'currentUser' && model.currentUser != null) {
-        setState(() {
-          _loadBookmarks(model.currentUser);
+      // - listen for bookmarks changes when user state changed from loggged-out to logged-in.
+      if (model.currentUser != null) {
+        _snapshotSubscription =
+            EntryService.bookmarksSnapshot(model.currentUser.id)
+                .listen((snaps) {
+          setState(() {
+            _entries = snaps.documents
+                .map((d) => BookmarkEntry.fromDocument(d))
+                .toList();
+          });
         });
       }
     });
     super.initState();
   }
 
-  void _loadBookmarks(User user) {
-    EntryService.getBookmarks(user.id).then((entries) {
-      setState(() {
-        _entries = entries;
-      });
-    }).catchError((err) => print(err));
+  @override
+  void dispose() {
+    if (_snapshotSubscription != null) _snapshotSubscription.cancel();
+    super.dispose();
   }
 
   void _deleteBookmark(BookmarkEntry bookmarkEntry) {
@@ -53,9 +52,6 @@ class _BookmarksState extends State<Bookmarks> {
     entry.id = bookmarkEntry.entryId;
 
     EntryService.bookmark(user.id, entry, delete: true).then((_) {
-      setState(() {
-        _entries.removeWhere((e) => e.entryId == bookmarkEntry.entryId);
-      });
       Toast.show('Berita dihapus', context, backgroundColor: Colors.black);
     }).catchError((err) {
       print(err);
