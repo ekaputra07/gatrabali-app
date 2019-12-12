@@ -121,7 +121,20 @@ class _CategoryEntriesState extends State<CategoryEntries>
       padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: _entries.length,
       itemBuilder: (BuildContext ctx, int index) {
-        return _listItem(ctx, index, _entries[index]);
+        if (index == 1) {
+          return Container(
+              padding: EdgeInsets.all(12),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text("Aktifkan Notifikasi",
+                    style: TextStyle(
+                        color: Colors.grey, fontWeight: FontWeight.w500)),
+                SizedBox(width: 5),
+                Icon(Icons.notifications_none, color: Colors.grey)
+              ]));
+        } else {
+          return _listItem(ctx, index, _entries[index]);
+        }
       },
     );
   }
