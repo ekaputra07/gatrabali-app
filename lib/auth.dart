@@ -15,8 +15,8 @@ class Auth {
   Auth(this.model);
 
   Future<User> anonymousSignIn() {
-    return _auth.signInAnonymously().then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+    return _auth.signInAnonymously().then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 
@@ -28,19 +28,15 @@ class Auth {
       return GoogleAuthProvider.getCredential(
           idToken: auth.idToken, accessToken: auth.accessToken);
     }).then((credential) {
-      if (linkAccount) {
-        return _auth.linkWithCredential(credential);
-      } else {
-        return _auth.signInWithCredential(credential);
-      }
-    }).then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+      return _auth.signInWithCredential(credential);
+    }).then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 
   Future<User> facebookSignIn({bool linkAccount = false}) {
     final _facebookSignin = FacebookLogin();
-    return _facebookSignin.logInWithReadPermissions(['email']).then((result) {
+    return _facebookSignin.logIn(['email']).then((result) {
       if (result.status == FacebookLoginStatus.cancelledByUser) {
         throw Exception('Facebook login cancelled');
       }
@@ -50,13 +46,9 @@ class Auth {
       return FacebookAuthProvider.getCredential(
           accessToken: result.accessToken.token);
     }).then((credential) {
-      if (linkAccount) {
-        return _auth.linkWithCredential(credential);
-      } else {
-        return _auth.signInWithCredential(credential);
-      }
-    }).then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+      return _auth.signInWithCredential(credential);
+    }).then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 

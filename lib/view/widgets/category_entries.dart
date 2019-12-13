@@ -5,6 +5,7 @@ import 'package:gatrabali/repository/entries.dart';
 import 'package:gatrabali/view/widgets/single_news_card.dart';
 import 'package:gatrabali/view/widgets/single_news_nocard.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:gatrabali/scoped_models/app.dart';
 
 class CategoryEntries extends StatefulWidget {
   final int categoryId;
@@ -30,6 +31,20 @@ class _CategoryEntriesState extends State<CategoryEntries>
   void initState() {
     _refreshController = RefreshController(initialRefresh: false);
     _refreshEntries();
+
+    // Listen for auth state changes
+    AppModel.of(context).addListener(() {
+      final model = AppModel.of(context);
+      if (model.currentUser == null) {
+        setState(() {
+          print('no user init');
+          // _subscription = null;
+        });
+      } else {
+        print('load subscription init');
+        // _loadSubscription();
+      }
+    });
     super.initState();
   }
 
@@ -84,7 +99,7 @@ class _CategoryEntriesState extends State<CategoryEntries>
   Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
         padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: index == 0
+        child: index == 1
             ? SingleNewsCard(
                 key: ValueKey(entry.id),
                 entry: entry,
@@ -121,7 +136,7 @@ class _CategoryEntriesState extends State<CategoryEntries>
       padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: _entries.length,
       itemBuilder: (BuildContext ctx, int index) {
-        if (index == 1) {
+        if (index == 0) {
           return Container(
               padding: EdgeInsets.all(12),
               child:
