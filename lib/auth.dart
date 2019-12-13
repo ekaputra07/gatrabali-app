@@ -28,7 +28,13 @@ class Auth {
       return GoogleAuthProvider.getCredential(
           idToken: auth.idToken, accessToken: auth.accessToken);
     }).then((credential) {
-      return _auth.signInWithCredential(credential);
+      if (linkAccount) {
+        return _auth
+            .currentUser()
+            .then((currentUser) => currentUser.linkWithCredential(credential));
+      } else {
+        return _auth.signInWithCredential(credential);
+      }
     }).then((authResult) {
       return Auth.userFromFirebaseUser(authResult.user);
     });
@@ -46,7 +52,13 @@ class Auth {
       return FacebookAuthProvider.getCredential(
           accessToken: result.accessToken.token);
     }).then((credential) {
-      return _auth.signInWithCredential(credential);
+      if (linkAccount) {
+        return _auth
+            .currentUser()
+            .then((currentUser) => currentUser.linkWithCredential(credential));
+      } else {
+        return _auth.signInWithCredential(credential);
+      }
     }).then((authResult) {
       return Auth.userFromFirebaseUser(authResult.user);
     });
@@ -83,10 +95,12 @@ class Auth {
     var avatar = isAnon ? DEFAULT_AVATAR_IMAGE : firebaseUser.photoUrl;
 
     if (!isAnon && firebaseUser.providerData.isNotEmpty) {
-      var info = firebaseUser.providerData.first;
+      var info = firebaseUser.providerData.firstWhere((i) {
+        return i.displayName != null && i.displayName.trim().length > 0;
+      });
       provider = info.providerId;
       name = info.displayName;
-      avatar = info.photoUrl;
+      avatar = info.photoUrl != null ? info.photoUrl : DEFAULT_AVATAR_IMAGE;
     }
 
     return User(

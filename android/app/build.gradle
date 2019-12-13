@@ -30,6 +30,7 @@ keyProperties.load(new FileInputStream(keyPropertiesFile))
 
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -79,5 +80,3 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     compile 'androidx.multidex:multidex:2.0.0'
 }
-
-apply plugin: 'com.google.gms.google-services'
