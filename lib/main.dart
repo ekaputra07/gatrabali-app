@@ -164,13 +164,15 @@ class _GatraBaliState extends State<GatraBali> {
 
   // TODO: Move this code to its own package
   void _handleMessagingData(Map<String, dynamic> message) {
-    // final dataType = message["data_type"];
-    final entryId = int.parse(message["entry_id"]);
-    final entryTitle = message["entry_title"];
-    final categoryId = int.parse(message["category_id"]);
-    final categoryTitle = message["category_title"];
-    final feedId = int.parse(message["feed_id"]);
-    final publishedAt = int.parse(message["published_at"]);
+    final data = message["data"];
+
+    // final dataType = data["data_type"];
+    final entryId = int.parse(data["entry_id"]);
+    final entryTitle = data["entry_title"];
+    final categoryId = int.parse(data["category_id"]);
+    final categoryTitle = data["category_title"];
+    final feedId = int.parse(data["feed_id"]);
+    final publishedAt = int.parse(data["published_at"]);
 
     var entry = Entry();
     entry.categoryId = categoryId;
