@@ -99,7 +99,7 @@ class _CategoryEntriesState extends State<CategoryEntries>
   Widget _listItem(BuildContext ctx, int index, Entry entry) {
     return Padding(
         padding: new EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: index == 1
+        child: index == 0
             ? SingleNewsCard(
                 key: ValueKey(entry.id),
                 entry: entry,
@@ -136,20 +136,7 @@ class _CategoryEntriesState extends State<CategoryEntries>
       padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: _entries.length,
       itemBuilder: (BuildContext ctx, int index) {
-        if (index == 0) {
-          return Container(
-              padding: EdgeInsets.all(12),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text("Aktifkan Notifikasi",
-                    style: TextStyle(
-                        color: Colors.grey, fontWeight: FontWeight.w500)),
-                SizedBox(width: 5),
-                Icon(Icons.notifications_none, color: Colors.grey)
-              ]));
-        } else {
-          return _listItem(ctx, index, _entries[index]);
-        }
+        return _listItem(ctx, index, _entries[index]);
       },
     );
   }
