@@ -15,24 +15,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: 0.8.2+3
-  firebase_auth: 0.7.0 #https://flutter.dev/docs/development/packages-and-plugins/androidx-compatibility#avoiding-androidx
-  google_sign_in: 3.2.4
-  firebase_messaging: 2.1.0
-  firebase_remote_config: 0.0.6+1
-  flutter_facebook_login: 1.2.0
+  cloud_firestore: ^0.13.0+1
+  firebase_auth: ^0.15.2
+  google_sign_in: ^4.1.0
+  firebase_messaging: ^6.0.9
+  firebase_remote_config: ^0.3.0+1
+  flutter_facebook_login: ^3.0.0
   flutter_html: ^0.9.4
   url_launcher: ^5.0.1
   scoped_model: ^1.0.1
   share: 0.6.0+1
   http: ^0.12.0+2
-  pull_to_refresh: ^1.3.9
+  pull_to_refresh: 1.3.9
   toast: ^0.1.3
   launch_review: ^2.0.0
-  cached_network_image: ^1.0.0
+  cached_network_image: 2.0.0-rc
   timeago: ^2.0.17
   basic_utils: ^1.3.0
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.3+5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

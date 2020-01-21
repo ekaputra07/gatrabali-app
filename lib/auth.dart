@@ -15,8 +15,8 @@ class Auth {
   Auth(this.model);
 
   Future<User> anonymousSignIn() {
-    return _auth.signInAnonymously().then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+    return _auth.signInAnonymously().then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 
@@ -29,18 +29,20 @@ class Auth {
           idToken: auth.idToken, accessToken: auth.accessToken);
     }).then((credential) {
       if (linkAccount) {
-        return _auth.linkWithCredential(credential);
+        return _auth
+            .currentUser()
+            .then((currentUser) => currentUser.linkWithCredential(credential));
       } else {
         return _auth.signInWithCredential(credential);
       }
-    }).then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+    }).then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 
   Future<User> facebookSignIn({bool linkAccount = false}) {
     final _facebookSignin = FacebookLogin();
-    return _facebookSignin.logInWithReadPermissions(['email']).then((result) {
+    return _facebookSignin.logIn(['email']).then((result) {
       if (result.status == FacebookLoginStatus.cancelledByUser) {
         throw Exception('Facebook login cancelled');
       }
@@ -51,12 +53,14 @@ class Auth {
           accessToken: result.accessToken.token);
     }).then((credential) {
       if (linkAccount) {
-        return _auth.linkWithCredential(credential);
+        return _auth
+            .currentUser()
+            .then((currentUser) => currentUser.linkWithCredential(credential));
       } else {
         return _auth.signInWithCredential(credential);
       }
-    }).then((firebaseUser) {
-      return Auth.userFromFirebaseUser(firebaseUser);
+    }).then((authResult) {
+      return Auth.userFromFirebaseUser(authResult.user);
     });
   }
 
@@ -91,10 +95,12 @@ class Auth {
     var avatar = isAnon ? DEFAULT_AVATAR_IMAGE : firebaseUser.photoUrl;
 
     if (!isAnon && firebaseUser.providerData.isNotEmpty) {
-      var info = firebaseUser.providerData.first;
+      var info = firebaseUser.providerData.firstWhere((i) {
+        return i.displayName != null && i.displayName.trim().length > 0;
+      });
       provider = info.providerId;
       name = info.displayName;
-      avatar = info.photoUrl;
+      avatar = info.photoUrl != null ? info.photoUrl : DEFAULT_AVATAR_IMAGE;
     }
 
     return User(
