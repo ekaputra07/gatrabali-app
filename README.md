@@ -1,4 +1,4 @@
-# Gatra Bali - Balinese News Reader
+# MadeKumis (formerly Gatra Bali) - Balinese News Reader
 
 Balinese news reader app. Now available on Google Play:
 
