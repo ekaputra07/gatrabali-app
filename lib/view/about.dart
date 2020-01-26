@@ -14,14 +14,14 @@ class About extends StatelessWidget {
 
   void _share() {
     Share.share(
-        "Dapatkan berita bali terkini dengan aplikasi MadeKumis. Download disini http://bit.ly/gatrabali");
+        "Dapatkan berita bali terkini dengan aplikasi Balikabar. Download disini http://bit.ly/gatrabali");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Tentang MadeKumis'),
+          title: Text('Tentang Balikabar'),
           elevation: 0,
         ),
         body: SingleChildScrollView(
@@ -32,7 +32,7 @@ class About extends StatelessWidget {
               Image.asset('assets/images/icon.png', width: 80, height: 80),
               SizedBox(height: 20),
               Text(
-                'MadeKumis mengumpulkan berita dari berbagai sumber berita online membuatnya mudah dibaca hanya dengan satu aplikasi.',
+                'Balikabar mengumpulkan berita dari berbagai sumber berita online membuatnya mudah dibaca hanya dengan satu aplikasi.',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -56,7 +56,7 @@ class About extends StatelessWidget {
               SizedBox(
                 height: 10.0,
               ),
-              Text('Dukung MadeKumis:',
+              Text('Dukung Balikabar:',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
               SizedBox(
@@ -88,7 +88,7 @@ class About extends StatelessWidget {
               Divider(),
               SizedBox(height: 10.0),
               Text(
-                'MadeKumis merupakan sebuah proyek Open Source (Sumber Terbuka), apabila anda ingin berkontribusi dalam pengembangannya silahkan cek kodenya di:',
+                'Balikabar merupakan sebuah proyek Open Source (Sumber Terbuka), apabila anda ingin berkontribusi dalam pengembangannya silahkan cek kodenya di:',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13.0, color: Colors.grey),
               ),
@@ -114,7 +114,7 @@ class About extends StatelessWidget {
                 height: 20.0,
               ),
               Text(
-                'MadeKumis v$APP_VERSION',
+                'Balikabar v$APP_VERSION',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 13.0,

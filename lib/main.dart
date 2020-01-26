@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'MadeKumis',
+        title: 'Balikabar',
         theme: ThemeData(primarySwatch: Colors.green),
         onGenerateRoute: _generateRoute,
         home: ScopedModel<AppModel>(
