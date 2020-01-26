@@ -14,7 +14,7 @@ class About extends StatelessWidget {
 
   void _share() {
     Share.share(
-        "Dapatkan berita bali terkini dengan aplikasi Balikabar. Download disini http://bit.ly/gatrabali");
+        "Dapatkan berita bali terkini dengan aplikasi Balikabar. Download disini http://bit.ly/balikabar");
   }
 
   @override
