@@ -166,7 +166,7 @@ class _SingleNews extends State<SingleNews> {
                 child: IconButton(
                     onPressed: () {
                       Share.share(
-                          "${_entry.url} via Balikabar App (http://bit.ly/balikabar)");
+                          "${_entry.url} via BaliFeed App (http://bit.ly/balifeed)");
                     },
                     icon: Icon(Icons.share)))
           ]),

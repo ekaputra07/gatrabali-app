@@ -1,4 +1,4 @@
-# Balikabar (formerly Gatra Bali) - Balinese News Reader App
+# BaliFeed (formerly Gatra Bali) - Balinese News Reader App
 
 Balinese news reader app. Now available on Google Play:
 

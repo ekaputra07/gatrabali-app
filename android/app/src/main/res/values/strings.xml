@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Balikabar</string>
+    <string name="app_name">BaliFeed</string>
     <string name="facebook_app_id">2368814269843022</string>
     <string name="fb_login_protocol_scheme">fb2368814269843022</string>
 </resources>

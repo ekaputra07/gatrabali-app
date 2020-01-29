@@ -306,7 +306,7 @@ class _ProfileState extends State<Profile> {
           SizedBox(height: 20.0),
           !_user.isAnonymous
               ? Text(
-                  'Terima kasih telah membuat akun di Balikabar. Anda bisa menyimpan, mengaktifkan notifikasi berita serta otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
+                  'Terima kasih telah membuat akun di BaliFeed. Anda bisa menyimpan, mengaktifkan notifikasi berita serta otomatis tersingkronisasi dengan perangkat lain apabila anda login dengan akun yang sama.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14.0, color: Colors.grey),
                 )
@@ -377,7 +377,7 @@ class _ProfileState extends State<Profile> {
           _loginButton('facebook', _facebookButton(_facebookSignIn)),
           SizedBox(height: 15.0),
           Text(
-            'Login dengan akun Facebook atau Google membuat anda secara otomatis bisa menggunakan fitur Komentar, Komunitas, dll. yang akan hadir di versi Balikabar berikutnya.',
+            'Login dengan akun Facebook atau Google membuat anda secara otomatis bisa menggunakan fitur Komentar, Komunitas, dll. yang akan hadir di versi BaliFeed berikutnya.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13.0, color: Colors.grey),
           )

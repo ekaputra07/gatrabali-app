@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Balikabar</string>
+	<string>BaliFeed</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -55,7 +55,7 @@
 	<key>FacebookAppID</key>
     <string>0000000000</string>
     <key>FacebookDisplayName</key>
-    <string>Balikabar</string>
+    <string>BaliFeed</string>
 	
 	<key>CFBundleURLTypes</key>
 	<array>
