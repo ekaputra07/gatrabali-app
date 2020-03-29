@@ -18,6 +18,7 @@ import 'package:gatrabali/view/category_news.dart';
 import 'package:gatrabali/view/single_news.dart';
 import 'package:gatrabali/view/balebengong.dart';
 import 'package:gatrabali/view/about.dart';
+import 'package:gatrabali/view/comments.dart';
 
 void main() => runApp(MyApp());
 
@@ -71,6 +72,11 @@ class MyApp extends StatelessWidget {
     if (settings.name == About.routeName) {
       return MaterialPageRoute(
           builder: (context) => About(), fullscreenDialog: true);
+    }
+    // handles /Comments
+    if (settings.name == Comments.routeName) {
+      return MaterialPageRoute(
+          builder: (context) => Comments(), fullscreenDialog: false);
     }
     return null;
   }
