@@ -132,7 +132,8 @@ class _ReactionBlock extends State<ReactionBlock> {
                   elevation: 1,
                   padding: EdgeInsets.all(15),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(Comments.routeName);
+                    Navigator.of(context).pushNamed(Comments.routeName,
+                        arguments: CommentsArgs(this.widget.entry));
                   },
                   color: Colors.white,
                   child:

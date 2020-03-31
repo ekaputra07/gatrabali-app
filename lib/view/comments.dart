@@ -1,48 +1,79 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/scoped_models/app.dart';
+import 'package:gatrabali/view/profile.dart';
+
+class CommentsArgs {
+  Entry entry;
+  CommentsArgs(this.entry);
+}
 
 class Comments extends StatelessWidget {
   static final routeName = '/Comments';
 
+  final Entry entry;
+  final AppModel model;
+
+  Comments({this.model, this.entry});
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
-      appBar: new AppBar(title: new Text('Komentar')),
-      body: new ChatScreen(),
+      appBar: AppBar(title: Text('Komentar')),
+      body: ScopedModel(model: this.model, child: ChatScreen(this.entry)),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
+  final Entry entry;
+
+  ChatScreen(this.entry);
+
   @override
-  State createState() => new ChatScreenState();
+  State createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  bool isLoading;
+  bool _loading;
 
-  final TextEditingController textEditingController =
-      new TextEditingController();
-  final ScrollController listScrollController = new ScrollController();
-  final FocusNode focusNode = new FocusNode();
+  final TextEditingController textEditingController = TextEditingController();
+  final ScrollController listScrollController = ScrollController();
+  final FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    focusNode.addListener(onFocusChange);
-    isLoading = false;
+    focusNode.addListener(_onFocusChange);
+    _loading = false;
   }
 
-  void onFocusChange() {
-    if (focusNode.hasFocus) {}
+  // open login/profile screen
+  void _login() {
+    Navigator.of(context).pushNamed(Profile.routeName, arguments: true);
   }
 
-  Future<bool> onBackPress() {
+  void _onFocusChange() async {
+    if (focusNode.hasFocus) {
+      print("FOCUS!");
+    } else {
+      print("NO FOCUS");
+    }
+  }
+
+  // handles back button/ device backpress
+  Future<bool> _onBackPress() {
     Navigator.pop(context);
     return Future.value(false);
   }
+
+  // send the comment
+  void _postComment() {}
 
   @override
   Widget build(BuildContext context) {
@@ -52,23 +83,23 @@ class ChatScreenState extends State<ChatScreen> {
           Column(
             children: [
               // List of messages
-              buildListMessage(),
+              _buildListMessage(),
               // Input content
-              buildInput(),
+              _buildInput()
             ],
           ),
 
           // Loading
-          buildLoading()
+          _buildLoading()
         ],
       ),
-      onWillPop: onBackPress,
+      onWillPop: _onBackPress,
     );
   }
 
-  Widget buildLoading() {
+  Widget _buildLoading() {
     return Positioned(
-      child: isLoading
+      child: _loading
           ? Container(
               child: Center(
                 child: CircularProgressIndicator(),
@@ -79,13 +110,42 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget buildInput() {
+  Widget _buildNeedLogin() {
+    return Padding(
+        child: ListTile(
+            onTap: _login,
+            leading: Icon(Icons.lock_outline, size: 40.0, color: Colors.green),
+            title: Text(
+                "Untuk bisa memberikan komentar silahkan login terlebih dahulu. Tap disini untuk login.")),
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0));
+  }
+
+  Widget _buildNeedUpgradeAccount() {
+    return Padding(
+        child: ListTile(
+            onTap: _login,
+            leading:
+                Icon(Icons.person_outline, size: 40.0, color: Colors.green),
+            title: Text(
+                "Silahkan login dengan akun media sosial anda sebelum bisa memberi komentar. Tap disini untuk login.")),
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0));
+  }
+
+  Widget _buildInput() {
+    final user = AppModel.of(context).currentUser;
+    if (user == null) {
+      return _buildNeedLogin();
+    }
+
+    if (user != null && user.isAnonymous) {
+      return _buildNeedUpgradeAccount();
+    }
+
     return Container(
         // height: height,
         width: double.infinity,
-        decoration: new BoxDecoration(
-            border: new Border(
-                top: new BorderSide(color: Colors.green, width: 0.5)),
+        decoration: BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.green, width: 0.5)),
             color: Colors.white),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,18 +174,22 @@ class ChatScreenState extends State<ChatScreen> {
             // Button send message
             Material(
               child: Container(
-                  padding: EdgeInsets.only(right: 20.0, left: 5.0),
+                padding: EdgeInsets.only(right: 20.0, left: 5.0),
+                child: GestureDetector(
                   child: Icon(
                     Icons.send,
                     size: 30.0,
-                  )),
+                  ),
+                  onTap: _postComment,
+                ),
+              ),
               color: Colors.white,
             ),
           ],
         ));
   }
 
-  Widget buildItem(int index) {
+  Widget _buildItem(int index) {
     return Container(
         padding: EdgeInsets.all(20.0),
         margin: EdgeInsets.only(bottom: 5.0),
@@ -156,27 +220,27 @@ class ChatScreenState extends State<ChatScreen> {
             ]));
   }
 
-  Widget buildListMessage() {
+  Widget _buildListMessage() {
     return Flexible(
         child: ListView(children: [
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
-      buildItem(1),
-      buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
+      _buildItem(1),
+      _buildItem(2),
     ]));
   }
 }

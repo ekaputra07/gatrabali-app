@@ -75,8 +75,9 @@ class MyApp extends StatelessWidget {
     }
     // handles /Comments
     if (settings.name == Comments.routeName) {
+      final CommentsArgs args = settings.arguments;
       return MaterialPageRoute(
-          builder: (context) => Comments(), fullscreenDialog: false);
+          builder: (context) => Comments(model: _model, entry: args.entry));
     }
     return null;
   }
