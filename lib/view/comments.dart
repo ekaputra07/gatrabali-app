@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:toast/toast.dart';
 
+import 'package:gatrabali/models/response.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/view/profile.dart';
+import 'package:gatrabali/repository/responses.dart';
 
 class CommentsArgs {
   Entry entry;
@@ -42,28 +45,14 @@ class ChatScreen extends StatefulWidget {
 class ChatScreenState extends State<ChatScreen> {
   bool _loading;
 
-  final TextEditingController textEditingController = TextEditingController();
-  final ScrollController listScrollController = ScrollController();
-  final FocusNode focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    focusNode.addListener(_onFocusChange);
     _loading = false;
-  }
-
-  // open login/profile screen
-  void _login() {
-    Navigator.of(context).pushNamed(Profile.routeName, arguments: true);
-  }
-
-  void _onFocusChange() async {
-    if (focusNode.hasFocus) {
-      print("FOCUS!");
-    } else {
-      print("NO FOCUS");
-    }
   }
 
   // handles back button/ device backpress
@@ -72,8 +61,43 @@ class ChatScreenState extends State<ChatScreen> {
     return Future.value(false);
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _textEditingController.dispose();
+    _focusNode.dispose();
+
+    super.dispose();
+  }
+
+  // open login/profile screen
+  void _login() {
+    Navigator.of(context).pushNamed(Profile.routeName, arguments: true);
+  }
+
   // send the comment
-  void _postComment() {}
+  void _postComment() async {
+    if (_textEditingController.text.trim().length == 0) return;
+
+    final userId = AppModel.of(context).currentUser.id;
+    var comment = Response.create(
+      TYPE_COMMENT,
+      widget.entry,
+      userId,
+      comment: _textEditingController.text,
+    );
+
+    try {
+      comment = await ResponseService.saveUserReaction(comment);
+      _textEditingController.clear();
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    } catch (err) {
+      print(err);
+      Toast.show('Maaf, komentar gagal terkirim!', context,
+          backgroundColor: Colors.red);
+      _textEditingController.text = comment.comment;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +181,7 @@ class ChatScreenState extends State<ChatScreen> {
                 child: TextField(
                   maxLines: 3,
                   style: TextStyle(fontSize: 15.0),
-                  controller: textEditingController,
+                  controller: _textEditingController,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.all(10.0),
@@ -166,7 +190,7 @@ class ChatScreenState extends State<ChatScreen> {
                     hintStyle: TextStyle(color: Colors.grey),
                     border: InputBorder.none,
                   ),
-                  focusNode: focusNode,
+                  focusNode: _focusNode,
                 ),
               ),
             ),
@@ -222,7 +246,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   Widget _buildListMessage() {
     return Flexible(
-        child: ListView(children: [
+        child: ListView(controller: _scrollController, children: [
       _buildItem(1),
       _buildItem(2),
       _buildItem(1),
