@@ -43,4 +43,24 @@ class ResponseService {
       });
     }
   }
+
+  static Future<List<Response>> getEntryComments(int entryId,
+      {int cursor = 0, int limit = 10}) {
+    return Firestore.instance
+        .collection(RESPONSES_COLLECTION)
+        .where("entry_id", isEqualTo: entryId)
+        .orderBy("created_at", descending: true)
+        // .startAfter([cursor])
+        .limit(limit)
+        .getDocuments()
+        .then((snaps) {
+          return snaps.documents.map((doc) {
+            return Response.fromDocument(doc);
+          }).toList();
+        })
+        .catchError((err) {
+          print(err);
+          return List<Response>();
+        });
+  }
 }

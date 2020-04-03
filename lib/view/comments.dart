@@ -43,16 +43,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  bool _loading;
-
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+
+  bool _loading;
+  List<Response> _comments = List<Response>();
 
   @override
   void initState() {
     super.initState();
     _loading = false;
+    _loadComments();
   }
 
   // handles back button/ device backpress
@@ -73,6 +75,14 @@ class ChatScreenState extends State<ChatScreen> {
   // open login/profile screen
   void _login() {
     Navigator.of(context).pushNamed(Profile.routeName, arguments: true);
+  }
+
+  void _loadComments() {
+    ResponseService.getEntryComments(widget.entry.id).then((comments) {
+      setState(() {
+        _comments = comments;
+      });
+    });
   }
 
   // send the comment
@@ -213,7 +223,7 @@ class ChatScreenState extends State<ChatScreen> {
         ));
   }
 
-  Widget _buildItem(int index) {
+  Widget _buildItem(Response comment) {
     return Container(
         padding: EdgeInsets.all(20.0),
         margin: EdgeInsets.only(bottom: 5.0),
@@ -233,38 +243,22 @@ class ChatScreenState extends State<ChatScreen> {
                     child: Text("Eka Putra",
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 15.0))),
-                Text("5 menit yang lalu",
+                Text(comment.formattedDate,
                     style: TextStyle(
                         fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
               ]),
               SizedBox(height: 10.0),
-              Text(
-                  "Komentar saya bagus sekali, By default, a TextField is decorated with an underline.\n\nTerima kasih bro",
-                  style: TextStyle(fontSize: 15.0))
+              Text(comment.comment, style: TextStyle(fontSize: 15.0))
             ]));
   }
 
   Widget _buildListMessage() {
     return Flexible(
-        child: ListView(controller: _scrollController, children: [
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-      _buildItem(1),
-      _buildItem(2),
-    ]));
+      child: ListView.builder(
+          itemCount: _comments.length,
+          itemBuilder: (ctx, index) {
+            return _buildItem(_comments[index]);
+          }),
+    );
   }
 }

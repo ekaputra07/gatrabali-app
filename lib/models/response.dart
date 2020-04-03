@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:gatrabali/models/entry.dart';
 
 // Types of response
@@ -23,6 +25,9 @@ class Response {
   int entryFeedId;
   int createdAt;
   int updatedAt;
+
+  String get formattedDate => timeago
+      .format(DateTime.fromMillisecondsSinceEpoch(createdAt), locale: 'id');
 
   static Response create(String type, Entry entry, String userId,
       {String reaction, String comment, String parentId}) {
