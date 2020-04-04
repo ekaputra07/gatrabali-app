@@ -50,6 +50,7 @@ class ResponseService {
         .collection(RESPONSES_COLLECTION)
         .where("entry_id", isEqualTo: entryId)
         .where("type", isEqualTo: TYPE_COMMENT)
+        .where("parent_id", isNull: true)
         .orderBy("created_at", descending: true)
         .limit(limit);
 

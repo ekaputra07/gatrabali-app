@@ -8,6 +8,7 @@ import 'package:gatrabali/models/response.dart';
 import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/scoped_models/app.dart';
 import 'package:gatrabali/view/profile.dart';
+import 'package:gatrabali/view/single_news.dart';
 import 'package:gatrabali/repository/responses.dart';
 
 class CommentsArgs {
@@ -28,8 +29,18 @@ class Comments extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
-          title: Text(
-              '${entry.commentCount == null ? 0 : entry.commentCount} komentar')),
+        title: Text(entry.title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.description),
+            onPressed: () {
+              Navigator.of(context).pushNamed(SingleNews.routeName,
+                  arguments: SingleNewsArgs("", entry));
+            },
+            padding: EdgeInsets.only(right: 15.0),
+          )
+        ],
+      ),
       body: ScopedModel(model: this.model, child: ChatScreen(this.entry)),
     );
   }
@@ -52,19 +63,16 @@ class ChatScreenState extends State<ChatScreen> {
 
   bool _loading = true;
   bool _loadingMore = false;
+  bool _posting = false;
   int _cursor;
+  Response _replyTo;
+  Response _replyToListParent;
   List<Response> _comments = List<Response>();
 
   @override
   void initState() {
     super.initState();
     _loadComments();
-  }
-
-  // handles back button/ device backpress
-  Future<bool> _onBackPress() {
-    Navigator.pop(context);
-    return Future.value(false);
   }
 
   @override
@@ -74,6 +82,12 @@ class ChatScreenState extends State<ChatScreen> {
     _focusNode.dispose();
 
     super.dispose();
+  }
+
+  // handles back button/ device backpress
+  Future<bool> _onBackPress() {
+    Navigator.pop(context);
+    return Future.value(false);
   }
 
   // open login/profile screen
@@ -124,22 +138,60 @@ class ChatScreenState extends State<ChatScreen> {
       widget.entry,
       user,
       comment: _textEditingController.text,
+      parentId: (_replyTo != null) ? _replyTo.id : null,
     );
 
     try {
-      comment = await ResponseService.saveUserReaction(comment);
       setState(() {
-        _comments.add(comment);
-        _textEditingController.clear();
+        _posting = true;
+      });
+
+      comment = await ResponseService.saveUserReaction(comment);
+
+      // add to main list or to parent
+      if (_replyToListParent == null) {
+        setState(() {
+          _comments.add(comment);
+        });
         _scrollController
             .jumpTo(_scrollController.position.maxScrollExtent + 100.0);
-      });
+      } else {
+        _comments.forEach((c) {
+          if (c.id == _replyToListParent.id) {
+            c.replies.add(comment);
+          }
+        });
+      }
+
+      // clear text edit
+      _textEditingController.clear();
+      // reset reply to
+      _resetReplyTo();
     } catch (err) {
       print(err);
       Toast.show('Maaf, komentar gagal terkirim!', context,
           backgroundColor: Colors.red);
       _textEditingController.text = comment.comment;
+    } finally {
+      setState(() {
+        _posting = false;
+      });
     }
+  }
+
+  void _setReplyTo(Response comment, Response listParent) {
+    setState(() {
+      _replyTo = comment;
+      _replyToListParent = listParent;
+      _focusNode.requestFocus();
+    });
+  }
+
+  void _resetReplyTo() {
+    setState(() {
+      _replyTo = null;
+      _replyToListParent = null;
+    });
   }
 
   @override
@@ -151,6 +203,7 @@ class ChatScreenState extends State<ChatScreen> {
             children: [
               // List of messages
               _buildListMessage(),
+              _buildReplyBar(),
               // Input content
               _buildInput()
             ],
@@ -162,6 +215,34 @@ class ChatScreenState extends State<ChatScreen> {
       ),
       onWillPop: _onBackPress,
     );
+  }
+
+  Widget _buildReplyBar() {
+    if (_replyTo == null) return Container();
+    return Container(
+        padding: EdgeInsets.all(12.0),
+        width: double.infinity,
+        color: Colors.green,
+        child: Row(
+          children: [
+            Text(
+              "Membalas ${_replyTo.user.name}...",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            GestureDetector(
+              child: Icon(
+                Icons.close,
+                color: Colors.white,
+                size: 20.0,
+              ),
+              onTap: _resetReplyTo,
+            )
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ));
   }
 
   Widget _buildLoading() {
@@ -242,13 +323,20 @@ class ChatScreenState extends State<ChatScreen> {
             Material(
               child: Container(
                 padding: EdgeInsets.only(right: 20.0, left: 5.0),
-                child: GestureDetector(
-                  child: Icon(
-                    Icons.send,
-                    size: 30.0,
-                  ),
-                  onTap: _postComment,
-                ),
+                child: _posting
+                    ? Container(
+                        child: CircularProgressIndicator(strokeWidth: 2.0),
+                        width: 30.0,
+                        height: 30.0,
+                      )
+                    : GestureDetector(
+                        child: Icon(
+                          Icons.send,
+                          size: 30.0,
+                          color: Colors.green,
+                        ),
+                        onTap: _postComment,
+                      ),
               ),
               color: Colors.white,
             ),
@@ -278,9 +366,8 @@ class ChatScreenState extends State<ChatScreen> {
                   "Komentar sebelumnya...",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.grey,
                     fontSize: 15.0,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 onTap: () {
@@ -302,19 +389,115 @@ class ChatScreenState extends State<ChatScreen> {
                 CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage: NetworkImage(comment.user.avatar),
-                  radius: 18.0,
+                  radius: 20.0,
                 ),
                 SizedBox(width: 10.0),
-                Expanded(
-                    child: Text(comment.user.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15.0))),
-                Text(comment.formattedDate,
-                    style: TextStyle(
-                        fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(comment.user.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 15.0)),
+                  Text(comment.formattedDate,
+                      style: TextStyle(
+                          fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
+                ]),
               ]),
-              SizedBox(height: 10.0),
-              Text(comment.comment, style: TextStyle(fontSize: 15.0))
+              SizedBox(height: 15.0),
+              Text(comment.comment, style: TextStyle(fontSize: 15.0)),
+              SizedBox(height: 15.0),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Expanded(
+                  child: GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        "1 balasan",
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey),
+                      )),
+                ),
+                Icon(
+                  Icons.reply,
+                  size: 16.0,
+                  color: Colors.grey,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      _setReplyTo(comment, comment);
+                    },
+                    child: Text(
+                      "Balas",
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey),
+                    )),
+              ]),
+              comment.replies.length == 0
+                  ? Container()
+                  : Column(children: [
+                      SizedBox(height: 15.0),
+                      _buildReplies(comment, comment)
+                    ])
+            ]));
+  }
+
+  Widget _buildReplies(Response comment, Response listParent) {
+    if (comment.replies.length == 0) return Container();
+
+    comment.replies.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    return Column(
+      children: comment.replies.map((c) => _buildReply(c, listParent)).toList(),
+    );
+  }
+
+  Widget _buildReply(Response comment, Response listParent) {
+    // render response
+    return Container(
+        padding: EdgeInsets.all(15.0),
+        margin: EdgeInsets.only(bottom: 5.0),
+        color: Colors.grey.withOpacity(0.1),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(comment.user.avatar),
+                  radius: 15.0,
+                ),
+                SizedBox(width: 10.0),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(comment.user.name,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 14.0)),
+                  Text(comment.formattedDate,
+                      style: TextStyle(
+                          fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
+                ]),
+              ]),
+              SizedBox(height: 15.0),
+              Text(comment.comment, style: TextStyle(fontSize: 15.0)),
+              SizedBox(height: 15.0),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Icon(
+                  Icons.reply,
+                  size: 16.0,
+                  color: Colors.grey,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      _setReplyTo(comment, listParent);
+                    },
+                    child: Text(
+                      "Balas",
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey),
+                    )),
+              ])
             ]));
   }
 

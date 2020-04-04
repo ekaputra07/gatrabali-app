@@ -31,6 +31,8 @@ class Response {
   String userId;
   User user;
 
+  List<Response> replies = List<Response>();
+
   String get formattedDate => timeago
       .format(DateTime.fromMillisecondsSinceEpoch(createdAt), locale: 'id');
 
@@ -91,7 +93,7 @@ class Response {
   // for simplicity we duplicate some of the user and entry data.
   Map<String, dynamic> toJson() => {
         "type": type,
-        "parentId": parentId,
+        "parent_id": parentId,
         "reaction": reaction,
         "comment": comment,
         "created_at": createdAt,
