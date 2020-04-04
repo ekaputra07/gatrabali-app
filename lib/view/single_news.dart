@@ -142,7 +142,7 @@ class _SingleNews extends State<SingleNews> {
         ],
       ));
     }
-    return Center(child: CircularProgressIndicator());
+    return Center(child: CircularProgressIndicator(strokeWidth: 2));
   }
 
   Widget _getBody(BuildContext ctx) {

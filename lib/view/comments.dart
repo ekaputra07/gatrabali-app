@@ -27,7 +27,9 @@ class Comments extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white.withOpacity(0.95),
-      appBar: AppBar(title: Text('Komentar')),
+      appBar: AppBar(
+          title: Text(
+              '${entry.commentCount == null ? 0 : entry.commentCount} komentar')),
       body: ScopedModel(model: this.model, child: ChatScreen(this.entry)),
     );
   }
@@ -46,14 +48,16 @@ class ChatScreenState extends State<ChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  final _limit = 10;
 
-  bool _loading;
+  bool _loading = true;
+  bool _loadingMore = false;
+  int _cursor;
   List<Response> _comments = List<Response>();
 
   @override
   void initState() {
     super.initState();
-    _loading = false;
     _loadComments();
   }
 
@@ -77,10 +81,35 @@ class ChatScreenState extends State<ChatScreen> {
     Navigator.of(context).pushNamed(Profile.routeName, arguments: true);
   }
 
-  void _loadComments() {
-    ResponseService.getEntryComments(widget.entry.id).then((comments) {
+  void _loadComments({bool loadmore = false}) {
+    if (loadmore) {
       setState(() {
-        _comments = comments;
+        _loadingMore = true;
+      });
+    }
+
+    ResponseService.getEntryComments(
+      widget.entry.id,
+      limit: _limit,
+      cursor: _cursor,
+    ).then((comments) {
+      setState(() {
+        // set cursor value
+        if (comments.length < _limit) {
+          _cursor = null;
+        } else {
+          _cursor = comments.last.createdAt;
+        }
+
+        if (loadmore) {
+          // append
+          _loadingMore = false;
+          _comments.addAll(comments);
+        } else {
+          // replace
+          _loading = false;
+          _comments = comments;
+        }
       });
     });
   }
@@ -89,18 +118,22 @@ class ChatScreenState extends State<ChatScreen> {
   void _postComment() async {
     if (_textEditingController.text.trim().length == 0) return;
 
-    final userId = AppModel.of(context).currentUser.id;
+    final user = AppModel.of(context).currentUser;
     var comment = Response.create(
       TYPE_COMMENT,
       widget.entry,
-      userId,
+      user,
       comment: _textEditingController.text,
     );
 
     try {
       comment = await ResponseService.saveUserReaction(comment);
-      _textEditingController.clear();
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      setState(() {
+        _comments.add(comment);
+        _textEditingController.clear();
+        _scrollController
+            .jumpTo(_scrollController.position.maxScrollExtent + 100.0);
+      });
     } catch (err) {
       print(err);
       Toast.show('Maaf, komentar gagal terkirim!', context,
@@ -136,7 +169,7 @@ class ChatScreenState extends State<ChatScreen> {
       child: _loading
           ? Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeWidth: 2),
               ),
               color: Colors.white.withOpacity(0.8),
             )
@@ -224,6 +257,39 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildItem(Response comment) {
+    // render loadmore
+    if (comment.type == "LOADMORE") {
+      return Container(
+        padding: EdgeInsets.all(15.0),
+        margin: EdgeInsets.only(bottom: 5.0),
+        color: Colors.white,
+        child: _loadingMore
+            ? Center(
+                child: Container(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                  width: 20.0,
+                  height: 20.0,
+                ),
+                widthFactor: 1,
+                heightFactor: 1,
+              )
+            : GestureDetector(
+                child: Text(
+                  "Komentar sebelumnya...",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onTap: () {
+                  _loadComments(loadmore: true);
+                }),
+      );
+    }
+
+    // render response
     return Container(
         padding: EdgeInsets.all(20.0),
         margin: EdgeInsets.only(bottom: 5.0),
@@ -234,13 +300,13 @@ class ChatScreenState extends State<ChatScreen> {
             children: [
               Row(children: [
                 CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 18.0,
-                    child: Image.network(
-                        "https://firebasestorage.googleapis.com/v0/b/gatrabali.appspot.com/o/app%2Favatar.png?alt=media")),
+                  backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(comment.user.avatar),
+                  radius: 18.0,
+                ),
                 SizedBox(width: 10.0),
                 Expanded(
-                    child: Text("Eka Putra",
+                    child: Text(comment.user.name,
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 15.0))),
                 Text(comment.formattedDate,
@@ -253,11 +319,26 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildListMessage() {
+    final comments = List<Response>.from(_comments);
+    comments.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+    // if more comments possibly still available
+    // add fake response to commenrs so it will be rendered as Load more button.
+    // only loggedin user can load previous comments.
+    final user = AppModel.of(context).currentUser;
+    if (_cursor != null && user != null && !user.isAnonymous) {
+      final resp = Response();
+      resp.type = "LOADMORE";
+      comments.insertAll(0, [resp]);
+    }
+
     return Flexible(
       child: ListView.builder(
-          itemCount: _comments.length,
+          // reverse: true,
+          controller: _scrollController,
+          itemCount: comments.length,
           itemBuilder: (ctx, index) {
-            return _buildItem(_comments[index]);
+            return _buildItem(comments[index]);
           }),
     );
   }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:gatrabali/models/entry.dart';
+import 'package:gatrabali/models/user.dart';
 
 // Types of response
 const TYPE_COMMENT = "COMMENT";
@@ -16,28 +17,34 @@ const REACTION_ANGRY = "ANGRY";
 class Response {
   String id;
   String type;
-  String userId;
   String parentId;
   String reaction;
   String comment;
-  int entryId;
-  int entryCategoryId;
-  int entryFeedId;
   int createdAt;
   int updatedAt;
+
+  int entryId;
+  int entryCategoryId; // for backward compatibility with backend
+  int entryFeedId; // for backward compatibility with backend
+  Entry entry;
+
+  String userId;
+  User user;
 
   String get formattedDate => timeago
       .format(DateTime.fromMillisecondsSinceEpoch(createdAt), locale: 'id');
 
-  static Response create(String type, Entry entry, String userId,
+  static Response create(String type, Entry entry, User user,
       {String reaction, String comment, String parentId}) {
     final now = DateTime.now().millisecondsSinceEpoch;
     var r = Response();
     r.type = type;
-    r.userId = userId;
+    r.userId = user.id;
+    r.user = user;
     r.entryId = entry.id;
     r.entryCategoryId = entry.categoryId;
     r.entryFeedId = entry.feedId;
+    r.entry = entry;
     r.reaction = reaction;
     r.comment = comment;
     r.parentId = parentId;
@@ -51,29 +58,62 @@ class Response {
     var reaction = new Response();
     reaction.id = doc.documentID;
     reaction.type = data["type"];
-    reaction.userId = data["user_id"];
     reaction.parentId = data["parent_id"];
     reaction.reaction = data["reaction"];
     reaction.comment = data["comment"];
+    reaction.createdAt = data["created_at"];
+    reaction.updatedAt = data["updated_at"];
+
+    reaction.userId = data["user_id"];
+    reaction.user = User(
+      id: data["user"]["id"],
+      name: data["user"]["name"],
+      avatar: data["user"]["avatar"],
+    );
+
     reaction.entryId = data["entry_id"];
     reaction.entryCategoryId = data["entry_category_id"];
     reaction.entryFeedId = data["entry_feed_id"];
-    reaction.createdAt = data["created_at"];
-    reaction.updatedAt = data["updated_at"];
+
+    final entry = Entry();
+    entry.id = data["entry"]["id"];
+    entry.title = data["entry"]["title"];
+    entry.url = data["entry"]["url"];
+    entry.feedId = data["entry"]["feed_id"];
+    entry.categoryId = data["entry"]["category_id"];
+    entry.picture = data["entry"]["picture"];
+    entry.publishedAt = data["entry"]["published_at"];
+    reaction.entry = entry;
+
     return reaction;
   }
 
+  // for simplicity we duplicate some of the user and entry data.
   Map<String, dynamic> toJson() => {
         "type": type,
-        "user_id": userId,
         "parentId": parentId,
         "reaction": reaction,
         "comment": comment,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "user_id": userId,
+        "user": {
+          "id": user.id,
+          "name": user.name,
+          "avatar": user.avatar,
+        },
         "entry_id": entryId,
         "entry_category_id": entryCategoryId,
         "entry_feed_id": entryFeedId,
-        "created_at": createdAt,
-        "updated_at": updatedAt
+        "entry": {
+          "id": entry.id,
+          "title": entry.title,
+          "url": entry.url,
+          "feed_id": entry.feedId,
+          "category_id": entry.categoryId,
+          "picture": entry.picture,
+          "published_at": entry.publishedAt,
+        }
       };
 
   static List<Response> emptyList() {

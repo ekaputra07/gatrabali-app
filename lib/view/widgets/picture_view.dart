@@ -43,7 +43,8 @@ class _PictureViewState extends State<PictureView> {
               children: <Widget>[
                 CachedNetworkImage(
                   imageUrl: widget.url,
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) =>
+                      CircularProgressIndicator(strokeWidth: 2),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
                 SizedBox(height: 10),

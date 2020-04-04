@@ -45,22 +45,25 @@ class ResponseService {
   }
 
   static Future<List<Response>> getEntryComments(int entryId,
-      {int cursor = 0, int limit = 10}) {
-    return Firestore.instance
+      {int cursor, int limit = 10}) {
+    var query = Firestore.instance
         .collection(RESPONSES_COLLECTION)
         .where("entry_id", isEqualTo: entryId)
+        .where("type", isEqualTo: TYPE_COMMENT)
         .orderBy("created_at", descending: true)
-        // .startAfter([cursor])
-        .limit(limit)
-        .getDocuments()
-        .then((snaps) {
-          return snaps.documents.map((doc) {
-            return Response.fromDocument(doc);
-          }).toList();
-        })
-        .catchError((err) {
-          print(err);
-          return List<Response>();
-        });
+        .limit(limit);
+
+    if (cursor != null) {
+      query = query.startAfter([cursor]);
+    }
+
+    return query.getDocuments().then((snaps) {
+      return snaps.documents.map((doc) {
+        return Response.fromDocument(doc);
+      }).toList();
+    }).catchError((err) {
+      print(err);
+      return List<Response>();
+    });
   }
 }
