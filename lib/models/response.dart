@@ -18,8 +18,10 @@ class Response {
   String id;
   String type;
   String parentId;
+  String threadId;
   String reaction;
   String comment;
+  int replyCount;
   int createdAt;
   int updatedAt;
 
@@ -37,7 +39,7 @@ class Response {
       .format(DateTime.fromMillisecondsSinceEpoch(createdAt), locale: 'id');
 
   static Response create(String type, Entry entry, User user,
-      {String reaction, String comment, String parentId}) {
+      {String reaction, String comment, String parentId, String threadId}) {
     final now = DateTime.now().millisecondsSinceEpoch;
     var r = Response();
     r.type = type;
@@ -50,6 +52,7 @@ class Response {
     r.reaction = reaction;
     r.comment = comment;
     r.parentId = parentId;
+    r.threadId = threadId;
     r.createdAt = now;
     r.updatedAt = now;
     return r;
@@ -61,8 +64,10 @@ class Response {
     reaction.id = doc.documentID;
     reaction.type = data["type"];
     reaction.parentId = data["parent_id"];
+    reaction.threadId = data["thread_id"];
     reaction.reaction = data["reaction"];
     reaction.comment = data["comment"];
+    reaction.replyCount = data["reply_count"];
     reaction.createdAt = data["created_at"];
     reaction.updatedAt = data["updated_at"];
 
@@ -94,8 +99,10 @@ class Response {
   Map<String, dynamic> toJson() => {
         "type": type,
         "parent_id": parentId,
+        "thread_id": threadId,
         "reaction": reaction,
         "comment": comment,
+        "reply_count": replyCount,
         "created_at": createdAt,
         "updated_at": updatedAt,
         "user_id": userId,

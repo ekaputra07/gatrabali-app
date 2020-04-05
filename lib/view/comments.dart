@@ -63,10 +63,11 @@ class ChatScreenState extends State<ChatScreen> {
 
   bool _loading = true;
   bool _loadingMore = false;
+  String _loadingRepliesFor;
   bool _posting = false;
   int _cursor;
   Response _replyTo;
-  Response _replyToListParent;
+  Response _replyToThread;
   List<Response> _comments = List<Response>();
 
   @override
@@ -128,6 +129,24 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  void _loadReplies(Response comment) {
+    if (_loadingRepliesFor != null) return;
+
+    setState(() {
+      _loadingRepliesFor = comment.id;
+    });
+    ResponseService.getCommentReplies(comment.id).then((comments) {
+      setState(() {
+        _comments.forEach((c) {
+          if (c.id == comment.id) {
+            c.replies = comments;
+          }
+        });
+        _loadingRepliesFor = null;
+      });
+    });
+  }
+
   // send the comment
   void _postComment() async {
     if (_textEditingController.text.trim().length == 0) return;
@@ -139,6 +158,7 @@ class ChatScreenState extends State<ChatScreen> {
       user,
       comment: _textEditingController.text,
       parentId: (_replyTo != null) ? _replyTo.id : null,
+      threadId: (_replyToThread != null) ? _replyToThread.id : null,
     );
 
     try {
@@ -149,7 +169,7 @@ class ChatScreenState extends State<ChatScreen> {
       comment = await ResponseService.saveUserReaction(comment);
 
       // add to main list or to parent
-      if (_replyToListParent == null) {
+      if (_replyToThread == null) {
         setState(() {
           _comments.add(comment);
         });
@@ -157,7 +177,7 @@ class ChatScreenState extends State<ChatScreen> {
             .jumpTo(_scrollController.position.maxScrollExtent + 100.0);
       } else {
         _comments.forEach((c) {
-          if (c.id == _replyToListParent.id) {
+          if (c.id == _replyToThread.id) {
             c.replies.add(comment);
           }
         });
@@ -169,8 +189,11 @@ class ChatScreenState extends State<ChatScreen> {
       _resetReplyTo();
     } catch (err) {
       print(err);
-      Toast.show('Maaf, komentar gagal terkirim!', context,
-          backgroundColor: Colors.red);
+      Toast.show(
+        'Maaf, komentar gagal terkirim!',
+        context,
+        backgroundColor: Colors.red,
+      );
       _textEditingController.text = comment.comment;
     } finally {
       setState(() {
@@ -179,10 +202,13 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _setReplyTo(Response comment, Response listParent) {
+  void _setReplyTo(Response comment, Response thread) {
     setState(() {
       _replyTo = comment;
-      _replyToListParent = listParent;
+      _replyToThread = thread;
+      if (comment.id != thread.id) {
+        _textEditingController.text = "@${comment.user.name}, ";
+      }
       _focusNode.requestFocus();
     });
   }
@@ -190,8 +216,31 @@ class ChatScreenState extends State<ChatScreen> {
   void _resetReplyTo() {
     setState(() {
       _replyTo = null;
-      _replyToListParent = null;
+      _replyToThread = null;
     });
+  }
+
+  void _deleteComment(Response comment) async {
+    try {
+      await ResponseService.deleteComment(comment);
+
+      setState(() {
+        // try to remove from top level
+        final removed = _comments.remove(comment);
+        // not top level, remove reply
+        if (!removed) {
+          final thread = _comments.firstWhere((c) => c.id == comment.threadId);
+          thread.replies.remove(comment);
+        }
+      });
+    } catch (err) {
+      print(err);
+      Toast.show(
+        'Maaf, gagal menghapus komentar.',
+        context,
+        backgroundColor: Colors.red,
+      );
+    }
   }
 
   @override
@@ -344,6 +393,33 @@ class ChatScreenState extends State<ChatScreen> {
         ));
   }
 
+  Widget _buildCommentMenu(Response comment) {
+    final user = AppModel.of(context).currentUser;
+    // only owner can delete
+    if (user == null || user.isAnonymous || user.id != comment.userId)
+      return Container();
+
+    return PopupMenuButton<int>(
+      padding: EdgeInsets.all(1.0),
+      child: Icon(
+        Icons.more_horiz,
+        size: 18,
+        color: Colors.grey,
+      ),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 1,
+          child: Text("Hapus", style: TextStyle(fontSize: 15.0)),
+        ),
+      ],
+      onSelected: (int val) {
+        if (val == 1) {
+          _deleteComment(comment);
+        }
+      },
+    );
+  }
+
   Widget _buildItem(Response comment) {
     // render loadmore
     if (comment.type == "LOADMORE") {
@@ -392,29 +468,42 @@ class ChatScreenState extends State<ChatScreen> {
                   radius: 20.0,
                 ),
                 SizedBox(width: 10.0),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(comment.user.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 15.0)),
-                  Text(comment.formattedDate,
-                      style: TextStyle(
-                          fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
-                ]),
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(comment.user.name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15.0)),
+                        Text(comment.formattedDate,
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.grey.withOpacity(0.5))),
+                      ]),
+                ),
+                _buildCommentMenu(comment),
               ]),
               SizedBox(height: 15.0),
               Text(comment.comment, style: TextStyle(fontSize: 15.0)),
               SizedBox(height: 15.0),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Expanded(
-                  child: GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        "1 balasan",
-                        style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey),
-                      )),
+                  child: (comment.replyCount != null && comment.replyCount > 0)
+                      ? GestureDetector(
+                          onTap: () {
+                            _loadReplies(comment);
+                          },
+                          child: Text(
+                            (_loadingRepliesFor != null &&
+                                    _loadingRepliesFor == comment.id)
+                                ? "Memuat balasan..."
+                                : "${comment.replyCount} balasan",
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey),
+                          ))
+                      : Container(),
                 ),
                 Icon(
                   Icons.reply,
@@ -423,7 +512,8 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      _setReplyTo(comment, comment);
+                      _setReplyTo(
+                          comment, comment); // parent and thread are the same
                     },
                     child: Text(
                       "Balas",
@@ -442,16 +532,16 @@ class ChatScreenState extends State<ChatScreen> {
             ]));
   }
 
-  Widget _buildReplies(Response comment, Response listParent) {
+  Widget _buildReplies(Response comment, Response thread) {
     if (comment.replies.length == 0) return Container();
 
     comment.replies.sort((a, b) => a.createdAt.compareTo(b.createdAt));
     return Column(
-      children: comment.replies.map((c) => _buildReply(c, listParent)).toList(),
+      children: comment.replies.map((c) => _buildReply(c, thread)).toList(),
     );
   }
 
-  Widget _buildReply(Response comment, Response listParent) {
+  Widget _buildReply(Response comment, Response thread) {
     // render response
     return Container(
         padding: EdgeInsets.all(15.0),
@@ -468,14 +558,19 @@ class ChatScreenState extends State<ChatScreen> {
                   radius: 15.0,
                 ),
                 SizedBox(width: 10.0),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(comment.user.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 14.0)),
-                  Text(comment.formattedDate,
-                      style: TextStyle(
-                          fontSize: 12.0, color: Colors.grey.withOpacity(0.5))),
-                ]),
+                Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Text(comment.user.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 14.0)),
+                      Text(comment.formattedDate,
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.grey.withOpacity(0.5))),
+                    ])),
+                _buildCommentMenu(comment),
               ]),
               SizedBox(height: 15.0),
               Text(comment.comment, style: TextStyle(fontSize: 15.0)),
@@ -488,7 +583,8 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      _setReplyTo(comment, listParent);
+                      _setReplyTo(
+                          comment, thread); // thread is the level 0 response.
                     },
                     child: Text(
                       "Balas",
