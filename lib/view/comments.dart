@@ -185,6 +185,8 @@ class ChatScreenState extends State<ChatScreen> {
 
       // clear text edit
       _textEditingController.clear();
+      // remove focus from text edit
+      _focusNode.unfocus();
       // reset reply to
       _resetReplyTo();
     } catch (err) {
@@ -206,10 +208,12 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       _replyTo = comment;
       _replyToThread = thread;
+      _focusNode.unfocus();
+      _focusNode.requestFocus();
+
       if (comment.id != thread.id) {
         _textEditingController.text = "@${comment.user.name}, ";
       }
-      _focusNode.requestFocus();
     });
   }
 
@@ -217,6 +221,8 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       _replyTo = null;
       _replyToThread = null;
+      _focusNode.unfocus();
+      _textEditingController.clear();
     });
   }
 
