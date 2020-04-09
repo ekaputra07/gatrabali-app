@@ -35,7 +35,7 @@ class Comments extends StatelessWidget {
             icon: Icon(Icons.description),
             onPressed: () {
               Navigator.of(context).pushNamed(SingleNews.routeName,
-                  arguments: SingleNewsArgs("", entry));
+                  arguments: SingleNewsArgs("", entry, id: entry.id));
             },
             padding: EdgeInsets.only(right: 15.0),
           )
