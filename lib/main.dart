@@ -18,6 +18,7 @@ import 'package:gatrabali/view/category_news.dart';
 import 'package:gatrabali/view/single_news.dart';
 import 'package:gatrabali/view/balebengong.dart';
 import 'package:gatrabali/view/about.dart';
+import 'package:gatrabali/view/comments.dart';
 
 void main() => runApp(MyApp());
 
@@ -71,6 +72,13 @@ class MyApp extends StatelessWidget {
     if (settings.name == About.routeName) {
       return MaterialPageRoute(
           builder: (context) => About(), fullscreenDialog: true);
+    }
+    // handles /Comments
+    if (settings.name == Comments.routeName) {
+      final CommentsArgs args = settings.arguments;
+      return MaterialPageRoute(
+          builder: (context) => Comments(model: _model, entry: args.entry),
+          fullscreenDialog: true);
     }
     return null;
   }
@@ -166,7 +174,7 @@ class _GatraBaliState extends State<GatraBali> {
   void _handleMessagingData(Map<String, dynamic> message) {
     final data = message["data"];
 
-    // final dataType = data["data_type"];
+    final dataType = data["data_type"];
     final entryId = int.parse(data["entry_id"]);
     final entryTitle = data["entry_title"];
     final categoryId = int.parse(data["category_id"]);
@@ -175,13 +183,20 @@ class _GatraBaliState extends State<GatraBali> {
     final publishedAt = int.parse(data["published_at"]);
 
     var entry = Entry();
+    entry.id = entryId;
     entry.categoryId = categoryId;
     entry.feedId = feedId;
     entry.publishedAt = publishedAt;
     entry.title = entryTitle;
 
-    Navigator.of(context).pushNamed(SingleNews.routeName,
-        arguments: SingleNewsArgs(categoryTitle, entry, id: entryId));
+    if (dataType == "entry") {
+      Navigator.of(context).pushNamed(SingleNews.routeName,
+          arguments: SingleNewsArgs(categoryTitle, entry, id: entryId));
+    }
+    if (dataType == "response") {
+      Navigator.of(context)
+          .pushNamed(Comments.routeName, arguments: CommentsArgs(entry));
+    }
   }
 
   @override

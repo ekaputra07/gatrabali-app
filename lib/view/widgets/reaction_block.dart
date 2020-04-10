@@ -6,6 +6,7 @@ import 'package:gatrabali/models/entry.dart';
 import 'package:gatrabali/models/response.dart';
 import 'package:gatrabali/repository/responses.dart';
 import 'package:gatrabali/view/profile.dart';
+import 'package:gatrabali/view/comments.dart';
 
 class ReactionBlock extends StatefulWidget {
   final Entry entry;
@@ -38,15 +39,14 @@ class _ReactionBlock extends State<ReactionBlock> {
       return;
     }
 
-    String userId = AppModel.of(context).currentUser.id;
+    final user = AppModel.of(context).currentUser;
     Response reaction;
 
     if (_reaction == null) {
       reaction =
-          Response.create(TYPE_REACTION, widget.entry, userId, reaction: r);
+          Response.create(TYPE_REACTION, widget.entry, user, reaction: r);
     } else if (_reaction != null && _reaction.reaction != r) {
       reaction = _reaction;
-      reaction.userId = userId;
       reaction.reaction = r;
     }
 
@@ -83,6 +83,11 @@ class _ReactionBlock extends State<ReactionBlock> {
 
   @override
   Widget build(BuildContext context) {
+    final commentText =
+        (widget.entry.commentCount == null) || (widget.entry.commentCount == 0)
+            ? "Berikan komentar"
+            : "${widget.entry.commentCount} komentar";
+
     return Container(
         color: Colors.green,
         margin: EdgeInsets.symmetric(vertical: 15),
@@ -124,16 +129,18 @@ class _ReactionBlock extends State<ReactionBlock> {
               _react(REACTION_ANGRY);
             })
           ]),
-          // SizedBox(height: 25),
-          // SizedBox(
-          //     width: double.maxFinite,
-          //     child: RaisedButton(
-          //         elevation: 1,
-          //         padding: EdgeInsets.all(15),
-          //         onPressed: () {},
-          //         color: Colors.white,
-          //         child:
-          //             Text("Berikan Komentar", style: TextStyle(fontSize: 15))))
+          SizedBox(height: 25),
+          SizedBox(
+              width: double.maxFinite,
+              child: RaisedButton(
+                  elevation: 1,
+                  padding: EdgeInsets.all(15),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Comments.routeName,
+                        arguments: CommentsArgs(this.widget.entry));
+                  },
+                  color: Colors.white,
+                  child: Text(commentText, style: TextStyle(fontSize: 15))))
         ]));
   }
 

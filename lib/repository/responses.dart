@@ -43,4 +43,58 @@ class ResponseService {
       });
     }
   }
+
+  static Future<List<Response>> getEntryComments(int entryId,
+      {int cursor, int limit = 10}) {
+    var query = Firestore.instance
+        .collection(RESPONSES_COLLECTION)
+        .where("entry_id", isEqualTo: entryId)
+        .where("type", isEqualTo: TYPE_COMMENT)
+        .where("parent_id", isNull: true)
+        .orderBy("created_at", descending: true)
+        .limit(limit);
+
+    if (cursor != null) {
+      query = query.startAfter([cursor]);
+    }
+
+    return query.getDocuments().then((snaps) {
+      return snaps.documents.map((doc) {
+        return Response.fromDocument(doc);
+      }).toList();
+    }).catchError((err) {
+      print(err);
+      return List<Response>();
+    });
+  }
+
+  static Future<List<Response>> getCommentReplies(String commentId,
+      {int cursor, int limit = 10}) {
+    var query = Firestore.instance
+        .collection(RESPONSES_COLLECTION)
+        .where("type", isEqualTo: TYPE_COMMENT)
+        .where("thread_id", isEqualTo: commentId)
+        .orderBy("created_at", descending: true)
+        .limit(limit);
+
+    if (cursor != null) {
+      query = query.startAfter([cursor]);
+    }
+
+    return query.getDocuments().then((snaps) {
+      return snaps.documents.map((doc) {
+        return Response.fromDocument(doc);
+      }).toList();
+    }).catchError((err) {
+      print(err);
+      return List<Response>();
+    });
+  }
+
+  static Future<void> deleteComment(Response comment) {
+    return Firestore.instance
+        .collection(RESPONSES_COLLECTION)
+        .document(comment.id)
+        .delete();
+  }
 }

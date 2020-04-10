@@ -142,7 +142,7 @@ class _SingleNews extends State<SingleNews> {
         ],
       ));
     }
-    return Center(child: CircularProgressIndicator());
+    return Center(child: CircularProgressIndicator(strokeWidth: 2));
   }
 
   Widget _getBody(BuildContext ctx) {
@@ -219,6 +219,7 @@ class _SingleNews extends State<SingleNews> {
         _publishDate(),
         _source(ctx),
         ReactionBlock(_entry),
+        // TODO: related entries always re-initialized when its visible causing it always calls API
         RelatedEntries(
             title: "Berita lainnya",
             categoryId: _entry.categoryId,

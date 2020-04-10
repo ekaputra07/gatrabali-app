@@ -5,7 +5,6 @@ import 'dart:convert' as convert;
 
 import 'package:gatrabali/config.dart';
 import 'package:gatrabali/models/entry.dart';
-import 'package:gatrabali/models/category.dart';
 
 class EntryService {
   /// Returns all entries.
@@ -76,19 +75,6 @@ class EntryService {
       if (resp.statusCode == 200) {
         List<dynamic> entries = convert.jsonDecode(resp.body);
         return entries.map((f) => Entry.fromJson(f)).toList();
-      }
-      throw Exception(resp.body);
-    });
-  }
-
-  /// Returns summary of Category news.
-  static Future<List<CategorySummary>> fetchCategorySummary() {
-    print('EntryService.fetchCategorySummary()...');
-    return http.get('$API_HOST/categories/summary').then((resp) {
-      print('EntryService.fetchCategorySummary() finished.');
-      if (resp.statusCode == 200) {
-        List<dynamic> summaries = convert.jsonDecode(resp.body);
-        return summaries.map((f) => CategorySummary.fromJson(f)).toList();
       }
       throw Exception(resp.body);
     });

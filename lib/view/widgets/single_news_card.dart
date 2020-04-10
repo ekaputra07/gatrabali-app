@@ -20,9 +20,12 @@ class SingleNewsCard extends StatelessWidget {
   Widget build(BuildContext ctx) {
     final categories = AppModel.of(ctx).categories;
     final categoryName = entry.getCategoryName(categories);
+    final commentText = (entry.commentCount != null && entry.commentCount > 0)
+        ? " · ${entry.commentCount} komentar"
+        : "";
     final subTitle = showCategoryName
-        ? "$categoryName, ${entry.formattedDate}"
-        : StringUtils.capitalize(entry.formattedDate);
+        ? "$categoryName, ${entry.formattedDate}$commentText"
+        : "${StringUtils.capitalize(entry.formattedDate)}$commentText";
 
     return Card(
       clipBehavior: Clip.antiAlias,
