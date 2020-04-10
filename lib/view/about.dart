@@ -70,7 +70,7 @@ class About extends StatelessWidget {
                     onPressed: _rate,
                     color: Colors.orange,
                   ),
-                  Text('Berikan Rating')
+                  Text('Beri Rating')
                 ]),
                 Column(
                   children: [
