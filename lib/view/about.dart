@@ -68,6 +68,7 @@ class About extends StatelessWidget {
                     icon: Icon(Icons.star),
                     iconSize: 40,
                     onPressed: _rate,
+                    color: Colors.orange,
                   ),
                   Text('Berikan Rating')
                 ]),
@@ -77,8 +78,24 @@ class About extends StatelessWidget {
                       icon: Icon(Icons.share),
                       iconSize: 40,
                       onPressed: _share,
+                      color: Colors.green,
                     ),
                     Text('Bagikan')
+                  ],
+                ),
+                Column(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.feedback),
+                      iconSize: 40,
+                      onPressed: () async {
+                        await launch(
+                            'https://docs.google.com/forms/d/e/1FAIpQLSehiyEcmkX_FHpG4tkAtmdP0CrAK0UpdAOf7DJc8_PBdDI3Yw/viewform?usp=sf_link',
+                            forceSafariVC: false);
+                      },
+                      color: Colors.blue,
+                    ),
+                    Text('Beri Masukan')
                   ],
                 )
               ]),
