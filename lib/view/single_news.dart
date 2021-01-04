@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -197,15 +198,19 @@ class _SingleNews extends State<SingleNews> {
                 }),
           )
         ]),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         Html(
-            useRichText: true,
             data: _entry.content,
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            defaultTextStyle: TextStyle(fontSize: 16),
-            linkStyle: const TextStyle(
-              color: Colors.green,
-            ),
+            blacklistedElements: ["iframe", "video", "figure", "ins"],
+            style: {
+              "html": Style(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  fontSize: FontSize(16)),
+              "a": Style(color: Colors.green),
+              "h1, h2, h3, h4, h5": Style(fontSize: FontSize(16)),
+              "blockquote": Style(
+                  margin: const EdgeInsets.all(0), fontStyle: FontStyle.italic)
+            },
             onLinkTap: (url) {
               Toast.show(
                   'Silahkan buka link tersebut di halaman asli berita ini.',
