@@ -239,15 +239,13 @@ class _GatraBaliState extends State<GatraBali> {
             });
           },
           items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text("Terbaru")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.grain), title: Text("Daerah")),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Terbaru"),
+            BottomNavigationBarItem(icon: Icon(Icons.grain), label: "Daerah"),
             BottomNavigationBarItem(
                 icon: Icon(GatraBaliIcons.balebengong, size: 20),
-                title: Text("Bale Bengong")),
+                label: "Bale Bengong"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark), title: Text("Disimpan")),
+                icon: Icon(Icons.bookmark), label: "Disimpan"),
           ],
         ),
         drawer: Drawer(

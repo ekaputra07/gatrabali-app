@@ -117,7 +117,6 @@ class _BalebengongEntriesState extends State<BalebengongEntries>
 
   Widget _buildList() {
     return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: _entries.length,
       itemBuilder: (BuildContext ctx, int index) {
